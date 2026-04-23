@@ -1,0 +1,2303 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard Ejecutivo — Refacciones</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+
+/* ============================================================
+   VARIABLES CSS — SISTEMA DE DISEÑO
+   Modifica estos valores para cambiar el tema completo
+   ============================================================ */
+:root {
+  /* Fondos con profundidad */
+  --bg-base:        #080c12;
+  --bg-surface:     #0e1420;
+  --bg-elevated:    #141c2c;
+  --bg-overlay:     #1a2236;
+
+  /* Glassmorphism */
+  --glass-bg:       rgba(20, 28, 44, 0.72);
+  --glass-border:   rgba(255, 255, 255, 0.07);
+  --glass-hover:    rgba(255, 255, 255, 0.11);
+  --glass-shadow:   0 4px 24px rgba(0,0,0,0.45), 0 1px 0 rgba(255,255,255,0.04) inset;
+  --glass-shadow-hover: 0 8px 32px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.07) inset;
+
+  /* Tipografía */
+  --text-primary:   #eef2f8;
+  --text-secondary: #7d8fa8;
+  --text-muted:     #4a5568;
+  --text-inverse:   #080c12;
+
+  /* Paleta de acento — Azul principal */
+  --blue-500:       #2563eb;
+  --blue-400:       #3b82f6;
+  --blue-300:       #60a5fa;
+  --blue-glow:      rgba(37,99,235,0.25);
+  --blue-dim:       rgba(37,99,235,0.12);
+
+  /* Verde — positivo */
+  --green-500:      #16a34a;
+  --green-400:      #22c55e;
+  --green-300:      #4ade80;
+  --green-dim:      rgba(22,163,74,0.12);
+  --green-border:   rgba(22,163,74,0.28);
+
+  /* Ámbar — advertencia */
+  --amber-500:      #d97706;
+  --amber-400:      #f59e0b;
+  --amber-300:      #fcd34d;
+  --amber-dim:      rgba(217,119,6,0.12);
+  --amber-border:   rgba(217,119,6,0.28);
+
+  /* Rojo — alerta */
+  --red-500:        #dc2626;
+  --red-400:        #ef4444;
+  --red-300:        #fca5a5;
+  --red-dim:        rgba(220,38,38,0.12);
+  --red-border:     rgba(220,38,38,0.28);
+
+  /* Púrpura — neutral especial */
+  --purple-500:     #7c3aed;
+  --purple-400:     #a78bfa;
+  --purple-dim:     rgba(124,58,237,0.12);
+
+  /* Bordes */
+  --border-subtle:  rgba(255,255,255,0.055);
+  --border-default: rgba(255,255,255,0.09);
+  --border-strong:  rgba(255,255,255,0.15);
+
+  /* Radio y espaciado */
+  --radius-sm:  6px;
+  --radius-md:  10px;
+  --radius-lg:  14px;
+  --radius-xl:  18px;
+
+  /* Transiciones */
+  --transition-fast:   0.15s ease;
+  --transition-base:   0.22s ease;
+  --transition-slow:   0.35s ease;
+}
+
+/* ============================================================
+   RESET Y BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Sora', sans-serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  min-height: 100vh;
+  /* Fondo con profundidad radial sutil */
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% 0%, rgba(37,99,235,0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 100%, rgba(124,58,237,0.05) 0%, transparent 55%);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================================
+   SCROLLBAR PERSONALIZADO
+   ============================================================ */
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.25); }
+
+/* ============================================================
+   HEADER — Sticky con blur
+   ============================================================ */
+.header {
+  position: sticky; top: 0; z-index: 200;
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  background: rgba(8, 12, 18, 0.85);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 14px 32px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background var(--transition-base);
+}
+
+.header-left { display: flex; align-items: center; gap: 14px; }
+
+.logo-mark {
+  width: 34px; height: 34px; border-radius: 9px;
+  background: linear-gradient(135deg, var(--blue-500) 0%, #1d4ed8 100%);
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.1), 0 4px 12px var(--blue-glow);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 700; color: #fff;
+  letter-spacing: -0.5px;
+  transition: box-shadow var(--transition-base), transform var(--transition-base);
+}
+.logo-mark:hover { transform: scale(1.05); box-shadow: 0 0 0 1px rgba(255,255,255,0.15), 0 6px 20px var(--blue-glow); }
+
+.header-title { font-size: 14px; font-weight: 600; color: var(--text-primary); letter-spacing: -0.2px; }
+.header-sub   { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+
+.header-right { display: flex; align-items: center; gap: 10px; }
+
+.live-pill {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--green-dim);
+  border: 1px solid var(--green-border);
+  border-radius: 20px; padding: 4px 11px;
+  font-size: 11px; font-weight: 600; color: var(--green-400);
+  letter-spacing: 0.2px;
+}
+
+.live-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green-400);
+  animation: livePulse 2.2s ease-in-out infinite;
+}
+
+@keyframes livePulse {
+  0%,100% { opacity:1; transform:scale(1); box-shadow:0 0 0 0 rgba(34,197,94,0.5); }
+  50%      { opacity:0.7; transform:scale(0.85); box-shadow:0 0 0 4px rgba(34,197,94,0); }
+}
+
+.header-time {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px; font-weight: 500;
+  color: var(--text-muted);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  padding: 4px 10px; border-radius: var(--radius-sm);
+}
+
+/* ============================================================
+   LAYOUT PRINCIPAL
+   ============================================================ */
+.main {
+  padding: 28px 32px 40px;
+  max-width: 1560px;
+  margin: 0 auto;
+}
+
+/* Etiquetas de sección */
+.section-label {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 1.8px; text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 14px; margin-top: 36px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-label::after { content:''; flex:1; height:1px; background:var(--border-subtle); }
+.section-label:first-child { margin-top: 0; }
+
+/* ============================================================
+   GRIDS — Mobile-first responsivo
+   ============================================================ */
+.grid-4, .grid-3, .grid-2, .grid-21 {
+  display: grid;
+  gap: 12px;
+}
+
+/* Mobile: una columna */
+.grid-4  { grid-template-columns: 1fr; }
+.grid-3  { grid-template-columns: 1fr; }
+.grid-2  { grid-template-columns: 1fr; }
+.grid-21 { grid-template-columns: 1fr; }
+
+/* Tablet: dos columnas */
+@media (min-width: 640px) {
+  .grid-4  { grid-template-columns: repeat(2, 1fr); }
+  .grid-3  { grid-template-columns: repeat(2, 1fr); }
+  .grid-2  { grid-template-columns: repeat(2, 1fr); }
+  .grid-21 { grid-template-columns: 1fr; }
+}
+
+/* Desktop: columnas completas */
+@media (min-width: 1024px) {
+  .grid-4  { grid-template-columns: repeat(4, 1fr); }
+  .grid-3  { grid-template-columns: repeat(3, 1fr); }
+  .grid-2  { grid-template-columns: repeat(2, 1fr); }
+  .grid-21 { grid-template-columns: 2fr 1fr; }
+}
+
+/* ============================================================
+   TARJETA BASE — Glassmorphism
+   ============================================================ */
+.card {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  padding: 20px 22px;
+  box-shadow: var(--glass-shadow);
+  transition:
+    border-color var(--transition-base),
+    box-shadow var(--transition-base),
+    transform var(--transition-base);
+}
+
+.card:hover {
+  border-color: var(--glass-hover);
+  box-shadow: var(--glass-shadow-hover);
+  transform: translateY(-1px);
+}
+
+.card-title {
+  font-size: 12px; font-weight: 500;
+  color: var(--text-secondary); margin-bottom: 16px;
+  letter-spacing: 0.1px;
+}
+
+/* ============================================================
+   KPI CARDS — Jerarquía tipográfica refinada
+   ============================================================ */
+.kpi-label {
+  font-size: 11px; color: var(--text-secondary);
+  font-weight: 500; margin-bottom: 10px;
+  line-height: 1.4; letter-spacing: 0.1px;
+}
+
+.kpi-value {
+  font-size: 28px; font-weight: 700;
+  color: var(--text-primary);
+  font-family: 'IBM Plex Mono', monospace;
+  letter-spacing: -1.5px; line-height: 1;
+}
+
+.kpi-delta {
+  font-size: 11px; margin-top: 7px; font-weight: 600;
+  display: flex; align-items: center; gap: 4px;
+  letter-spacing: 0.1px;
+}
+
+.kpi-sub {
+  font-size: 10px; color: var(--text-muted);
+  margin-top: 4px; letter-spacing: 0.1px;
+}
+
+/* Colores semánticos de delta */
+.pos { color: var(--green-400); }
+.neg { color: var(--red-400);   }
+.neu { color: var(--amber-400); }
+
+/* Acentos de borde izquierdo */
+.accent-blue   { border-left: 2px solid var(--blue-400); }
+.accent-green  { border-left: 2px solid var(--green-400); }
+.accent-amber  { border-left: 2px solid var(--amber-400); }
+.accent-red    { border-left: 2px solid var(--red-400); }
+.accent-purple { border-left: 2px solid var(--purple-400); }
+
+/* ============================================================
+   TARJETAS MACRO — FX e Inflación
+   ============================================================ */
+.fx-card {
+  border-radius: var(--radius-lg);
+  padding: 20px 22px;
+  position: relative; overflow: hidden;
+  background: linear-gradient(145deg, #0a1628 0%, #050d1a 100%);
+  border: 1px solid rgba(37,99,235,0.25);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5), 0 0 0 1px rgba(37,99,235,0.08) inset;
+  transition: border-color var(--transition-base), box-shadow var(--transition-base), transform var(--transition-base);
+}
+.fx-card:hover {
+  border-color: rgba(37,99,235,0.4);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 30px rgba(37,99,235,0.1);
+  transform: translateY(-1px);
+}
+/* Orbe decorativo */
+.fx-card::before {
+  content:''; position:absolute; right:-40px; top:-40px;
+  width:160px; height:160px; border-radius:50%;
+  background: radial-gradient(circle, rgba(37,99,235,0.18) 0%, transparent 70%);
+  pointer-events:none;
+}
+.fx-card::after {
+  content:''; position:absolute; left:-20px; bottom:-30px;
+  width:100px; height:100px; border-radius:50%;
+  background: radial-gradient(circle, rgba(37,99,235,0.08) 0%, transparent 70%);
+  pointer-events:none;
+}
+
+.fx-label  { font-size:11px; color:#5b89be; font-weight:500; margin-bottom:7px; letter-spacing:0.2px; }
+.fx-value  { font-size:34px; font-weight:700; color:#fff; font-family:'IBM Plex Mono',monospace; letter-spacing:-2px; line-height:1; }
+.fx-delta  { font-size:11px; margin-top:5px; font-weight:600; }
+.fx-source { font-size:10px; color:#3d6a99; margin-top:8px; }
+
+.inf-card {
+  border-radius: var(--radius-lg);
+  padding: 20px 22px;
+  background: linear-gradient(145deg, #120f22 0%, #0d0a1a 100%);
+  border: 1px solid rgba(124,58,237,0.22);
+  box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  transition: border-color var(--transition-base), transform var(--transition-base);
+}
+.inf-card:hover { border-color: rgba(124,58,237,0.38); transform:translateY(-1px); }
+
+.inf-label { font-size:11px; color:#7c5fa5; font-weight:500; margin-bottom:7px; }
+.inf-value { font-size:34px; font-weight:700; color:#fff; font-family:'IBM Plex Mono',monospace; letter-spacing:-2px; line-height:1; }
+.inf-sub   { font-size:11px; color:#5c4382; margin-top:5px; }
+
+/* ============================================================
+   TABLA DE PROVEEDORES
+   ============================================================ */
+table { width:100%; border-collapse:collapse; font-size:12px; }
+
+th {
+  font-weight:600; font-size:10px; letter-spacing:1.2px;
+  text-transform:uppercase; color:var(--text-muted);
+  padding:0 8px 10px 0; text-align:left;
+}
+
+td {
+  padding:10px 8px 10px 0;
+  border-top:1px solid var(--border-subtle);
+  color:var(--text-primary); vertical-align:middle;
+}
+td:last-child { text-align:right; padding-right:0; }
+
+/* Micro-interacción en filas */
+tr { transition: background var(--transition-fast); }
+tr:hover td {
+  background: rgba(255,255,255,0.025);
+}
+tr:hover td:first-child { border-radius: var(--radius-sm) 0 0 var(--radius-sm); }
+tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; }
+
+/* ============================================================
+   BADGES — Con animación de pulso para alertas
+   ============================================================ */
+.badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 600;
+  padding: 3px 9px; border-radius: 20px;
+  letter-spacing: 0.4px;
+  transition: opacity var(--transition-fast);
+}
+
+.badge-ok {
+  background: var(--green-dim);
+  color: var(--green-400);
+  border: 1px solid var(--green-border);
+}
+
+.badge-warn {
+  background: var(--amber-dim);
+  color: var(--amber-400);
+  border: 1px solid var(--amber-border);
+}
+
+/* Badge de error con pulso de alerta */
+.badge-err {
+  background: var(--red-dim);
+  color: var(--red-300);
+  border: 1px solid var(--red-border);
+  animation: alertPulse 2.5s ease-in-out infinite;
+}
+
+.badge-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  display: inline-block; flex-shrink: 0;
+}
+.badge-ok .badge-dot   { background: var(--green-400); }
+.badge-warn .badge-dot { background: var(--amber-400); }
+.badge-err .badge-dot  { background: var(--red-300); animation: dotPulse 1.8s ease-in-out infinite; }
+
+@keyframes alertPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(220,38,38,0); }
+  50%      { box-shadow: 0 0 0 3px rgba(220,38,38,0.2); }
+}
+@keyframes dotPulse {
+  0%,100% { transform:scale(1); opacity:1; }
+  50%      { transform:scale(1.5); opacity:0.6; }
+}
+
+/* ============================================================
+   BARRA DE PRECIO PROVEEDOR
+   ============================================================ */
+.bar-wrap { display:flex; align-items:center; gap:8px; }
+.bar-bg   { flex:1; height:4px; background:var(--bg-overlay); border-radius:2px; overflow:hidden; }
+.bar-fill { height:4px; border-radius:2px; transition:width 0.6s cubic-bezier(.4,0,.2,1); }
+.price-pct {
+  font-size:11px; font-family:'IBM Plex Mono',monospace;
+  font-weight:500; min-width:42px; text-align:right;
+}
+
+/* ============================================================
+   MINI STATS (KPIs secundarios)
+   ============================================================ */
+.mini-stat {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:9px 0; border-bottom:1px solid var(--border-subtle);
+  transition: background var(--transition-fast);
+}
+.mini-stat:last-child { border-bottom:none; }
+.mini-stat:hover { background: rgba(255,255,255,0.02); margin: 0 -4px; padding: 9px 4px; border-radius: var(--radius-sm); }
+
+.mini-label { font-size:12px; color:var(--text-secondary); }
+.mini-val   { font-size:13px; font-weight:600; font-family:'IBM Plex Mono',monospace; color:var(--text-primary); }
+
+/* ============================================================
+   LEYENDAS DE GRÁFICAS
+   ============================================================ */
+.chart-legend {
+  display:flex; flex-wrap:wrap; gap:14px;
+  margin-bottom:12px; font-size:11px;
+  color:var(--text-secondary);
+}
+.legend-item { display:flex; align-items:center; gap:5px; }
+.legend-swatch {
+  width:10px; height:10px; border-radius:2px;
+  display:inline-block; flex-shrink:0;
+}
+.legend-swatch.dashed {
+  background:none;
+  border-bottom:2px dashed currentColor;
+  height:0; width:14px; border-radius:0;
+}
+
+/* ============================================================
+   CONTENEDOR DE GRÁFICAS
+   ============================================================ */
+.chart-wrap { position:relative; width:100%; }
+
+/* Leyenda donut inline */
+.donut-legend {
+  display:grid; grid-template-columns:1fr 1fr;
+  gap:5px; font-size:11px; color:var(--text-secondary);
+  margin-top:10px;
+}
+.donut-legend-item { display:flex; align-items:center; gap:5px; }
+.donut-swatch { width:8px; height:8px; border-radius:2px; flex-shrink:0; }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.footer {
+  text-align:center; font-size:11px; color:var(--text-muted);
+  padding:20px 32px; margin-top:8px;
+  border-top:1px solid var(--border-subtle);
+  letter-spacing:0.2px;
+}
+
+/* ============================================================
+   ANIMACIONES DE ENTRADA (carga)
+   ============================================================ */
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(12px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+
+.fade-in { animation: fadeUp 0.5s ease forwards; opacity:0; }
+.delay-1 { animation-delay: 0.07s; }
+.delay-2 { animation-delay: 0.14s; }
+.delay-3 { animation-delay: 0.21s; }
+.delay-4 { animation-delay: 0.28s; }
+
+/* ============================================================
+   RESPONSIVIDAD ADICIONAL
+   ============================================================ */
+@media (max-width: 640px) {
+  .header     { padding: 12px 16px; }
+  .main       { padding: 18px 16px 32px; }
+  .header-time { display:none; }
+  .kpi-value  { font-size: 24px; }
+  .fx-value, .inf-value { font-size: 28px; }
+}
+
+@media (min-width: 640px) and (max-width: 1023px) {
+  .header { padding: 14px 24px; }
+  .main   { padding: 22px 24px 36px; }
+}
+
+</style>
+
+<style>
+/* ============================================================
+   SISTEMA DE TABS
+   ============================================================ */
+.tab-nav {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 32px;
+  background: rgba(8,12,18,0.9);
+  border-bottom: 1px solid var(--border-subtle);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.tab-nav::-webkit-scrollbar { display: none; }
+
+.tab-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 500;
+  font-family: 'Sora', sans-serif;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.2s, border-color 0.2s;
+  margin-bottom: -1px;
+}
+.tab-btn:hover { color: var(--text-secondary); }
+.tab-btn.active {
+  color: var(--blue-300);
+  border-bottom-color: var(--blue-400);
+}
+.tab-btn .tab-icon { font-size: 14px; }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ── Selector de año ─────────────────────────────────────────── */
+.year-select {
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  border-radius: 8px;
+  padding: 5px 14px;
+  font-family: 'Sora', sans-serif;
+  font-size: 12px;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.year-select:hover { border-color: var(--blue-400); }
+
+/* ── Tabla financiera ────────────────────────────────────────── */
+.fin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+.fin-table th {
+  background: var(--bg-elevated);
+  padding: 8px 14px;
+  text-align: right;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.5px;
+}
+.fin-table th:first-child { text-align: left; }
+.fin-table td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  text-align: right;
+  color: var(--text-primary);
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 11px;
+}
+.fin-table td:first-child {
+  text-align: left;
+  font-family: 'Sora', sans-serif;
+  color: var(--text-secondary);
+  font-size: 12px;
+}
+.fin-table tr.subtotal td { color: var(--blue-300); font-weight: 600; }
+.fin-table tr.total td { color: var(--green-300); font-weight: 700; border-top: 1px solid var(--border-strong); }
+.fin-table tr.section-header td {
+  background: var(--bg-elevated);
+  color: var(--text-muted);
+  font-family: 'Sora', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+}
+
+/* ── Z-Score badge ───────────────────────────────────────────── */
+.zscore-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.zscore-safe   { background: var(--green-dim); color: var(--green-300); border: 1px solid var(--green-border); }
+.zscore-warn   { background: var(--amber-dim); color: var(--amber-300); border: 1px solid var(--amber-border); }
+.zscore-danger { background: var(--red-dim);   color: var(--red-300);   border: 1px solid var(--red-border); }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     HEADER
+     ============================================================ -->
+<header class="header">
+  <div class="header-left">
+    <div class="logo-mark">RX</div>
+    <div>
+      <div class="header-title">Dashboard Ejecutivo — Refacciones</div>
+      <div class="header-sub" id="db-date">Cargando...</div>
+    </div>
+  </div>
+  <div class="header-right">
+    <div class="live-pill">
+      <span class="live-dot"></span>
+      En vivo
+    </div>
+    <div class="header-time" id="header-time">--:--:--</div>
+  </div>
+</header>
+
+<!-- ============================================================
+     NAVEGACIÓN DE TABS
+     ============================================================ -->
+<nav class="tab-nav">
+  <button class="tab-btn active" data-tab="mercado">
+    <span class="tab-icon">🌐</span> Mercado
+  </button>
+  <button class="tab-btn" data-tab="resumen">
+    <span class="tab-icon">📋</span> Resumen
+  </button>
+  <button class="tab-btn" data-tab="resultados">
+    <span class="tab-icon">📊</span> Estado de Resultados
+  </button>
+  <button class="tab-btn" data-tab="balance">
+    <span class="tab-icon">🏦</span> Balance General
+  </button>
+  <button class="tab-btn" data-tab="ratios">
+    <span class="tab-icon">📈</span> Ratios Financieros
+  </button>
+  <button class="tab-btn" data-tab="operaciones">
+    <span class="tab-icon">⚙️</span> Operaciones
+  </button>
+</nav>
+
+<main class="main">
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB: MERCADO
+     ══════════════════════════════════════════════════════════ -->
+<div class="tab-panel active" id="tab-mercado">
+
+  <!-- ── SECCIÓN: MACRO ── -->
+  <div class="section-label">Mercado &amp; Macroeconómico</div>
+  <div class="grid-4">
+
+    <!-- Tipo de Cambio -->
+    <div class="fx-card fade-in delay-1">
+      <div class="fx-label">USD / MXN — Tipo de Cambio</div>
+      <div class="fx-value" id="fx-rate">—.——</div>
+      <div class="fx-delta" id="fx-delta" style="color:#5b89be;">Obteniendo dato...</div>
+      <div class="fx-source" id="fx-source">Fuente: Banco de México</div>
+    </div>
+
+    <!-- Inflación INPC -->
+    <div class="inf-card fade-in delay-2">
+      <div class="inf-label">Inflación INPC General</div>
+      <div class="inf-value">3.80%</div>
+      <div class="inf-sub">Marzo 2025 · INEGI</div>
+    </div>
+
+    <!-- Inflación Refacciones -->
+    <div class="card accent-amber fade-in delay-3">
+      <div class="kpi-label">Inflación Refacciones / AutoPartes</div>
+      <div class="kpi-value">5.2%</div>
+      <div class="kpi-delta neg">▲ +0.4pp vs febrero</div>
+      <div class="kpi-sub">Índice INPC Mercancías · INEGI</div>
+    </div>
+
+    <!-- Petróleo WTI -->
+    <div class="card accent-purple fade-in delay-4">
+      <div class="kpi-label">Petróleo WTI (ref. logística)</div>
+      <div class="kpi-value">$73.40</div>
+      <div class="kpi-delta neg">▼ −1.2% esta semana</div>
+      <div class="kpi-sub">USD / barril · EIA</div>
+    </div>
+
+  </div>
+
+  </div> <!-- /tab-mercado -->
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB: RESUMEN
+     ══════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-resumen">
+  <div class="section-label" style="justify-content:space-between;">
+    <span>Resumen Ejecutivo Financiero</span>
+    <select id="resumen-year" class="year-select"></select>
+  </div>
+
+  <div class="grid-4">
+    <div class="card accent-blue"><div class="kpi-label">ROE (Dupont)</div><div class="kpi-value" id="rz-roe">—</div><div class="kpi-sub">Rentabilidad financiera</div></div>
+    <div class="card accent-green"><div class="kpi-label">Margen Neto</div><div class="kpi-value" id="rz-margen-neto">—</div><div class="kpi-sub">Utilidad neta / ventas</div></div>
+    <div class="card accent-blue"><div class="kpi-label">Rotación de Activos</div><div class="kpi-value" id="rz-rotacion">—</div><div class="kpi-sub">Eficiencia operativa</div></div>
+    <div class="card accent-amber"><div class="kpi-label">% EBITDA</div><div class="kpi-value" id="rz-ebitda">—</div><div class="kpi-sub">Desempeño operativo</div></div>
+  </div>
+
+  <div class="grid-2" style="margin-top:12px;">
+    <div class="card">
+      <div class="card-title">Crecimiento de Ventas (Nominal vs Real)</div>
+      <div class="chart-wrap" style="height:220px;"><canvas id="chartResumenCrec"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Márgenes y Gastos (%)</div>
+      <div class="chart-wrap" style="height:220px;"><canvas id="chartResumenMargen"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB: ESTADO DE RESULTADOS
+     ══════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-resultados">
+  <div class="section-label" style="justify-content:space-between;">
+    <span>Estado de Resultados</span>
+    <select id="er-year" class="year-select"></select>
+  </div>
+
+  <div class="grid-4">
+    <div class="card accent-blue"><div class="kpi-label">Ventas Netas</div><div class="kpi-value" id="er-ventas">—</div></div>
+    <div class="card accent-green"><div class="kpi-label">Utilidad Bruta</div><div class="kpi-value" id="er-bruta">—</div></div>
+    <div class="card accent-amber"><div class="kpi-label">Utilidad Operativa</div><div class="kpi-value" id="er-operativa">—</div></div>
+    <div class="card accent-purple"><div class="kpi-label">Utilidad Neta</div><div class="kpi-value" id="er-neta">—</div></div>
+  </div>
+
+  <div class="grid-2" style="margin-top:12px;">
+    <div class="card">
+      <div class="card-title">Detalle del año seleccionado</div>
+      <table class="fin-table">
+        <tbody id="er-table-body"></tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">Tendencia de Utilidades</div>
+      <div class="chart-wrap" style="height:240px;"><canvas id="chartERTrend"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB: BALANCE GENERAL
+     ══════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-balance">
+  <div class="section-label" style="justify-content:space-between;">
+    <span>Balance General</span>
+    <select id="bg-year-select" class="year-select"></select>
+  </div>
+
+  <div class="grid-4">
+    <div class="card accent-blue"><div class="kpi-label">Activo Circulante</div><div class="kpi-value" id="bg-circulante">—</div><div class="kpi-delta" id="bg-circulante-delta">—</div></div>
+    <div class="card accent-green"><div class="kpi-label">Activo Fijo</div><div class="kpi-value" id="bg-fijo">—</div><div class="kpi-delta" id="bg-fijo-delta">—</div></div>
+    <div class="card accent-amber"><div class="kpi-label">Total Activo</div><div class="kpi-value" id="bg-total">—</div></div>
+    <div class="card accent-purple"><div class="kpi-label">Pasivo CP</div><div class="kpi-value" id="bg-pasivo">—</div></div>
+  </div>
+
+  <div class="grid-2" style="margin-top:12px;">
+    <div class="card">
+      <div class="card-title">Estructura del Activo</div>
+      <div class="chart-wrap" style="height:220px;"><canvas id="chartBalance"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Composición Activo Circulante</div>
+      <div class="chart-wrap" style="height:220px;"><canvas id="chartComposicion"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB: RATIOS
+     ══════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-ratios">
+  <div class="section-label" style="justify-content:space-between;">
+    <span>Ratios Financieros</span>
+    <select id="ratios-year" class="year-select"></select>
+  </div>
+
+  <div class="grid-4">
+    <div class="card accent-blue"><div class="kpi-label">Liquidez</div><div class="kpi-value" id="rt-liquidez">—</div></div>
+    <div class="card accent-amber"><div class="kpi-label">Endeudamiento</div><div class="kpi-value" id="rt-endeudamiento">—</div></div>
+    <div class="card accent-green"><div class="kpi-label">Solvencia</div><div class="kpi-value" id="rt-solvencia">—</div></div>
+    <div class="card accent-purple"><div class="kpi-label">Z-Score</div><div class="kpi-value" id="rt-zscore">—</div><div id="rt-zbadge" class="zscore-badge zscore-safe" style="margin-top:8px;">Seguro</div></div>
+  </div>
+
+  <div class="grid-2" style="margin-top:12px;">
+    <div class="card">
+      <div class="card-title">Liquidez, Endeudamiento y Solvencia</div>
+      <div class="chart-wrap" style="height:230px;"><canvas id="chartRatiosCore"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Rentabilidad Financiera vs Económica</div>
+      <div class="chart-wrap" style="height:230px;"><canvas id="chartRatiosRent"></canvas></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB: OPERACIONES
+     ══════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-operaciones">
+
+  <!-- ── SECCIÓN: KPIs FINANCIEROS ── -->
+  <div class="section-label">KPIs Financieros — Acumulado 2025</div>
+  <div class="grid-4">
+
+    <div class="card accent-blue fade-in delay-1">
+      <div class="kpi-label">Ventas Netas YTD</div>
+      <div class="kpi-value">$182.4M</div>
+      <div class="kpi-delta pos">▲ +11.3% vs 2024</div>
+      <div class="kpi-sub">MXN · Ene–Abr 2025</div>
+    </div>
+
+    <div class="card accent-green fade-in delay-2">
+      <div class="kpi-label">Margen Bruto</div>
+      <div class="kpi-value">34.7%</div>
+      <div class="kpi-delta pos">▲ +1.2pp vs 2024</div>
+      <div class="kpi-sub">Objetivo: 35.0%</div>
+    </div>
+
+    <div class="card accent-blue fade-in delay-3">
+      <div class="kpi-label">EBITDA YTD</div>
+      <div class="kpi-value">$28.6M</div>
+      <div class="kpi-delta pos">▲ +8.7% vs 2024</div>
+      <div class="kpi-sub">Margen EBITDA: 15.7%</div>
+    </div>
+
+    <div class="card accent-amber fade-in delay-4">
+      <div class="kpi-label">Cartera Vencida</div>
+      <div class="kpi-value">4.1%</div>
+      <div class="kpi-delta neg">▲ +0.6pp vs 2024</div>
+      <div class="kpi-sub">Límite política interna: 5%</div>
+    </div>
+
+  </div>
+
+  <!-- Charts financieros -->
+  <div class="grid-2" style="margin-top:12px;">
+
+    <div class="card fade-in delay-1">
+      <div class="card-title">Ventas anuales 2021–2025 · MXN millones + Margen bruto %</div>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>Ventas MXN</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#22c55e;"></span>Margen bruto %</span>
+      </div>
+      <div class="chart-wrap" style="height:220px;">
+        <canvas id="chartVentas"></canvas>
+      </div>
+    </div>
+
+    <div class="card fade-in delay-2">
+      <div class="card-title">EBITDA vs Utilidad neta 2021–2025 · MXN millones</div>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>EBITDA</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#f59e0b;"></span>Utilidad neta</span>
+      </div>
+      <div class="chart-wrap" style="height:220px;">
+        <canvas id="chartEbitda"></canvas>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── SECCIÓN: BALANCE GENERAL (Google Sheets) ── -->
+  <div class="section-label" style="display:flex;align-items:center;justify-content:space-between;">
+    <span>Balance General — Datos Reales</span>
+    <select id="bg-year-select" style="
+      background:#141c2c;color:#eef2f8;border:1px solid rgba(255,255,255,0.12);
+      border-radius:8px;padding:5px 14px;font-family:'Sora',sans-serif;font-size:13px;
+      cursor:pointer;outline:none;">
+      <option value="">Cargando...</option>
+    </select>
+  </div>
+
+  <div class="grid-4">
+    <div class="card accent-blue fade-in delay-1">
+      <div class="kpi-label">Total Activo Circulante</div>
+      <div class="kpi-value" id="bg-circulante">—</div>
+      <div class="kpi-delta" id="bg-circulante-delta" style="color:var(--text-secondary);">—</div>
+      <div class="kpi-sub">Caja + Inventario + Cuentas por cobrar</div>
+    </div>
+    <div class="card accent-green fade-in delay-2">
+      <div class="kpi-label">Total Activo Fijo</div>
+      <div class="kpi-value" id="bg-fijo">—</div>
+      <div class="kpi-delta" id="bg-fijo-delta" style="color:var(--text-secondary);">—</div>
+      <div class="kpi-sub">Mobiliario, equipo e intangibles</div>
+    </div>
+    <div class="card accent-amber fade-in delay-3">
+      <div class="kpi-label">Caja / Bancos</div>
+      <div class="kpi-value" id="bg-caja">—</div>
+      <div class="kpi-delta" id="bg-caja-delta" style="color:var(--text-secondary);">—</div>
+      <div class="kpi-sub">Disponible inmediato</div>
+    </div>
+    <div class="card accent-purple fade-in delay-4">
+      <div class="kpi-label">Existencias (Inventario)</div>
+      <div class="kpi-value" id="bg-existencias">—</div>
+      <div class="kpi-delta" id="bg-exist-delta" style="color:var(--text-secondary);">—</div>
+      <div class="kpi-sub">Mercaderías valoradas</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:12px;">
+    <div class="card fade-in delay-1">
+      <div class="card-title">Activo Circulante vs Activo Fijo · 2020–2024</div>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>Circulante</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#22c55e;"></span>Fijo</span>
+      </div>
+      <div class="chart-wrap" style="height:220px;">
+        <canvas id="chartBalance"></canvas>
+      </div>
+    </div>
+    <div class="card fade-in delay-2">
+      <div class="card-title">Composición del Activo Circulante · año seleccionado</div>
+      <div class="chart-wrap" style="height:175px;">
+        <canvas id="chartComposicion"></canvas>
+      </div>
+      <div class="donut-legend" style="margin-top:12px;" id="bg-donut-legend">
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#3b82f6;"></span>Existencias</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#22c55e;"></span>Caja/Bancos</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#f59e0b;"></span>Inversiones</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#a78bfa;"></span>Cuentas por cobrar</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN: INVENTARIO ── -->
+</div><!-- /tab-mercado -->
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB: RESUMEN
+     ══════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-resumen">
+  <div class="section-label" style="display:flex;align-items:center;justify-content:space-between;">
+    <span>Resumen Financiero — Indicadores Clave</span>
+    <select class="year-select" id="resumen-year-select"></select>
+  </div>
+
+  <div class="grid-4" id="resumen-kpis">
+    <div class="card accent-blue fade-in delay-1">
+      <div class="kpi-label">ROE (DuPont)</div>
+      <div class="kpi-value" id="res-roe">—</div>
+      <div class="kpi-delta" id="res-roe-delta" style="color:var(--text-secondary);">—</div>
+      <div class="kpi-sub">Rentabilidad sobre capital</div>
+    </div>
+    <div class="card accent-green fade-in delay-2">
+      <div class="kpi-label">Margen Neto</div>
+      <div class="kpi-value" id="res-margen">—</div>
+      <div class="kpi-delta" id="res-margen-delta" style="color:var(--text-secondary);">—</div>
+      <div class="kpi-sub">Utilidad Neta / Ventas</div>
+    </div>
+    <div class="card accent-amber fade-in delay-3">
+      <div class="kpi-label">% EBITDA</div>
+      <div class="kpi-value" id="res-ebitda">—</div>
+      <div class="kpi-delta" id="res-ebitda-delta" style="color:var(--text-secondary);">—</div>
+      <div class="kpi-sub">Sobre ventas netas</div>
+    </div>
+    <div class="card accent-purple fade-in delay-4">
+      <div class="kpi-label">Rotación de Activos</div>
+      <div class="kpi-value" id="res-rotacion">—</div>
+      <div class="kpi-delta" id="res-rotacion-delta" style="color:var(--text-secondary);">—</div>
+      <div class="kpi-sub">Ventas / Activo total</div>
+    </div>
+  </div>
+
+  <div class="grid-4" style="margin-top:12px;">
+    <div class="card fade-in delay-1">
+      <div class="kpi-label">Crec. Ventas Nominal</div>
+      <div class="kpi-value" id="res-crec-nom">—</div>
+      <div class="kpi-delta" id="res-crec-nom-delta" style="color:var(--text-secondary);">—</div>
+    </div>
+    <div class="card fade-in delay-2">
+      <div class="kpi-label">Crec. Ventas Real</div>
+      <div class="kpi-value" id="res-crec-real">—</div>
+      <div class="kpi-delta" id="res-crec-real-delta" style="color:var(--text-secondary);">—</div>
+    </div>
+    <div class="card fade-in delay-3">
+      <div class="kpi-label">Margen Operativo</div>
+      <div class="kpi-value" id="res-margen-op">—</div>
+      <div class="kpi-delta" id="res-margen-op-delta" style="color:var(--text-secondary);">—</div>
+    </div>
+    <div class="card fade-in delay-4">
+      <div class="kpi-label">% Gastos Generales</div>
+      <div class="kpi-value" id="res-gastos">—</div>
+      <div class="kpi-delta" id="res-gastos-delta" style="color:var(--text-secondary);">—</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:12px;">
+    <div class="card fade-in delay-1">
+      <div class="card-title">ROE · Margen Neto · EBITDA — Tendencia 2020–2024</div>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>ROE %</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#22c55e;"></span>Margen Neto %</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#f59e0b;"></span>EBITDA %</span>
+      </div>
+      <div class="chart-wrap" style="height:220px;"><canvas id="chartResumenRoe"></canvas></div>
+    </div>
+    <div class="card fade-in delay-2">
+      <div class="card-title">Crecimiento de Ventas — Nominal vs Real 2020–2024</div>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>Nominal %</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#f59e0b;"></span>Real %</span>
+      </div>
+      <div class="chart-wrap" style="height:220px;"><canvas id="chartResumenCrec"></canvas></div>
+    </div>
+  </div>
+</div><!-- /tab-resumen -->
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB: ESTADO DE RESULTADOS
+     ══════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-resultados">
+  <div class="section-label" style="display:flex;align-items:center;justify-content:space-between;">
+    <span>Estado de Resultados</span>
+    <select class="year-select" id="er-year-select"></select>
+  </div>
+
+  <div class="grid-4">
+    <div class="card accent-blue fade-in delay-1">
+      <div class="kpi-label">Ventas Netas</div>
+      <div class="kpi-value" id="er-ventas">—</div>
+      <div class="kpi-delta" id="er-ventas-delta" style="color:var(--text-secondary);">—</div>
+    </div>
+    <div class="card accent-green fade-in delay-2">
+      <div class="kpi-label">Utilidad Bruta</div>
+      <div class="kpi-value" id="er-bruta">—</div>
+      <div class="kpi-delta" id="er-bruta-delta" style="color:var(--text-secondary);">—</div>
+      <div class="kpi-sub" id="er-bruta-pct"></div>
+    </div>
+    <div class="card accent-amber fade-in delay-3">
+      <div class="kpi-label">Utilidad Operativa</div>
+      <div class="kpi-value" id="er-operativa">—</div>
+      <div class="kpi-delta" id="er-operativa-delta" style="color:var(--text-secondary);">—</div>
+    </div>
+    <div class="card accent-purple fade-in delay-4">
+      <div class="kpi-label">Utilidad Neta</div>
+      <div class="kpi-value" id="er-neta">—</div>
+      <div class="kpi-delta" id="er-neta-delta" style="color:var(--text-secondary);">—</div>
+      <div class="kpi-sub" id="er-neta-pct"></div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:12px;">
+    <div class="card fade-in delay-1">
+      <div class="card-title">Ventas vs Costo de Ventas · MXN — 2020–2024</div>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>Ventas Netas</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#ef4444;"></span>Costo de Ventas</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#22c55e;"></span>Utilidad Bruta</span>
+      </div>
+      <div class="chart-wrap" style="height:230px;"><canvas id="chartErVentas"></canvas></div>
+    </div>
+    <div class="card fade-in delay-2">
+      <div class="card-title">Cascada de utilidades · año seleccionado</div>
+      <div class="chart-wrap" style="height:230px;"><canvas id="chartErCascada"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card fade-in delay-1" style="margin-top:12px;">
+    <div class="card-title">Detalle completo · año <span id="er-table-year"></span></div>
+    <table class="fin-table" id="er-table">
+      <thead>
+        <tr>
+          <th>Concepto</th>
+          <th>Monto (MXN)</th>
+          <th>% sobre Ventas</th>
+        </tr>
+      </thead>
+      <tbody id="er-table-body"></tbody>
+    </table>
+  </div>
+</div><!-- /tab-resultados -->
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB: BALANCE GENERAL
+     ══════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-balance">
+  <div class="section-label" style="display:flex;align-items:center;justify-content:space-between;">
+    <span>Balance General</span>
+    <select class="year-select" id="bg-year-select2"></select>
+  </div>
+
+  <div class="grid-4">
+    <div class="card accent-blue fade-in delay-1">
+      <div class="kpi-label">Total Activo Circulante</div>
+      <div class="kpi-value" id="bg-circulante">—</div>
+      <div class="kpi-delta" id="bg-circulante-delta" style="color:var(--text-secondary);">—</div>
+      <div class="kpi-sub">Caja + Inventario + CxC</div>
+    </div>
+    <div class="card accent-green fade-in delay-2">
+      <div class="kpi-label">Total Activo Fijo</div>
+      <div class="kpi-value" id="bg-fijo">—</div>
+      <div class="kpi-delta" id="bg-fijo-delta" style="color:var(--text-secondary);">—</div>
+      <div class="kpi-sub">Mobiliario e intangibles</div>
+    </div>
+    <div class="card accent-amber fade-in delay-3">
+      <div class="kpi-label">Existencias</div>
+      <div class="kpi-value" id="bg-existencias">—</div>
+      <div class="kpi-delta" id="bg-exist-delta" style="color:var(--text-secondary);">—</div>
+      <div class="kpi-sub">Inventario valorado</div>
+    </div>
+    <div class="card accent-purple fade-in delay-4">
+      <div class="kpi-label">Total Pasivo CP</div>
+      <div class="kpi-value" id="bg-pasivo">—</div>
+      <div class="kpi-delta" id="bg-pasivo-delta" style="color:var(--text-secondary);">—</div>
+      <div class="kpi-sub">Obligaciones corto plazo</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:12px;">
+    <div class="card fade-in delay-1">
+      <div class="card-title">Activo Circulante vs Fijo — 2020–2024</div>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>Circulante</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#22c55e;"></span>Fijo</span>
+      </div>
+      <div class="chart-wrap" style="height:220px;"><canvas id="chartBalance"></canvas></div>
+    </div>
+    <div class="card fade-in delay-2">
+      <div class="card-title">Composición Activo Circulante — año seleccionado</div>
+      <div class="chart-wrap" style="height:175px;"><canvas id="chartComposicion"></canvas></div>
+      <div class="donut-legend" style="margin-top:12px;">
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#3b82f6;"></span>Existencias</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#22c55e;"></span>Caja/Bancos</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#f59e0b;"></span>Inversiones</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#a78bfa;"></span>Cuentas por cobrar</span>
+      </div>
+    </div>
+  </div>
+</div><!-- /tab-balance -->
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB: RATIOS FINANCIEROS
+     ══════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-ratios">
+  <div class="section-label" style="display:flex;align-items:center;justify-content:space-between;">
+    <span>Ratios Financieros</span>
+    <select class="year-select" id="ratios-year-select"></select>
+  </div>
+
+  <div class="grid-4">
+    <div class="card accent-green fade-in delay-1">
+      <div class="kpi-label">Liquidez</div>
+      <div class="kpi-value" id="rat-liquidez">—</div>
+      <div class="kpi-delta" id="rat-liquidez-delta" style="color:var(--text-secondary);">—</div>
+      <div class="kpi-sub">Activo circ. / Pasivo CP</div>
+    </div>
+    <div class="card accent-blue fade-in delay-2">
+      <div class="kpi-label">Solvencia</div>
+      <div class="kpi-value" id="rat-solvencia">—</div>
+      <div class="kpi-delta" id="rat-solvencia-delta" style="color:var(--text-secondary);">—</div>
+    </div>
+    <div class="card accent-amber fade-in delay-3">
+      <div class="kpi-label">Endeudamiento</div>
+      <div class="kpi-value" id="rat-endeudamiento">—</div>
+      <div class="kpi-delta" id="rat-endeud-delta" style="color:var(--text-secondary);">—</div>
+    </div>
+    <div class="card fade-in delay-4">
+      <div class="kpi-label">Capital de Trabajo</div>
+      <div class="kpi-value" id="rat-capital">—</div>
+      <div class="kpi-delta" id="rat-capital-delta" style="color:var(--text-secondary);">—</div>
+      <div class="kpi-sub">MXN</div>
+    </div>
+  </div>
+
+  <div class="grid-2" style="margin-top:12px;">
+    <div class="card fade-in delay-1">
+      <div class="card-title">Rentabilidad Financiera y Económica — 2020–2024</div>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>Financiera %</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#22c55e;"></span>Económica %</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#f59e0b;"></span>Margen Utilidad %</span>
+      </div>
+      <div class="chart-wrap" style="height:210px;"><canvas id="chartRatRent"></canvas></div>
+    </div>
+    <div class="card fade-in delay-2" style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card-title">Z-Score Altman — Salud Financiera</div>
+      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <div id="zscore-badge" class="zscore-badge zscore-safe">— </div>
+        <div style="font-size:11px;color:var(--text-secondary);line-height:1.6;">
+          <div>&gt; 2.99 → Zona segura ✅</div>
+          <div>1.81 – 2.99 → Zona gris ⚠️</div>
+          <div>&lt; 1.81 → Zona peligro 🚨</div>
+        </div>
+      </div>
+      <div class="chart-wrap" style="height:140px;"><canvas id="chartZScore"></canvas></div>
+      <div class="mini-stat">
+        <span class="mini-label">Liquidez</span>
+        <span class="mini-val" id="rat-liq-val">—</span>
+      </div>
+      <div class="mini-stat">
+        <span class="mini-label">Autonomía</span>
+        <span class="mini-val" id="rat-aut-val">—</span>
+      </div>
+      <div class="mini-stat">
+        <span class="mini-label">Rotación Activo</span>
+        <span class="mini-val" id="rat-rot-val">—</span>
+      </div>
+    </div>
+  </div>
+</div><!-- /tab-ratios -->
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB: OPERACIONES
+     ══════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-operaciones">
+
+  <div class="section-label">Inventario &amp; Rotación</div>
+  <div class="grid-4">
+
+    <div class="card accent-blue fade-in delay-1">
+      <div class="kpi-label">Valor de Inventario</div>
+      <div class="kpi-value">$64.2M</div>
+      <div class="kpi-delta neg">▲ +3.1% vs mes anterior</div>
+      <div class="kpi-sub">MXN · equiv. USD $3.36M</div>
+    </div>
+
+    <div class="card accent-green fade-in delay-2">
+      <div class="kpi-label">Rotación de Inventario</div>
+      <div class="kpi-value">6.8x</div>
+      <div class="kpi-delta pos">▲ +0.4x vs 2024</div>
+      <div class="kpi-sub">Objetivo: 7.0x anual</div>
+    </div>
+
+    <div class="card accent-amber fade-in delay-3">
+      <div class="kpi-label">Días de Inventario (DIO)</div>
+      <div class="kpi-value">53.7</div>
+      <div class="kpi-delta pos">▼ −3 días vs 2024</div>
+      <div class="kpi-sub">Rango saludable: 45–60 días</div>
+    </div>
+
+    <!-- SKU Quiebre: badge de alerta con pulso -->
+    <div class="card accent-red fade-in delay-4">
+      <div class="kpi-label">SKUs con Quiebre de Stock</div>
+      <div class="kpi-value">142</div>
+      <div class="kpi-delta neg">▲ +28 vs mes anterior</div>
+      <div class="kpi-sub">de 4,820 SKUs activos (2.9%)</div>
+    </div>
+
+  </div>
+
+  <div class="grid-21" style="margin-top:12px;">
+
+    <div class="card fade-in delay-1">
+      <div class="card-title">Días de inventario — tendencia mensual 2025</div>
+      <div class="chart-wrap" style="height:185px;">
+        <canvas id="chartDIO"></canvas>
+      </div>
+    </div>
+
+    <div class="card fade-in delay-2">
+      <div class="card-title">Inventario por categoría</div>
+      <div class="chart-wrap" style="height:150px;">
+        <canvas id="chartInv"></canvas>
+      </div>
+      <div class="donut-legend">
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#3b82f6;"></span>Motor 34%</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#22c55e;"></span>Frenos 22%</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#f59e0b;"></span>Suspensión 18%</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#a78bfa;"></span>Eléctrico 15%</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#4a5568;"></span>Otros 11%</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── SECCIÓN: PROVEEDORES ── -->
+  <div class="section-label">Proveedores &amp; Abastecimiento</div>
+  <div class="grid-2">
+
+    <!-- Tabla de proveedores -->
+    <div class="card fade-in delay-1">
+      <div class="card-title">Estado de proveedores clave</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Proveedor</th>
+            <th>País</th>
+            <th>Lead time</th>
+            <th style="min-width:120px;">Var. precio</th>
+            <th>Estatus</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600;">ACDelco / GM</td>
+            <td style="color:var(--text-secondary);">USA</td>
+            <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">12 d</td>
+            <td>
+              <div class="bar-wrap">
+                <div class="bar-bg"><div class="bar-fill" style="width:45%;background:#3b82f6;"></div></div>
+                <span class="price-pct pos">+4.2%</span>
+              </div>
+            </td>
+            <td><span class="badge badge-ok"><span class="badge-dot"></span>Normal</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Bosch México</td>
+            <td style="color:var(--text-secondary);">MEX</td>
+            <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">5 d</td>
+            <td>
+              <div class="bar-wrap">
+                <div class="bar-bg"><div class="bar-fill" style="width:62%;background:#f59e0b;"></div></div>
+                <span class="price-pct neu">+6.1%</span>
+              </div>
+            </td>
+            <td><span class="badge badge-warn"><span class="badge-dot"></span>Presión</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Denso Intl.</td>
+            <td style="color:var(--text-secondary);">JPN</td>
+            <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">28 d</td>
+            <td>
+              <div class="bar-wrap">
+                <div class="bar-bg"><div class="bar-fill" style="width:30%;background:#3b82f6;"></div></div>
+                <span class="price-pct pos">+2.8%</span>
+              </div>
+            </td>
+            <td><span class="badge badge-ok"><span class="badge-dot"></span>Normal</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Gates Industrial</td>
+            <td style="color:var(--text-secondary);">USA</td>
+            <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">18 d</td>
+            <td>
+              <div class="bar-wrap">
+                <div class="bar-bg"><div class="bar-fill" style="width:95%;background:#ef4444;"></div></div>
+                <span class="price-pct neg">+9.3%</span>
+              </div>
+            </td>
+            <td><span class="badge badge-err"><span class="badge-dot"></span>Alerta</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">SKF México</td>
+            <td style="color:var(--text-secondary);">MEX</td>
+            <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">4 d</td>
+            <td>
+              <div class="bar-wrap">
+                <div class="bar-bg"><div class="bar-fill" style="width:36%;background:#3b82f6;"></div></div>
+                <span class="price-pct pos">+3.5%</span>
+              </div>
+            </td>
+            <td><span class="badge badge-ok"><span class="badge-dot"></span>Normal</span></td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Hyundai Mobis</td>
+            <td style="color:var(--text-secondary);">KOR</td>
+            <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">35 d</td>
+            <td>
+              <div class="bar-wrap">
+                <div class="bar-bg"><div class="bar-fill" style="width:74%;background:#f59e0b;"></div></div>
+                <span class="price-pct neu">+7.4%</span>
+              </div>
+            </td>
+            <td><span class="badge badge-warn"><span class="badge-dot"></span>Presión</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- KPIs abastecimiento + gráfica -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+
+      <div class="card fade-in delay-2">
+        <div class="card-title">KPIs de abastecimiento</div>
+        <div class="mini-stat">
+          <span class="mini-label">Nivel de servicio proveedor</span>
+          <span class="mini-val" style="color:var(--green-400);">91.4%</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-label">Órdenes emitidas este mes</span>
+          <span class="mini-val">347</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-label">Entregadas a tiempo</span>
+          <span class="mini-val" style="color:var(--green-400);">318 (91.6%)</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-label">Proveedores activos</span>
+          <span class="mini-val">62</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-label">Exposición en USD</span>
+          <span class="mini-val" style="color:var(--amber-400);">$1.24M</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-label">Ahorro negociación YTD</span>
+          <span class="mini-val" style="color:var(--green-400);">$2.8M MXN</span>
+        </div>
+      </div>
+
+      <div class="card fade-in delay-3">
+        <div class="card-title">Var. precio proveedor vs INPC 2021–2025</div>
+        <div class="chart-legend">
+          <span class="legend-item" style="color:var(--text-secondary);">
+            <span class="legend-swatch" style="background:#ef4444;"></span>Proveedor
+          </span>
+          <span class="legend-item" style="color:var(--text-secondary);">
+            <span class="legend-swatch" style="background:#3b82f6;opacity:0.7;"></span>INPC
+          </span>
+        </div>
+        <div class="chart-wrap" style="height:130px;">
+          <canvas id="chartProv"></canvas>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN: VENTAS & CLIENTES ── -->
+  <div class="section-label">Ventas &amp; Clientes</div>
+  <div class="grid-4">
+
+    <div class="card accent-blue fade-in delay-1">
+      <div class="kpi-label">Pedidos del Mes</div>
+      <div class="kpi-value">2,841</div>
+      <div class="kpi-delta pos">▲ +7.2% vs abr 2024</div>
+    </div>
+
+    <div class="card accent-green fade-in delay-2">
+      <div class="kpi-label">Ticket Promedio</div>
+      <div class="kpi-value">$16,180</div>
+      <div class="kpi-delta pos">▲ +3.4% vs abr 2024</div>
+      <div class="kpi-sub">MXN por pedido</div>
+    </div>
+
+    <div class="card accent-blue fade-in delay-3">
+      <div class="kpi-label">Clientes Activos (90 días)</div>
+      <div class="kpi-value">1,247</div>
+      <div class="kpi-delta pos">▲ +82 nuevos clientes</div>
+    </div>
+
+    <div class="card accent-amber fade-in delay-4">
+      <div class="kpi-label">Fill Rate</div>
+      <div class="kpi-value">94.8%</div>
+      <div class="kpi-delta neg">▼ −0.9pp vs meta</div>
+      <div class="kpi-sub">Objetivo: 95.7%</div>
+    </div>
+
+  </div>
+
+  <div class="grid-2" style="margin-top:12px;">
+
+    <div class="card fade-in delay-1">
+      <div class="card-title">Ventas mensuales 2025 vs 2024 · MXN millones</div>
+      <div class="chart-legend">
+        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>2025</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#2d3748;"></span>2024</span>
+      </div>
+      <div class="chart-wrap" style="height:210px;">
+        <canvas id="chartMensual"></canvas>
+      </div>
+    </div>
+
+    <div class="card fade-in delay-2">
+      <div class="card-title">Ventas por canal — participación % 2025</div>
+      <div class="chart-wrap" style="height:175px;">
+        <canvas id="chartCanal"></canvas>
+      </div>
+      <div class="donut-legend" style="margin-top:12px;">
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#3b82f6;"></span>Mayoristas 48%</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#22c55e;"></span>Talleres 31%</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#f59e0b;"></span>E-commerce 13%</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#4a5568;"></span>Otros 8%</span>
+      </div>
+    </div>
+
+  </div>
+
+  </div> <!-- /tab-operaciones -->
+
+</main>
+
+<!-- ============================================================
+     FOOTER
+     ============================================================ -->
+<footer class="footer" id="footer-ts">
+  Dashboard Ejecutivo Refacciones · Datos de ejemplo · Conectar con base de datos Excel para cifras reales
+</footer>
+
+<!-- ============================================================
+     JAVASCRIPT
+     ============================================================ -->
+<script>
+
+/* ── RELOJ Y FECHA ── */
+function updateTime() {
+  const now = new Date();
+  const optsDate = { weekday:'long', year:'numeric', month:'long', day:'numeric' };
+  document.getElementById('db-date').textContent = now.toLocaleDateString('es-MX', optsDate);
+  document.getElementById('header-time').textContent = now.toLocaleTimeString('es-MX');
+  document.getElementById('footer-ts').textContent =
+    'Última actualización: ' + now.toLocaleDateString('es-MX', optsDate) +
+    ' · ' + now.toLocaleTimeString('es-MX') +
+    ' · T.C.: open.er-api.com · Inflación: INEGI · Datos financieros: ejemplo';
+}
+updateTime();
+setInterval(updateTime, 1000);
+
+/* ── NAVEGACIÓN DE TABS ── */
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    const panel = document.getElementById('tab-' + btn.dataset.tab);
+    if (panel) panel.classList.add('active');
+  });
+});
+
+/* ── TIPO DE CAMBIO EN VIVO ── */
+async function fetchFX() {
+  try {
+    const res  = await fetch('https://open.er-api.com/v6/latest/USD');
+    const data = await res.json();
+    const rate = data.rates['MXN'];
+    if (!rate) throw new Error('Sin dato MXN');
+
+    document.getElementById('fx-rate').textContent = rate.toFixed(2);
+
+    /* Variación simulada del día (open.er-api no provee OHLC libre) */
+    const change = parseFloat((Math.random() * 0.5 - 0.25).toFixed(4));
+    const pct    = ((change / rate) * 100).toFixed(3);
+    const sign   = change >= 0 ? '+' : '';
+    const arrow  = change >= 0 ? '▲' : '▼';
+    const color  = change >= 0 ? '#f59e0b' : '#22c55e';
+
+    const deltaEl = document.getElementById('fx-delta');
+    deltaEl.textContent = `${arrow} ${sign}${change.toFixed(4)} (${sign}${pct}%) hoy`;
+    deltaEl.style.color = color;
+    deltaEl.style.fontWeight = '600';
+
+    document.getElementById('fx-source').textContent =
+      'open.er-api.com · Actualizado: ' + new Date().toLocaleTimeString('es-MX');
+
+  } catch (err) {
+    document.getElementById('fx-rate').textContent = '19.12';
+    document.getElementById('fx-delta').textContent = 'Referencia (sin conexión)';
+    document.getElementById('fx-source').textContent = 'Banco de México — último dato disponible';
+  }
+}
+fetchFX();
+setInterval(fetchFX, 60000); /* Actualiza cada minuto */
+
+/* ── CHART.JS — CONFIGURACIÓN GLOBAL ── */
+const C = {
+  text:   '#7d8fa8',
+  grid:   'rgba(255,255,255,0.04)',
+  border: '#141c2c',
+  anos:   ['2021','2022','2023','2024','2025E'],
+
+  /* Colores exactos alineados con variables CSS */
+  blue:   '#3b82f6',
+  green:  '#22c55e',
+  amber:  '#f59e0b',
+  red:    '#ef4444',
+  purple: '#a78bfa',
+  gray:   '#4a5568',
+  gray2:  '#2d3748',
+
+  /* Tooltip estilizado y enriquecido */
+  tooltip: {
+    backgroundColor:  'rgba(14,20,32,0.95)',
+    titleColor:       '#eef2f8',
+    bodyColor:        '#7d8fa8',
+    borderColor:      'rgba(255,255,255,0.1)',
+    borderWidth:      1,
+    padding:          12,
+    cornerRadius:     8,
+    titleFont:        { family:'Sora', size:12, weight:'600' },
+    bodyFont:         { family:'Sora', size:11 },
+    displayColors:    true,
+    boxWidth:         8,
+    boxHeight:        8,
+    boxPadding:       4,
+    caretSize:        5,
+    caretPadding:     6,
+  },
+
+  /* Animación fluida de entrada */
+  animation: {
+    duration:   800,
+    easing:     'easeOutQuart',
+  },
+
+  /* Escalas base */
+  scales() {
+    return {
+      x: {
+        ticks:  { color:C.text, font:{size:11,family:'Sora'} },
+        grid:   { display:false },
+        border: { display:false },
+      },
+      y: {
+        ticks:  { color:C.text, font:{size:11,family:'Sora'} },
+        grid:   { color:C.grid, drawBorder:false },
+        border: { display:false },
+      }
+    };
+  }
+};
+
+/* ── GRÁFICA 1: Ventas anuales + Margen bruto (doble eje) ── */
+new Chart(document.getElementById('chartVentas'), {
+  data: {
+    labels: C.anos,
+    datasets: [
+      {
+        type: 'bar', label: 'Ventas MXN (M)',
+        data: [285, 324, 381, 428, 490],
+        backgroundColor: 'rgba(59,130,246,0.65)',
+        hoverBackgroundColor: 'rgba(59,130,246,0.9)',
+        borderRadius: 5, borderSkipped: false, yAxisID: 'y',
+      },
+      {
+        type: 'line', label: 'Margen bruto %',
+        data: [31.2, 32.1, 33.4, 33.5, 34.7],
+        borderColor: C.green, backgroundColor: 'transparent',
+        pointBackgroundColor: C.green, pointRadius: 4,
+        pointHoverRadius: 6, tension: 0.4, yAxisID: 'y2',
+        borderWidth: 2,
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    animation: C.animation,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        ...C.tooltip,
+        callbacks: {
+          title:  ctx => `Año ${ctx[0].label}`,
+          label:  ctx => ctx.dataset.yAxisID === 'y2'
+            ? ` Margen bruto: ${ctx.parsed.y}%`
+            : ` Ventas: $${ctx.parsed.y}M MXN`,
+          afterBody: ctx => ctx[0].label === '2025E' ? ['  ⚠ Estimado'] : [],
+        }
+      }
+    },
+    scales: {
+      x: C.scales().x,
+      y: { ...C.scales().y, ticks:{ ...C.scales().y.ticks, callback: v => '$'+v+'M' } },
+      y2: {
+        position: 'right',
+        ticks:  { color:C.text, font:{size:11}, callback:v=>v+'%' },
+        grid:   { display:false }, border:{ display:false },
+      }
+    }
+  }
+});
+
+/* ── GRÁFICA 2: EBITDA vs Utilidad Neta ── */
+new Chart(document.getElementById('chartEbitda'), {
+  data: {
+    labels: C.anos,
+    datasets: [
+      {
+        type:'bar', label:'EBITDA',
+        data:[38,47,58,68,82],
+        backgroundColor:'rgba(59,130,246,0.65)',
+        hoverBackgroundColor:'rgba(59,130,246,0.9)',
+        borderRadius:5,
+      },
+      {
+        type:'bar', label:'Utilidad neta',
+        data:[18,22,28,34,42],
+        backgroundColor:'rgba(245,158,11,0.65)',
+        hoverBackgroundColor:'rgba(245,158,11,0.9)',
+        borderRadius:5,
+      }
+    ]
+  },
+  options: {
+    responsive:true, maintainAspectRatio:false,
+    animation:C.animation,
+    plugins:{
+      legend:{ display:false },
+      tooltip:{
+        ...C.tooltip,
+        callbacks:{
+          title:  ctx=>`Año ${ctx[0].label}`,
+          label:  ctx=>` ${ctx.dataset.label}: $${ctx.parsed.y}M MXN`,
+          afterLabel: ctx => {
+            if(ctx.datasetIndex===0){
+              const margen = [13.3,14.5,15.2,15.9,16.7];
+              return `   Margen EBITDA: ${margen[ctx.dataIndex]}%`;
+            }
+            return '';
+          }
+        }
+      }
+    },
+    scales:{
+      x:C.scales().x,
+      y:{ ...C.scales().y, ticks:{...C.scales().y.ticks, callback:v=>'$'+v+'M'} }
+    }
+  }
+});
+
+/* ── GRÁFICA 3: DIO tendencia ── */
+new Chart(document.getElementById('chartDIO'), {
+  type:'line',
+  data:{
+    labels:['Enero','Febrero','Marzo','Abril'],
+    datasets:[{
+      label:'Días de inventario',
+      data:[62,59,56,54],
+      borderColor:C.blue,
+      backgroundColor:'rgba(59,130,246,0.06)',
+      fill:true, tension:0.45,
+      pointBackgroundColor:C.blue, pointRadius:5, pointHoverRadius:7,
+      borderWidth:2,
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    animation:C.animation,
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        ...C.tooltip,
+        callbacks:{
+          title: ctx=>`${ctx[0].label} 2025`,
+          label: ctx=>` DIO: ${ctx.parsed.y} días`,
+          afterLabel: () => '   Meta: 45–60 días',
+        }
+      }
+    },
+    scales:{
+      x:C.scales().x,
+      y:{...C.scales().y, min:42, ticks:{...C.scales().y.ticks, callback:v=>v+' d'}}
+    }
+  }
+});
+
+/* ── GRÁFICA 4: Inventario por categoría (donut) ── */
+new Chart(document.getElementById('chartInv'), {
+  type:'doughnut',
+  data:{
+    labels:['Motor','Frenos','Suspensión','Eléctrico','Otros'],
+    datasets:[{
+      data:[34,22,18,15,11],
+      backgroundColor:[C.blue,C.green,C.amber,C.purple,C.gray],
+      hoverBackgroundColor:['#60a5fa','#4ade80','#fcd34d','#c4b5fd','#718096'],
+      borderWidth:2, borderColor:C.border,
+      hoverOffset:6,
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    animation:C.animation,
+    cutout:'68%',
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        ...C.tooltip,
+        callbacks:{
+          label: ctx=>`  ${ctx.label}: ${ctx.parsed}% del inventario`,
+        }
+      }
+    }
+  }
+});
+
+/* ── GRÁFICA 5: Var. precio proveedor vs INPC ── */
+new Chart(document.getElementById('chartProv'), {
+  type:'line',
+  data:{
+    labels:C.anos,
+    datasets:[
+      {
+        label:'Var. precio proveedor',
+        data:[4.1,8.2,5.6,6.8,5.9],
+        borderColor:C.red,
+        backgroundColor:'rgba(239,68,68,0.06)',
+        fill:true, tension:0.35,
+        pointBackgroundColor:C.red, pointRadius:4, pointHoverRadius:6,
+        borderWidth:2,
+      },
+      {
+        label:'Inflación INPC',
+        data:[3.4,7.8,4.7,4.2,3.8],
+        borderColor:C.blue,
+        backgroundColor:'transparent',
+        tension:0.35, borderDash:[5,4],
+        pointBackgroundColor:C.blue, pointRadius:4, pointHoverRadius:6,
+        borderWidth:2,
+      }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    animation:C.animation,
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        ...C.tooltip,
+        mode:'index', intersect:false,
+        callbacks:{
+          title:  ctx=>`Año ${ctx[0].label}`,
+          label:  ctx=>` ${ctx.dataset.label}: ${ctx.parsed.y}%`,
+          afterBody: ctx => {
+            const prov=ctx[0]?.parsed?.y, inpc=ctx[1]?.parsed?.y;
+            if(prov&&inpc){ const diff=(prov-inpc).toFixed(1); return [`  Diferencial: +${diff}pp`]; }
+            return [];
+          }
+        }
+      }
+    },
+    scales:{
+      x:C.scales().x,
+      y:{...C.scales().y, ticks:{...C.scales().y.ticks, callback:v=>v+'%'}}
+    }
+  }
+});
+
+/* ── GRÁFICA 6: Ventas mensuales 2025 vs 2024 ── */
+new Chart(document.getElementById('chartMensual'), {
+  type:'bar',
+  data:{
+    labels:['Enero','Febrero','Marzo','Abril'],
+    datasets:[
+      {
+        label:'2025',
+        data:[44.2,46.8,45.1,46.3],
+        backgroundColor:'rgba(59,130,246,0.72)',
+        hoverBackgroundColor:'rgba(59,130,246,0.95)',
+        borderRadius:5,
+      },
+      {
+        label:'2024',
+        data:[39.8,41.2,40.3,41.5],
+        backgroundColor:'rgba(45,55,72,0.7)',
+        hoverBackgroundColor:'rgba(45,55,72,0.95)',
+        borderRadius:5,
+      }
+    ]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    animation:C.animation,
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        ...C.tooltip,
+        mode:'index', intersect:false,
+        callbacks:{
+          title:  ctx=>`${ctx[0].label} — Ventas`,
+          label:  ctx=>` ${ctx.dataset.label}: $${ctx.parsed.y}M MXN`,
+          afterBody: ctx => {
+            const v25=ctx[0]?.parsed?.y, v24=ctx[1]?.parsed?.y;
+            if(v25&&v24){
+              const crecimiento=(((v25-v24)/v24)*100).toFixed(1);
+              return [`  Variación YoY: +${crecimiento}%`];
+            }
+            return [];
+          }
+        }
+      }
+    },
+    scales:{
+      x:{...C.scales().x, ticks:{...C.scales().x.ticks, autoSkip:false}},
+      y:{...C.scales().y, ticks:{...C.scales().y.ticks, callback:v=>'$'+v+'M'}}
+    }
+  }
+});
+
+/* ── GRÁFICA 7: Canal de ventas (donut) ── */
+new Chart(document.getElementById('chartCanal'), {
+  type:'doughnut',
+  data:{
+    labels:['Mayoristas','Talleres directos','E-commerce','Otros'],
+    datasets:[{
+      data:[48,31,13,8],
+      backgroundColor:[C.blue,C.green,C.amber,C.gray],
+      hoverBackgroundColor:['#60a5fa','#4ade80','#fcd34d','#718096'],
+      borderWidth:2, borderColor:C.border,
+      hoverOffset:6,
+    }]
+  },
+  options:{
+    responsive:true, maintainAspectRatio:false,
+    animation:C.animation,
+    cutout:'68%',
+    plugins:{
+      legend:{display:false},
+      tooltip:{
+        ...C.tooltip,
+        callbacks:{
+          label: ctx=>` ${ctx.label}: ${ctx.parsed}% de ventas`,
+        }
+      }
+    }
+  }
+});
+
+/* ── BALANCE GENERAL DESDE GOOGLE SHEETS ── */
+let balanceData = [];
+let chartBalanceTrend = null;
+let chartComposicion  = null;
+
+function fmtMXN(n) {
+  if (n >= 1_000_000) return '$' + (n / 1_000_000).toFixed(2) + 'M';
+  if (n >= 1_000)     return '$' + (n / 1_000).toFixed(1) + 'K';
+  return '$' + n.toLocaleString('es-MX');
+}
+
+function pctDelta(actual, anterior) {
+  if (!anterior) return null;
+  const pct = ((actual - anterior) / Math.abs(anterior) * 100).toFixed(1);
+  return pct;
+}
+
+function renderKPIs(año) {
+  const idx  = balanceData.findIndex(d => String(d.ano || d.año).trim() === String(año));
+  if (idx < 0) return;
+  const d    = balanceData[idx];
+  const prev = balanceData[idx - 1];
+
+  const campos = [
+    { id:'bg-circulante', val:d.totalCirculante, prevVal: prev?.totalCirculante, deltaId:'bg-circulante-delta' },
+    { id:'bg-fijo',       val:d.totalFijo,       prevVal: prev?.totalFijo,       deltaId:'bg-fijo-delta'       },
+    { id:'bg-caja',       val:d.cajaBancos,       prevVal: prev?.cajaBancos,      deltaId:'bg-caja-delta'       },
+    { id:'bg-existencias',val:d.existencias,      prevVal: prev?.existencias,     deltaId:'bg-exist-delta'      },
+  ];
+
+  campos.forEach(({ id, val, prevVal, deltaId }) => {
+    document.getElementById(id).textContent = fmtMXN(val);
+    const deltaEl = document.getElementById(deltaId);
+    const pct = pctDelta(val, prevVal);
+    if (pct !== null) {
+      const pos = parseFloat(pct) >= 0;
+      deltaEl.textContent = (pos ? '▲ +' : '▼ ') + pct + '% vs ' + (prev?.ano || prev?.año || '—');
+      deltaEl.style.color = pos ? 'var(--green-400)' : 'var(--red-400)';
+    } else {
+      deltaEl.textContent = 'Sin dato anterior';
+    }
+  });
+
+  // Gráfica de composición (donut)
+  if (chartComposicion) chartComposicion.destroy();
+  chartComposicion = new Chart(document.getElementById('chartComposicion'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Existencias','Caja/Bancos','Inversiones Fin.','Cuentas por cobrar'],
+      datasets:[{
+        data: [d.existencias, d.cajaBancos, d.inversionesFin, d.cuentasCobrar],
+        backgroundColor: [C.blue, C.green, C.amber, C.purple],
+        hoverBackgroundColor: ['#60a5fa','#4ade80','#fcd34d','#c4b5fd'],
+        borderWidth: 2, borderColor: C.border, hoverOffset: 6,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      cutout: '66%',
+      animation: C.animation,
+      plugins: {
+        legend: { display: false },
+        tooltip: { ...C.tooltip, callbacks: { label: ctx => ` ${ctx.label}: ${fmtMXN(ctx.parsed)}` } }
+      }
+    }
+  });
+}
+
+function renderTrendChart() {
+  const años       = balanceData.map(d => d.ano || d.año);
+  const circulante = balanceData.map(d => d.totalCirculante / 1_000_000);
+  const fijo       = balanceData.map(d => d.totalFijo / 1_000_000);
+
+  if (chartBalanceTrend) chartBalanceTrend.destroy();
+  chartBalanceTrend = new Chart(document.getElementById('chartBalance'), {
+    data: {
+      labels: años,
+      datasets: [
+        {
+          type: 'bar', label: 'Circulante',
+          data: circulante,
+          backgroundColor: 'rgba(59,130,246,0.65)',
+          hoverBackgroundColor: 'rgba(59,130,246,0.9)',
+          borderRadius: 5, yAxisID: 'y',
+        },
+        {
+          type: 'line', label: 'Fijo',
+          data: fijo,
+          borderColor: C.green, backgroundColor: 'transparent',
+          pointBackgroundColor: C.green, pointRadius: 5, pointHoverRadius: 7,
+          tension: 0.4, borderWidth: 2, yAxisID: 'y',
+        }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      animation: C.animation,
+      plugins: {
+        legend: { display: false },
+        tooltip: { ...C.tooltip, callbacks: {
+          title: ctx => `Año ${ctx[0].label}`,
+          label: ctx => ` ${ctx.dataset.label}: $${ctx.parsed.y.toFixed(2)}M MXN`,
+        }}
+      },
+      scales: {
+        x: C.scales().x,
+        y: { ...C.scales().y, ticks: { ...C.scales().y.ticks, callback: v => '$' + v + 'M' } }
+      }
+    }
+  });
+}
+
+async function cargarBalanceGeneral() {
+  try {
+    const res  = await fetch('/api/balance');
+    balanceData = await res.json();
+    if (!balanceData.length) return;
+
+    const normalize = (x) => ({ ...x, año: x.año || x.ano, ano: x.ano || x.año });
+    balanceData = balanceData.map(normalize);
+
+    // Poblar selector de año
+    const select = document.getElementById('bg-year-select');
+    select.innerHTML = '';
+    balanceData.forEach(d => {
+      const opt = document.createElement('option');
+      opt.value = d.ano;
+      opt.textContent = d.ano;
+      select.appendChild(opt);
+    });
+    // Seleccionar el año más reciente por defecto
+    select.value = balanceData[0].ano;
+
+    renderTrendChart();
+    renderKPIs(select.value);
+
+    select.addEventListener('change', e => renderKPIs(e.target.value));
+
+    // Otros KPIs de balance (si existen en el tab nuevo)
+    const actual = balanceData.find(d => d.ano === select.value) || balanceData[0];
+    const totalEl = document.getElementById('bg-total');
+    const pasivoEl = document.getElementById('bg-pasivo');
+    if (totalEl) totalEl.textContent = fmtMXN(actual.totalActivo || 0);
+    if (pasivoEl) pasivoEl.textContent = fmtMXN(actual.totalPasivoCP || 0);
+    select.addEventListener('change', e => {
+      const d = balanceData.find(x => x.ano === e.target.value);
+      if (!d) return;
+      if (totalEl) totalEl.textContent = fmtMXN(d.totalActivo || 0);
+      if (pasivoEl) pasivoEl.textContent = fmtMXN(d.totalPasivoCP || 0);
+    });
+  } catch (err) {
+    console.warn('⚠ No se pudo cargar Balance General:', err.message);
+  }
+}
+
+/* ── RESUMEN ── */
+let resumenData = [];
+let chartResumenCrec = null;
+let chartResumenMargen = null;
+
+async function cargarResumen() {
+  try {
+    const res = await fetch('/api/resumen');
+    resumenData = await res.json();
+    if (!resumenData.length) return;
+
+    const sel = document.getElementById('resumen-year');
+    if (!sel) return;
+    sel.innerHTML = '';
+    resumenData.forEach(d => {
+      const y = d.ano || d.año;
+      const o = document.createElement('option');
+      o.value = y; o.textContent = y;
+      sel.appendChild(o);
+    });
+    sel.value = (resumenData[0].ano || resumenData[0].año);
+
+    const setResumen = (year) => {
+      const d = resumenData.find(x => String(x.ano || x.año) === String(year));
+      if (!d) return;
+      const set = (id, v, suf='') => { const el = document.getElementById(id); if (el) el.textContent = (v == null ? '—' : v + suf); };
+      set('rz-roe', d.roe, '%');
+      set('rz-margen-neto', d.margenNeto, '%');
+      set('rz-rotacion', d.rotacionActivos, 'x');
+      set('rz-ebitda', d.ebitda, '%');
+    };
+    setResumen(sel.value);
+    sel.addEventListener('change', e => setResumen(e.target.value));
+
+    const labels = resumenData.map(d => d.ano || d.año).reverse();
+    const nom = resumenData.map(d => d.crecNominal ?? 0).reverse();
+    const real = resumenData.map(d => d.crecReal ?? 0).reverse();
+    const margenN = resumenData.map(d => d.margenNeto ?? 0).reverse();
+    const margenO = resumenData.map(d => d.margenOperativo ?? 0).reverse();
+    const gastos = resumenData.map(d => d.pctGastos ?? 0).reverse();
+
+    if (document.getElementById('chartResumenCrec')) {
+      if (chartResumenCrec) chartResumenCrec.destroy();
+      chartResumenCrec = new Chart(document.getElementById('chartResumenCrec'), {
+        type: 'line',
+        data: { labels, datasets: [
+          { label:'Nominal', data: nom, borderColor:C.blue, tension:0.35 },
+          { label:'Real', data: real, borderColor:C.amber, tension:0.35 }
+        ]},
+        options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:C.scales().x, y:{...C.scales().y, ticks:{...C.scales().y.ticks, callback:v=>v+'%'}} } }
+      });
+    }
+    if (document.getElementById('chartResumenMargen')) {
+      if (chartResumenMargen) chartResumenMargen.destroy();
+      chartResumenMargen = new Chart(document.getElementById('chartResumenMargen'), {
+        type: 'bar',
+        data: { labels, datasets: [
+          { label:'Margen Neto', data:margenN, backgroundColor:'rgba(34,197,94,0.6)' },
+          { label:'Margen Operativo', data:margenO, backgroundColor:'rgba(59,130,246,0.6)' },
+          { label:'% Gastos', data:gastos, backgroundColor:'rgba(245,158,11,0.6)' }
+        ]},
+        options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:C.scales().x, y:{...C.scales().y, ticks:{...C.scales().y.ticks, callback:v=>v+'%'}} } }
+      });
+    }
+  } catch (e) {
+    console.warn('No se pudo cargar resumen', e.message);
+  }
+}
+
+/* ── ESTADO DE RESULTADOS ── */
+let erData = [];
+let chartERTrend = null;
+
+async function cargarEstadoResultados() {
+  try {
+    const res = await fetch('/api/estado-resultados');
+    erData = await res.json();
+    if (!erData.length) return;
+    const sel = document.getElementById('er-year');
+    if (!sel) return;
+    sel.innerHTML = '';
+    erData.forEach(d => {
+      const y = d.ano || d.año;
+      const o = document.createElement('option'); o.value = y; o.textContent = y; sel.appendChild(o);
+    });
+    sel.value = erData[0].ano || erData[0].año;
+
+    const renderER = (year) => {
+      const d = erData.find(x => String(x.ano || x.año) === String(year));
+      if (!d) return;
+      const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = fmtMXN(v || 0); };
+      set('er-ventas', d.ventasNetas);
+      set('er-bruta', d.utilidadBruta);
+      set('er-operativa', d.utilidadOperativa);
+      set('er-neta', d.utilidadNeta);
+      const body = document.getElementById('er-table-body');
+      if (body) {
+        body.innerHTML = `
+          <tr><td>Ventas Netas</td><td>${fmtMXN(d.ventasNetas||0)}</td></tr>
+          <tr><td>Costo de Ventas</td><td>${fmtMXN(d.costoVentas||0)}</td></tr>
+          <tr class="subtotal"><td>Utilidad Bruta</td><td>${fmtMXN(d.utilidadBruta||0)}</td></tr>
+          <tr><td>Gastos de Venta</td><td>${fmtMXN(d.gastosVenta||0)}</td></tr>
+          <tr class="subtotal"><td>Utilidad Operativa</td><td>${fmtMXN(d.utilidadOperativa||0)}</td></tr>
+          <tr><td>Impuestos</td><td>${fmtMXN(d.impuestos||0)}</td></tr>
+          <tr class="total"><td>Utilidad Neta</td><td>${fmtMXN(d.utilidadNeta||0)}</td></tr>`;
+      }
+    };
+    renderER(sel.value);
+    sel.addEventListener('change', e => renderER(e.target.value));
+
+    if (document.getElementById('chartERTrend')) {
+      if (chartERTrend) chartERTrend.destroy();
+      const labels = erData.map(d => d.ano || d.año).reverse();
+      chartERTrend = new Chart(document.getElementById('chartERTrend'), {
+        type: 'line',
+        data: { labels, datasets:[
+          { label:'Utilidad Operativa', data: erData.map(d=> (d.utilidadOperativa||0)/1_000_000).reverse(), borderColor:C.blue, tension:0.35 },
+          { label:'Utilidad Neta', data: erData.map(d=> (d.utilidadNeta||0)/1_000_000).reverse(), borderColor:C.green, tension:0.35 }
+        ]},
+        options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:C.scales().x, y:{...C.scales().y, ticks:{...C.scales().y.ticks, callback:v=>'$'+v+'M'}} } }
+      });
+    }
+  } catch (e) {
+    console.warn('No se pudo cargar estado resultados', e.message);
+  }
+}
+
+/* ── RATIOS ── */
+let ratiosData = [];
+let chartRatiosCore = null;
+let chartRatiosRent = null;
+
+function zBadge(z) {
+  if (z == null) return { cls:'zscore-warn', txt:'Sin dato' };
+  if (z >= 3) return { cls:'zscore-safe', txt:'Seguro' };
+  if (z >= 1.8) return { cls:'zscore-warn', txt:'Vigilancia' };
+  return { cls:'zscore-danger', txt:'Riesgo' };
+}
+
+async function cargarRatios() {
+  try {
+    const res = await fetch('/api/ratios');
+    ratiosData = await res.json();
+    if (!ratiosData.length) return;
+    const sel = document.getElementById('ratios-year');
+    if (!sel) return;
+    sel.innerHTML = '';
+    ratiosData.forEach(d => {
+      const y = d.ano || d.año;
+      const o = document.createElement('option'); o.value = y; o.textContent = y; sel.appendChild(o);
+    });
+    sel.value = ratiosData[0].ano || ratiosData[0].año;
+
+    const setRat = (year) => {
+      const d = ratiosData.find(x => String(x.ano || x.año) === String(year));
+      if (!d) return;
+      const set = (id,v,s='') => { const el=document.getElementById(id); if(el) el.textContent = (v==null?'—':v+s); };
+      set('rt-liquidez', d.liquidez, 'x');
+      set('rt-endeudamiento', d.endeudamiento, 'x');
+      set('rt-solvencia', d.solvencia, 'x');
+      set('rt-zscore', d.zScore, '');
+      const b = document.getElementById('rt-zbadge');
+      if (b) {
+        const z = zBadge(d.zScore);
+        b.className = 'zscore-badge ' + z.cls;
+        b.textContent = z.txt;
+      }
+    };
+    setRat(sel.value);
+    sel.addEventListener('change', e => setRat(e.target.value));
+
+    const labels = ratiosData.map(d => d.ano || d.año).reverse();
+    if (document.getElementById('chartRatiosCore')) {
+      if (chartRatiosCore) chartRatiosCore.destroy();
+      chartRatiosCore = new Chart(document.getElementById('chartRatiosCore'), {
+        type:'line',
+        data:{ labels, datasets:[
+          { label:'Liquidez', data:ratiosData.map(d=>d.liquidez??0).reverse(), borderColor:C.blue, tension:0.35 },
+          { label:'Endeudamiento', data:ratiosData.map(d=>d.endeudamiento??0).reverse(), borderColor:C.red, tension:0.35 },
+          { label:'Solvencia', data:ratiosData.map(d=>d.solvencia??0).reverse(), borderColor:C.green, tension:0.35 }
+        ]},
+        options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:C.scales().x, y:C.scales().y } }
+      });
+    }
+    if (document.getElementById('chartRatiosRent')) {
+      if (chartRatiosRent) chartRatiosRent.destroy();
+      chartRatiosRent = new Chart(document.getElementById('chartRatiosRent'), {
+        type:'bar',
+        data:{ labels, datasets:[
+          { label:'Rent. Financiera', data:ratiosData.map(d=>d.rentabilidadFin??0).reverse(), backgroundColor:'rgba(59,130,246,0.6)' },
+          { label:'Rent. Económica', data:ratiosData.map(d=>d.rentabilidadEcon??0).reverse(), backgroundColor:'rgba(34,197,94,0.6)' }
+        ]},
+        options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:C.scales().x, y:{...C.scales().y, ticks:{...C.scales().y.ticks, callback:v=>v+'%'}} } }
+      });
+    }
+  } catch (e) {
+    console.warn('No se pudo cargar ratios', e.message);
+  }
+}
+
+cargarBalanceGeneral();
+cargarResumen();
+cargarEstadoResultados();
+cargarRatios();
+
+</script>
+</body>
+</html>
