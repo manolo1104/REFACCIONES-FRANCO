@@ -629,6 +629,49 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
 .zscore-safe   { background: var(--green-dim); color: var(--green-300); border: 1px solid var(--green-border); }
 .zscore-warn   { background: var(--amber-dim); color: var(--amber-300); border: 1px solid var(--amber-border); }
 .zscore-danger { background: var(--red-dim);   color: var(--red-300);   border: 1px solid var(--red-border); }
+
+/* ── Botón Actualizar ── */
+.btn-refresh {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 5px 12px;
+  font-family: 'Sora', sans-serif;
+  font-size: 11px; font-weight: 500;
+  cursor: pointer;
+  transition: color var(--transition-fast), border-color var(--transition-fast), background var(--transition-fast);
+}
+.btn-refresh:hover { color: var(--text-primary); border-color: var(--blue-400); background: var(--bg-overlay); }
+.btn-refresh.spinning .refresh-icon { display: inline-block; animation: spin 0.8s linear infinite; }
+.btn-refresh:disabled { opacity: 0.5; cursor: default; }
+@keyframes spin { to { transform: rotate(360deg); } }
+@media (max-width: 640px) { .btn-refresh span:not(.refresh-icon) { display: none; } }
+
+/* ── Banner de error ── */
+.error-banner {
+  display: none; align-items: center; gap: 10px;
+  background: var(--red-dim);
+  border-bottom: 1px solid var(--red-border);
+  padding: 8px 32px;
+  font-size: 12px; color: var(--red-300);
+}
+.error-banner.visible { display: flex; }
+.error-close {
+  margin-left: auto;
+  background: none; border: none;
+  color: var(--red-300); cursor: pointer;
+  font-size: 16px; padding: 0 4px; line-height: 1;
+}
+.error-close:hover { color: var(--red-400); }
+
+/* ── Timestamp de última actualización ── */
+.data-ts {
+  font-size: 10px; color: var(--text-muted);
+  font-weight: 400; letter-spacing: 0.4px;
+  margin-left: 8px;
+}
 </style>
 </head>
 <body>
@@ -649,9 +692,19 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
       <span class="live-dot"></span>
       En vivo
     </div>
+    <button class="btn-refresh" id="btn-refresh" title="Actualizar datos de Google Sheets">
+      <span class="refresh-icon">↻</span>
+      <span>Actualizar</span>
+    </button>
     <div class="header-time" id="header-time">--:--:--</div>
   </div>
 </header>
+
+<div class="error-banner" id="error-banner" role="alert">
+  <span>⚠</span>
+  <span id="error-msg">Error al conectar con Google Sheets</span>
+  <button class="error-close" id="error-close" aria-label="Cerrar">✕</button>
+</div>
 
 <!-- ============================================================
      NAVEGACIÓN DE TABS
@@ -793,8 +846,8 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
   <div class="grid-4">
     <div class="card accent-blue"><div class="kpi-label">Activo Circulante</div><div class="kpi-value" id="bg-circulante">—</div><div class="kpi-delta" id="bg-circulante-delta">—</div></div>
     <div class="card accent-green"><div class="kpi-label">Activo Fijo</div><div class="kpi-value" id="bg-fijo">—</div><div class="kpi-delta" id="bg-fijo-delta">—</div></div>
-    <div class="card accent-amber"><div class="kpi-label">Total Activo</div><div class="kpi-value" id="bg-total">—</div></div>
-    <div class="card accent-purple"><div class="kpi-label">Pasivo CP</div><div class="kpi-value" id="bg-pasivo">—</div></div>
+    <div class="card accent-amber"><div class="kpi-label">Total Activo</div><div class="kpi-value" id="bg-total">—</div><div class="kpi-delta" id="bg-total-delta">—</div></div>
+    <div class="card accent-purple"><div class="kpi-label">Pasivo CP</div><div class="kpi-value" id="bg-pasivo">—</div><div class="kpi-delta" id="bg-pasivo-delta">—</div></div>
   </div>
 
   <div class="grid-2" style="margin-top:12px;">
@@ -843,28 +896,28 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
 <div class="tab-panel" id="tab-operaciones">
 
   <!-- ── SECCIÓN: KPIs FINANCIEROS ── -->
-  <div class="section-label">KPIs Financieros — Acumulado 2025</div>
+  <div class="section-label">KPIs Financieros — Año más reciente Google Sheets<span class="data-ts" id="sheets-ts-op"></span></div>
   <div class="grid-4">
 
     <div class="card accent-blue fade-in delay-1">
-      <div class="kpi-label">Ventas Netas YTD</div>
-      <div class="kpi-value">$182.4M</div>
-      <div class="kpi-delta pos">▲ +11.3% vs 2024</div>
-      <div class="kpi-sub">MXN · Ene–Abr 2025</div>
+      <div class="kpi-label">Ventas Netas</div>
+      <div class="kpi-value" id="op-ventas">$182.4M</div>
+      <div class="kpi-delta pos" id="op-ventas-delta">▲ +11.3% vs año anterior</div>
+      <div class="kpi-sub">MXN · año más reciente</div>
     </div>
 
     <div class="card accent-green fade-in delay-2">
       <div class="kpi-label">Margen Bruto</div>
-      <div class="kpi-value">34.7%</div>
-      <div class="kpi-delta pos">▲ +1.2pp vs 2024</div>
-      <div class="kpi-sub">Objetivo: 35.0%</div>
+      <div class="kpi-value" id="op-margen">34.7%</div>
+      <div class="kpi-delta pos" id="op-margen-delta">▲ +1.2pp vs año anterior</div>
+      <div class="kpi-sub">Utilidad Bruta / Ventas</div>
     </div>
 
     <div class="card accent-blue fade-in delay-3">
-      <div class="kpi-label">EBITDA YTD</div>
-      <div class="kpi-value">$28.6M</div>
-      <div class="kpi-delta pos">▲ +8.7% vs 2024</div>
-      <div class="kpi-sub">Margen EBITDA: 15.7%</div>
+      <div class="kpi-label">EBITDA</div>
+      <div class="kpi-value" id="op-ebitda">$28.6M</div>
+      <div class="kpi-delta pos" id="op-ebitda-delta">▲ +8.7% vs año anterior</div>
+      <div class="kpi-sub">% EBITDA × Ventas Netas</div>
     </div>
 
     <div class="card accent-amber fade-in delay-4">
@@ -880,7 +933,7 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
   <div class="grid-2" style="margin-top:12px;">
 
     <div class="card fade-in delay-1">
-      <div class="card-title">Ventas anuales 2021–2025 · MXN millones + Margen bruto %</div>
+      <div class="card-title">Ventas anuales · MXN millones + Margen bruto %</div>
       <div class="chart-legend">
         <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>Ventas MXN</span>
         <span class="legend-item"><span class="legend-swatch" style="background:#22c55e;"></span>Margen bruto %</span>
@@ -891,7 +944,7 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
     </div>
 
     <div class="card fade-in delay-2">
-      <div class="card-title">EBITDA vs Utilidad neta 2021–2025 · MXN millones</div>
+      <div class="card-title">EBITDA vs Utilidad neta · MXN millones</div>
       <div class="chart-legend">
         <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>EBITDA</span>
         <span class="legend-item"><span class="legend-swatch" style="background:#f59e0b;"></span>Utilidad neta</span>
@@ -903,350 +956,7 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
 
   </div>
 
-  <!-- ── SECCIÓN: BALANCE GENERAL (Google Sheets) ── -->
-  <div class="section-label" style="display:flex;align-items:center;justify-content:space-between;">
-    <span>Balance General — Datos Reales</span>
-    <select id="bg-year-select" style="
-      background:#141c2c;color:#eef2f8;border:1px solid rgba(255,255,255,0.12);
-      border-radius:8px;padding:5px 14px;font-family:'Sora',sans-serif;font-size:13px;
-      cursor:pointer;outline:none;">
-      <option value="">Cargando...</option>
-    </select>
-  </div>
 
-  <div class="grid-4">
-    <div class="card accent-blue fade-in delay-1">
-      <div class="kpi-label">Total Activo Circulante</div>
-      <div class="kpi-value" id="bg-circulante">—</div>
-      <div class="kpi-delta" id="bg-circulante-delta" style="color:var(--text-secondary);">—</div>
-      <div class="kpi-sub">Caja + Inventario + Cuentas por cobrar</div>
-    </div>
-    <div class="card accent-green fade-in delay-2">
-      <div class="kpi-label">Total Activo Fijo</div>
-      <div class="kpi-value" id="bg-fijo">—</div>
-      <div class="kpi-delta" id="bg-fijo-delta" style="color:var(--text-secondary);">—</div>
-      <div class="kpi-sub">Mobiliario, equipo e intangibles</div>
-    </div>
-    <div class="card accent-amber fade-in delay-3">
-      <div class="kpi-label">Caja / Bancos</div>
-      <div class="kpi-value" id="bg-caja">—</div>
-      <div class="kpi-delta" id="bg-caja-delta" style="color:var(--text-secondary);">—</div>
-      <div class="kpi-sub">Disponible inmediato</div>
-    </div>
-    <div class="card accent-purple fade-in delay-4">
-      <div class="kpi-label">Existencias (Inventario)</div>
-      <div class="kpi-value" id="bg-existencias">—</div>
-      <div class="kpi-delta" id="bg-exist-delta" style="color:var(--text-secondary);">—</div>
-      <div class="kpi-sub">Mercaderías valoradas</div>
-    </div>
-  </div>
-
-  <div class="grid-2" style="margin-top:12px;">
-    <div class="card fade-in delay-1">
-      <div class="card-title">Activo Circulante vs Activo Fijo · 2020–2024</div>
-      <div class="chart-legend">
-        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>Circulante</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#22c55e;"></span>Fijo</span>
-      </div>
-      <div class="chart-wrap" style="height:220px;">
-        <canvas id="chartBalance"></canvas>
-      </div>
-    </div>
-    <div class="card fade-in delay-2">
-      <div class="card-title">Composición del Activo Circulante · año seleccionado</div>
-      <div class="chart-wrap" style="height:175px;">
-        <canvas id="chartComposicion"></canvas>
-      </div>
-      <div class="donut-legend" style="margin-top:12px;" id="bg-donut-legend">
-        <span class="donut-legend-item"><span class="donut-swatch" style="background:#3b82f6;"></span>Existencias</span>
-        <span class="donut-legend-item"><span class="donut-swatch" style="background:#22c55e;"></span>Caja/Bancos</span>
-        <span class="donut-legend-item"><span class="donut-swatch" style="background:#f59e0b;"></span>Inversiones</span>
-        <span class="donut-legend-item"><span class="donut-swatch" style="background:#a78bfa;"></span>Cuentas por cobrar</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── SECCIÓN: INVENTARIO ── -->
-</div><!-- /tab-mercado -->
-
-<!-- ══════════════════════════════════════════════════════════
-     TAB: RESUMEN
-     ══════════════════════════════════════════════════════════ -->
-<div class="tab-panel" id="tab-resumen">
-  <div class="section-label" style="display:flex;align-items:center;justify-content:space-between;">
-    <span>Resumen Financiero — Indicadores Clave</span>
-    <select class="year-select" id="resumen-year-select"></select>
-  </div>
-
-  <div class="grid-4" id="resumen-kpis">
-    <div class="card accent-blue fade-in delay-1">
-      <div class="kpi-label">ROE (DuPont)</div>
-      <div class="kpi-value" id="res-roe">—</div>
-      <div class="kpi-delta" id="res-roe-delta" style="color:var(--text-secondary);">—</div>
-      <div class="kpi-sub">Rentabilidad sobre capital</div>
-    </div>
-    <div class="card accent-green fade-in delay-2">
-      <div class="kpi-label">Margen Neto</div>
-      <div class="kpi-value" id="res-margen">—</div>
-      <div class="kpi-delta" id="res-margen-delta" style="color:var(--text-secondary);">—</div>
-      <div class="kpi-sub">Utilidad Neta / Ventas</div>
-    </div>
-    <div class="card accent-amber fade-in delay-3">
-      <div class="kpi-label">% EBITDA</div>
-      <div class="kpi-value" id="res-ebitda">—</div>
-      <div class="kpi-delta" id="res-ebitda-delta" style="color:var(--text-secondary);">—</div>
-      <div class="kpi-sub">Sobre ventas netas</div>
-    </div>
-    <div class="card accent-purple fade-in delay-4">
-      <div class="kpi-label">Rotación de Activos</div>
-      <div class="kpi-value" id="res-rotacion">—</div>
-      <div class="kpi-delta" id="res-rotacion-delta" style="color:var(--text-secondary);">—</div>
-      <div class="kpi-sub">Ventas / Activo total</div>
-    </div>
-  </div>
-
-  <div class="grid-4" style="margin-top:12px;">
-    <div class="card fade-in delay-1">
-      <div class="kpi-label">Crec. Ventas Nominal</div>
-      <div class="kpi-value" id="res-crec-nom">—</div>
-      <div class="kpi-delta" id="res-crec-nom-delta" style="color:var(--text-secondary);">—</div>
-    </div>
-    <div class="card fade-in delay-2">
-      <div class="kpi-label">Crec. Ventas Real</div>
-      <div class="kpi-value" id="res-crec-real">—</div>
-      <div class="kpi-delta" id="res-crec-real-delta" style="color:var(--text-secondary);">—</div>
-    </div>
-    <div class="card fade-in delay-3">
-      <div class="kpi-label">Margen Operativo</div>
-      <div class="kpi-value" id="res-margen-op">—</div>
-      <div class="kpi-delta" id="res-margen-op-delta" style="color:var(--text-secondary);">—</div>
-    </div>
-    <div class="card fade-in delay-4">
-      <div class="kpi-label">% Gastos Generales</div>
-      <div class="kpi-value" id="res-gastos">—</div>
-      <div class="kpi-delta" id="res-gastos-delta" style="color:var(--text-secondary);">—</div>
-    </div>
-  </div>
-
-  <div class="grid-2" style="margin-top:12px;">
-    <div class="card fade-in delay-1">
-      <div class="card-title">ROE · Margen Neto · EBITDA — Tendencia 2020–2024</div>
-      <div class="chart-legend">
-        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>ROE %</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#22c55e;"></span>Margen Neto %</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#f59e0b;"></span>EBITDA %</span>
-      </div>
-      <div class="chart-wrap" style="height:220px;"><canvas id="chartResumenRoe"></canvas></div>
-    </div>
-    <div class="card fade-in delay-2">
-      <div class="card-title">Crecimiento de Ventas — Nominal vs Real 2020–2024</div>
-      <div class="chart-legend">
-        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>Nominal %</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#f59e0b;"></span>Real %</span>
-      </div>
-      <div class="chart-wrap" style="height:220px;"><canvas id="chartResumenCrec"></canvas></div>
-    </div>
-  </div>
-</div><!-- /tab-resumen -->
-
-<!-- ══════════════════════════════════════════════════════════
-     TAB: ESTADO DE RESULTADOS
-     ══════════════════════════════════════════════════════════ -->
-<div class="tab-panel" id="tab-resultados">
-  <div class="section-label" style="display:flex;align-items:center;justify-content:space-between;">
-    <span>Estado de Resultados</span>
-    <select class="year-select" id="er-year-select"></select>
-  </div>
-
-  <div class="grid-4">
-    <div class="card accent-blue fade-in delay-1">
-      <div class="kpi-label">Ventas Netas</div>
-      <div class="kpi-value" id="er-ventas">—</div>
-      <div class="kpi-delta" id="er-ventas-delta" style="color:var(--text-secondary);">—</div>
-    </div>
-    <div class="card accent-green fade-in delay-2">
-      <div class="kpi-label">Utilidad Bruta</div>
-      <div class="kpi-value" id="er-bruta">—</div>
-      <div class="kpi-delta" id="er-bruta-delta" style="color:var(--text-secondary);">—</div>
-      <div class="kpi-sub" id="er-bruta-pct"></div>
-    </div>
-    <div class="card accent-amber fade-in delay-3">
-      <div class="kpi-label">Utilidad Operativa</div>
-      <div class="kpi-value" id="er-operativa">—</div>
-      <div class="kpi-delta" id="er-operativa-delta" style="color:var(--text-secondary);">—</div>
-    </div>
-    <div class="card accent-purple fade-in delay-4">
-      <div class="kpi-label">Utilidad Neta</div>
-      <div class="kpi-value" id="er-neta">—</div>
-      <div class="kpi-delta" id="er-neta-delta" style="color:var(--text-secondary);">—</div>
-      <div class="kpi-sub" id="er-neta-pct"></div>
-    </div>
-  </div>
-
-  <div class="grid-2" style="margin-top:12px;">
-    <div class="card fade-in delay-1">
-      <div class="card-title">Ventas vs Costo de Ventas · MXN — 2020–2024</div>
-      <div class="chart-legend">
-        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>Ventas Netas</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#ef4444;"></span>Costo de Ventas</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#22c55e;"></span>Utilidad Bruta</span>
-      </div>
-      <div class="chart-wrap" style="height:230px;"><canvas id="chartErVentas"></canvas></div>
-    </div>
-    <div class="card fade-in delay-2">
-      <div class="card-title">Cascada de utilidades · año seleccionado</div>
-      <div class="chart-wrap" style="height:230px;"><canvas id="chartErCascada"></canvas></div>
-    </div>
-  </div>
-
-  <div class="card fade-in delay-1" style="margin-top:12px;">
-    <div class="card-title">Detalle completo · año <span id="er-table-year"></span></div>
-    <table class="fin-table" id="er-table">
-      <thead>
-        <tr>
-          <th>Concepto</th>
-          <th>Monto (MXN)</th>
-          <th>% sobre Ventas</th>
-        </tr>
-      </thead>
-      <tbody id="er-table-body"></tbody>
-    </table>
-  </div>
-</div><!-- /tab-resultados -->
-
-<!-- ══════════════════════════════════════════════════════════
-     TAB: BALANCE GENERAL
-     ══════════════════════════════════════════════════════════ -->
-<div class="tab-panel" id="tab-balance">
-  <div class="section-label" style="display:flex;align-items:center;justify-content:space-between;">
-    <span>Balance General</span>
-    <select class="year-select" id="bg-year-select2"></select>
-  </div>
-
-  <div class="grid-4">
-    <div class="card accent-blue fade-in delay-1">
-      <div class="kpi-label">Total Activo Circulante</div>
-      <div class="kpi-value" id="bg-circulante">—</div>
-      <div class="kpi-delta" id="bg-circulante-delta" style="color:var(--text-secondary);">—</div>
-      <div class="kpi-sub">Caja + Inventario + CxC</div>
-    </div>
-    <div class="card accent-green fade-in delay-2">
-      <div class="kpi-label">Total Activo Fijo</div>
-      <div class="kpi-value" id="bg-fijo">—</div>
-      <div class="kpi-delta" id="bg-fijo-delta" style="color:var(--text-secondary);">—</div>
-      <div class="kpi-sub">Mobiliario e intangibles</div>
-    </div>
-    <div class="card accent-amber fade-in delay-3">
-      <div class="kpi-label">Existencias</div>
-      <div class="kpi-value" id="bg-existencias">—</div>
-      <div class="kpi-delta" id="bg-exist-delta" style="color:var(--text-secondary);">—</div>
-      <div class="kpi-sub">Inventario valorado</div>
-    </div>
-    <div class="card accent-purple fade-in delay-4">
-      <div class="kpi-label">Total Pasivo CP</div>
-      <div class="kpi-value" id="bg-pasivo">—</div>
-      <div class="kpi-delta" id="bg-pasivo-delta" style="color:var(--text-secondary);">—</div>
-      <div class="kpi-sub">Obligaciones corto plazo</div>
-    </div>
-  </div>
-
-  <div class="grid-2" style="margin-top:12px;">
-    <div class="card fade-in delay-1">
-      <div class="card-title">Activo Circulante vs Fijo — 2020–2024</div>
-      <div class="chart-legend">
-        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>Circulante</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#22c55e;"></span>Fijo</span>
-      </div>
-      <div class="chart-wrap" style="height:220px;"><canvas id="chartBalance"></canvas></div>
-    </div>
-    <div class="card fade-in delay-2">
-      <div class="card-title">Composición Activo Circulante — año seleccionado</div>
-      <div class="chart-wrap" style="height:175px;"><canvas id="chartComposicion"></canvas></div>
-      <div class="donut-legend" style="margin-top:12px;">
-        <span class="donut-legend-item"><span class="donut-swatch" style="background:#3b82f6;"></span>Existencias</span>
-        <span class="donut-legend-item"><span class="donut-swatch" style="background:#22c55e;"></span>Caja/Bancos</span>
-        <span class="donut-legend-item"><span class="donut-swatch" style="background:#f59e0b;"></span>Inversiones</span>
-        <span class="donut-legend-item"><span class="donut-swatch" style="background:#a78bfa;"></span>Cuentas por cobrar</span>
-      </div>
-    </div>
-  </div>
-</div><!-- /tab-balance -->
-
-<!-- ══════════════════════════════════════════════════════════
-     TAB: RATIOS FINANCIEROS
-     ══════════════════════════════════════════════════════════ -->
-<div class="tab-panel" id="tab-ratios">
-  <div class="section-label" style="display:flex;align-items:center;justify-content:space-between;">
-    <span>Ratios Financieros</span>
-    <select class="year-select" id="ratios-year-select"></select>
-  </div>
-
-  <div class="grid-4">
-    <div class="card accent-green fade-in delay-1">
-      <div class="kpi-label">Liquidez</div>
-      <div class="kpi-value" id="rat-liquidez">—</div>
-      <div class="kpi-delta" id="rat-liquidez-delta" style="color:var(--text-secondary);">—</div>
-      <div class="kpi-sub">Activo circ. / Pasivo CP</div>
-    </div>
-    <div class="card accent-blue fade-in delay-2">
-      <div class="kpi-label">Solvencia</div>
-      <div class="kpi-value" id="rat-solvencia">—</div>
-      <div class="kpi-delta" id="rat-solvencia-delta" style="color:var(--text-secondary);">—</div>
-    </div>
-    <div class="card accent-amber fade-in delay-3">
-      <div class="kpi-label">Endeudamiento</div>
-      <div class="kpi-value" id="rat-endeudamiento">—</div>
-      <div class="kpi-delta" id="rat-endeud-delta" style="color:var(--text-secondary);">—</div>
-    </div>
-    <div class="card fade-in delay-4">
-      <div class="kpi-label">Capital de Trabajo</div>
-      <div class="kpi-value" id="rat-capital">—</div>
-      <div class="kpi-delta" id="rat-capital-delta" style="color:var(--text-secondary);">—</div>
-      <div class="kpi-sub">MXN</div>
-    </div>
-  </div>
-
-  <div class="grid-2" style="margin-top:12px;">
-    <div class="card fade-in delay-1">
-      <div class="card-title">Rentabilidad Financiera y Económica — 2020–2024</div>
-      <div class="chart-legend">
-        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>Financiera %</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#22c55e;"></span>Económica %</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#f59e0b;"></span>Margen Utilidad %</span>
-      </div>
-      <div class="chart-wrap" style="height:210px;"><canvas id="chartRatRent"></canvas></div>
-    </div>
-    <div class="card fade-in delay-2" style="display:flex;flex-direction:column;gap:14px;">
-      <div class="card-title">Z-Score Altman — Salud Financiera</div>
-      <div style="display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
-        <div id="zscore-badge" class="zscore-badge zscore-safe">— </div>
-        <div style="font-size:11px;color:var(--text-secondary);line-height:1.6;">
-          <div>&gt; 2.99 → Zona segura ✅</div>
-          <div>1.81 – 2.99 → Zona gris ⚠️</div>
-          <div>&lt; 1.81 → Zona peligro 🚨</div>
-        </div>
-      </div>
-      <div class="chart-wrap" style="height:140px;"><canvas id="chartZScore"></canvas></div>
-      <div class="mini-stat">
-        <span class="mini-label">Liquidez</span>
-        <span class="mini-val" id="rat-liq-val">—</span>
-      </div>
-      <div class="mini-stat">
-        <span class="mini-label">Autonomía</span>
-        <span class="mini-val" id="rat-aut-val">—</span>
-      </div>
-      <div class="mini-stat">
-        <span class="mini-label">Rotación Activo</span>
-        <span class="mini-val" id="rat-rot-val">—</span>
-      </div>
-    </div>
-  </div>
-</div><!-- /tab-ratios -->
-
-<!-- ══════════════════════════════════════════════════════════
-     TAB: OPERACIONES
-     ══════════════════════════════════════════════════════════ -->
-<div class="tab-panel" id="tab-operaciones">
 
   <div class="section-label">Inventario &amp; Rotación</div>
   <div class="grid-4">
@@ -1518,7 +1228,7 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
      FOOTER
      ============================================================ -->
 <footer class="footer" id="footer-ts">
-  Dashboard Ejecutivo Refacciones · Datos de ejemplo · Conectar con base de datos Excel para cifras reales
+  Dashboard Ejecutivo Refacciones · Datos financieros: Google Sheets · Inventario y operaciones: datos ilustrativos
 </footer>
 
 <!-- ============================================================
@@ -1535,10 +1245,22 @@ function updateTime() {
   document.getElementById('footer-ts').textContent =
     'Última actualización: ' + now.toLocaleDateString('es-MX', optsDate) +
     ' · ' + now.toLocaleTimeString('es-MX') +
-    ' · T.C.: open.er-api.com · Inflación: INEGI · Datos financieros: ejemplo';
+    ' · T.C.: open.er-api.com · Inflación: INEGI · Datos financieros: Google Sheets';
 }
 updateTime();
 setInterval(updateTime, 1000);
+
+/* ── ERROR BANNER ── */
+function showError(msg) {
+  const banner = document.getElementById('error-banner');
+  const msgEl  = document.getElementById('error-msg');
+  if (banner) banner.classList.add('visible');
+  if (msgEl)  msgEl.textContent = msg;
+}
+function hideError() {
+  document.getElementById('error-banner')?.classList.remove('visible');
+}
+document.getElementById('error-close')?.addEventListener('click', hideError);
 
 /* ── NAVEGACIÓN DE TABS ── */
 document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -1644,7 +1366,7 @@ const C = {
 };
 
 /* ── GRÁFICA 1: Ventas anuales + Margen bruto (doble eje) ── */
-new Chart(document.getElementById('chartVentas'), {
+let chartVentasInst = new Chart(document.getElementById('chartVentas'), {
   data: {
     labels: C.anos,
     datasets: [
@@ -1677,7 +1399,6 @@ new Chart(document.getElementById('chartVentas'), {
           label:  ctx => ctx.dataset.yAxisID === 'y2'
             ? ` Margen bruto: ${ctx.parsed.y}%`
             : ` Ventas: $${ctx.parsed.y}M MXN`,
-          afterBody: ctx => ctx[0].label === '2025E' ? ['  ⚠ Estimado'] : [],
         }
       }
     },
@@ -1694,7 +1415,7 @@ new Chart(document.getElementById('chartVentas'), {
 });
 
 /* ── GRÁFICA 2: EBITDA vs Utilidad Neta ── */
-new Chart(document.getElementById('chartEbitda'), {
+let chartEbitdaInst = new Chart(document.getElementById('chartEbitda'), {
   data: {
     labels: C.anos,
     datasets: [
@@ -1944,6 +1665,7 @@ let chartBalanceTrend = null;
 let chartComposicion  = null;
 
 function fmtMXN(n) {
+  if (n == null || isNaN(n)) return '—';
   if (n >= 1_000_000) return '$' + (n / 1_000_000).toFixed(2) + 'M';
   if (n >= 1_000)     return '$' + (n / 1_000).toFixed(1) + 'K';
   return '$' + n.toLocaleString('es-MX');
@@ -1964,13 +1686,15 @@ function renderKPIs(año) {
   const campos = [
     { id:'bg-circulante', val:d.totalCirculante, prevVal: prev?.totalCirculante, deltaId:'bg-circulante-delta' },
     { id:'bg-fijo',       val:d.totalFijo,       prevVal: prev?.totalFijo,       deltaId:'bg-fijo-delta'       },
-    { id:'bg-caja',       val:d.cajaBancos,       prevVal: prev?.cajaBancos,      deltaId:'bg-caja-delta'       },
-    { id:'bg-existencias',val:d.existencias,      prevVal: prev?.existencias,     deltaId:'bg-exist-delta'      },
+    { id:'bg-total',      val:d.totalActivo,     prevVal: prev?.totalActivo,     deltaId:'bg-total-delta'      },
+    { id:'bg-pasivo',     val:d.totalPasivoCP,   prevVal: prev?.totalPasivoCP,   deltaId:'bg-pasivo-delta'     },
   ];
 
   campos.forEach(({ id, val, prevVal, deltaId }) => {
-    document.getElementById(id).textContent = fmtMXN(val);
+    const valueEl = document.getElementById(id);
+    if (valueEl) valueEl.textContent = fmtMXN(val);
     const deltaEl = document.getElementById(deltaId);
+    if (!deltaEl) return;
     const pct = pctDelta(val, prevVal);
     if (pct !== null) {
       const pos = parseFloat(pct) >= 0;
@@ -1978,6 +1702,7 @@ function renderKPIs(año) {
       deltaEl.style.color = pos ? 'var(--green-400)' : 'var(--red-400)';
     } else {
       deltaEl.textContent = 'Sin dato anterior';
+      deltaEl.style.color = 'var(--text-muted)';
     }
   });
 
@@ -2073,23 +1798,10 @@ async function cargarBalanceGeneral() {
 
     renderTrendChart();
     renderKPIs(select.value);
-
     select.addEventListener('change', e => renderKPIs(e.target.value));
-
-    // Otros KPIs de balance (si existen en el tab nuevo)
-    const actual = balanceData.find(d => d.ano === select.value) || balanceData[0];
-    const totalEl = document.getElementById('bg-total');
-    const pasivoEl = document.getElementById('bg-pasivo');
-    if (totalEl) totalEl.textContent = fmtMXN(actual.totalActivo || 0);
-    if (pasivoEl) pasivoEl.textContent = fmtMXN(actual.totalPasivoCP || 0);
-    select.addEventListener('change', e => {
-      const d = balanceData.find(x => x.ano === e.target.value);
-      if (!d) return;
-      if (totalEl) totalEl.textContent = fmtMXN(d.totalActivo || 0);
-      if (pasivoEl) pasivoEl.textContent = fmtMXN(d.totalPasivoCP || 0);
-    });
   } catch (err) {
-    console.warn('⚠ No se pudo cargar Balance General:', err.message);
+    showError('Balance General: ' + err.message);
+    console.warn('Balance General:', err.message);
   }
 }
 
@@ -2157,8 +1869,13 @@ async function cargarResumen() {
         options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:C.scales().x, y:{...C.scales().y, ticks:{...C.scales().y.ticks, callback:v=>v+'%'}} } }
       });
     }
+    if (erData.length) {
+      actualizarKPIsOperaciones(erData, resumenData);
+      actualizarChartsOperaciones(erData, resumenData);
+    }
   } catch (e) {
-    console.warn('No se pudo cargar resumen', e.message);
+    showError('Resumen financiero: ' + e.message);
+    console.warn('Resumen:', e.message);
   }
 }
 
@@ -2215,8 +1932,12 @@ async function cargarEstadoResultados() {
         options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:C.scales().x, y:{...C.scales().y, ticks:{...C.scales().y.ticks, callback:v=>'$'+v+'M'}} } }
       });
     }
+    actualizarKPIsOperaciones(erData, resumenData);
+    actualizarChartsOperaciones(erData, resumenData);
+    cargarMeta();
   } catch (e) {
-    console.warn('No se pudo cargar estado resultados', e.message);
+    showError('Estado de Resultados: ' + e.message);
+    console.warn('Estado de Resultados:', e.message);
   }
 }
 
@@ -2289,9 +2010,126 @@ async function cargarRatios() {
       });
     }
   } catch (e) {
-    console.warn('No se pudo cargar ratios', e.message);
+    showError('Ratios Financieros: ' + e.message);
+    console.warn('Ratios:', e.message);
   }
 }
+
+/* ── OPERACIONES — KPIs desde Google Sheets ── */
+function actualizarKPIsOperaciones(erD, resD) {
+  if (!erD || !erD.length) return;
+  const ultimo   = erD[0];
+  const anterior = erD[1];
+  if (!ultimo) return;
+
+  const setKpi = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+  const setDelta = (id, pct, ref) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const pos = parseFloat(pct) >= 0;
+    el.textContent = (pos ? '▲ +' : '▼ ') + pct + '% vs ' + ref;
+    el.className = 'kpi-delta ' + (pos ? 'pos' : 'neg');
+  };
+
+  if (ultimo.ventasNetas != null) {
+    setKpi('op-ventas', fmtMXN(ultimo.ventasNetas));
+    if (anterior?.ventasNetas) setDelta('op-ventas-delta', pctDelta(ultimo.ventasNetas, anterior.ventasNetas), anterior.ano);
+  }
+
+  if (ultimo.ventasNetas && ultimo.utilidadBruta != null) {
+    const mg = ((ultimo.utilidadBruta / ultimo.ventasNetas) * 100).toFixed(1);
+    setKpi('op-margen', mg + '%');
+    if (anterior?.ventasNetas && anterior?.utilidadBruta != null) {
+      const mgAnt = ((anterior.utilidadBruta / anterior.ventasNetas) * 100).toFixed(1);
+      const diff  = (parseFloat(mg) - parseFloat(mgAnt)).toFixed(1);
+      const el = document.getElementById('op-margen-delta');
+      if (el) {
+        const pos = parseFloat(diff) >= 0;
+        el.textContent = (pos ? '▲ +' : '▼ ') + diff + 'pp vs ' + anterior.ano;
+        el.className = 'kpi-delta ' + (pos ? 'pos' : 'neg');
+      }
+    }
+  }
+
+  const resUlt = resD?.find(r => String(r.ano || r.año) === String(ultimo.ano));
+  if (resUlt?.ebitda != null && ultimo.ventasNetas) {
+    const ebitdaMXN = (resUlt.ebitda / 100) * ultimo.ventasNetas;
+    setKpi('op-ebitda', fmtMXN(ebitdaMXN));
+    if (anterior?.ventasNetas) {
+      const resAnt = resD?.find(r => String(r.ano || r.año) === String(anterior.ano));
+      if (resAnt?.ebitda != null) {
+        const ebitdaAnt = (resAnt.ebitda / 100) * anterior.ventasNetas;
+        setDelta('op-ebitda-delta', pctDelta(ebitdaMXN, ebitdaAnt), anterior.ano);
+      }
+    }
+  }
+}
+
+function actualizarChartsOperaciones(erD, resD) {
+  if (!erD || !erD.length) return;
+  const rev      = [...erD].reverse();
+  const labels   = rev.map(d => d.ano);
+  const ventas   = rev.map(d => d.ventasNetas != null ? parseFloat((d.ventasNetas / 1_000_000).toFixed(2)) : null);
+  const margenBr = rev.map(d => (d.ventasNetas && d.utilidadBruta != null)
+    ? parseFloat(((d.utilidadBruta / d.ventasNetas) * 100).toFixed(1)) : null);
+  const utilNeta = rev.map(d => d.utilidadNeta != null ? parseFloat((d.utilidadNeta / 1_000_000).toFixed(2)) : null);
+  const ebitdaArr = rev.map(d => {
+    const r = resD?.find(x => String(x.ano || x.año) === String(d.ano));
+    return (r?.ebitda != null && d.ventasNetas != null)
+      ? parseFloat(((r.ebitda / 100) * d.ventasNetas / 1_000_000).toFixed(2)) : null;
+  });
+
+  if (chartVentasInst) {
+    chartVentasInst.data.labels = labels;
+    chartVentasInst.data.datasets[0].data = ventas;
+    chartVentasInst.data.datasets[1].data = margenBr;
+    chartVentasInst.update();
+  }
+  if (chartEbitdaInst) {
+    chartEbitdaInst.data.labels = labels;
+    chartEbitdaInst.data.datasets[0].data = ebitdaArr;
+    chartEbitdaInst.data.datasets[1].data = utilNeta;
+    chartEbitdaInst.update();
+  }
+}
+
+/* ── ÚLTIMA ACTUALIZACIÓN DESDE CACHE ── */
+async function cargarMeta() {
+  try {
+    const res = await fetch('/api/meta');
+    if (!res.ok) return;
+    const meta = await res.json();
+    const keys = Object.keys(meta);
+    if (!keys.length) return;
+    const oldest = Math.min(...keys.map(k => new Date(meta[k].cachedAt).getTime()));
+    const ts = document.getElementById('sheets-ts-op');
+    if (ts) ts.textContent = '· datos al ' + new Date(oldest).toLocaleTimeString('es-MX');
+  } catch (_) {}
+}
+
+/* ── BOTÓN ACTUALIZAR ── */
+document.getElementById('btn-refresh')?.addEventListener('click', async () => {
+  const btn = document.getElementById('btn-refresh');
+  if (!btn || btn.disabled) return;
+  btn.disabled = true;
+  btn.classList.add('spinning');
+  try {
+    const r = await fetch('/api/refresh', { method: 'POST' });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    hideError();
+    await Promise.all([
+      cargarBalanceGeneral(),
+      cargarResumen(),
+      cargarEstadoResultados(),
+      cargarRatios(),
+    ]);
+  } catch (e) {
+    showError('Error al refrescar: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.classList.remove('spinning');
+  }
+});
 
 cargarBalanceGeneral();
 cargarResumen();

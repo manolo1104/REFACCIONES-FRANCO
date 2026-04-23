@@ -6,7 +6,7 @@ const VoiceResponse = twilio.twiml.VoiceResponse;
 // ─── Configuración de voz ────────────────────────────────────────────────────
 const VOZ = {
   language: "es-MX",
-  voice: "Polly.Mia",   // Amazon Polly – Neural. Fallback: "woman" si no está habilitada.
+  voice: "Polly.Mia",
 };
 
 /**
@@ -19,18 +19,20 @@ function say(parent, texto) {
 }
 
 /**
- * Genera una respuesta TwiML con el menú principal.
- * @param {string} [mensajeExtra] - Mensaje opcional antes del menú (error, bienvenida, etc.)
+ * Bienvenida principal. Captura voz libre del cliente (sin presionar teclas).
+ * @param {string} [mensajeExtra] - Mensaje opcional antes de pedir input
  * @returns {string} XML TwiML
  */
 function menuPrincipal(mensajeExtra = "") {
   const twiml = new VoiceResponse();
 
   const gather = twiml.gather({
-    numDigits: 1,
-    action: "/menu",
+    input: "speech",
+    language: "es-MX",
+    action: "/intent",
     method: "POST",
-    timeout: 10,
+    speechTimeout: "auto",
+    timeout: 5,
   });
 
   if (mensajeExtra) {
@@ -39,42 +41,38 @@ function menuPrincipal(mensajeExtra = "") {
 
   say(
     gather,
-    "Bienvenido a Refacciones Automotrices. " +
-      "Para consultar el precio de una pieza, presione uno. " +
-      "Para verificar disponibilidad, presione dos. " +
-      "Para realizar un pedido, presione tres. " +
-      "Para hablar con un asesor, presione cuatro."
+    "Bienvenido a Refacciones Automotrices Franco. " +
+      "Soy su asistente virtual. " +
+      "¿En qué le puedo ayudar hoy?"
   );
 
-  // Fallback si no se presiona nada en 10 s
-  say(twiml, "No recibimos su selección. Le repetiremos el menú.");
+  say(twiml, "No escuchamos su respuesta. Por favor intente de nuevo.");
   twiml.redirect({ method: "POST" }, "/voice");
 
   return twiml.toString();
 }
 
 /**
- * Genera un <Gather> que solicita un SKU o nombre de pieza por voz/DTMF.
- * @param {string} accion  - URL del webhook que recibirá el dígito / SKU
- * @param {string} mensaje - Instrucción que se le da al usuario
- * @param {number} [digitos=20] - Número máximo de dígitos para DTMF
+ * Pide al cliente que diga el nombre o SKU de una pieza por voz.
+ * @param {string} accion  - URL del webhook que recibirá el resultado
+ * @param {string} mensaje - Instrucción para el cliente
  * @returns {string} XML TwiML
  */
-function solicitarEntrada(accion, mensaje, digitos = 20) {
+function solicitarPieza(accion, mensaje) {
   const twiml = new VoiceResponse();
 
   const gather = twiml.gather({
-    numDigits: digitos,
+    input: "speech",
+    language: "es-MX",
     action: accion,
     method: "POST",
-    timeout: 10,
-    finishOnKey: "#",
+    speechTimeout: "auto",
+    timeout: 6,
   });
 
   say(gather, mensaje);
 
-  // Fallback
-  say(twiml, "No recibimos información. Regresando al menú principal.");
+  say(twiml, "No recibimos su respuesta. Regresando al menú principal.");
   twiml.redirect({ method: "POST" }, "/voice");
 
   return twiml.toString();
@@ -123,29 +121,49 @@ function transferir(numero) {
 }
 
 /**
- * Respuesta cuando el asesor no contesta: ofrece devolución de llamada.
+ * Asesor no disponible: pide confirmación por voz para callback.
  * @returns {string} XML TwiML
  */
 function fallbackAsesor() {
   const twiml = new VoiceResponse();
 
   const gather = twiml.gather({
-    numDigits: 1,
+    input: "speech",
+    language: "es-MX",
     action: "/transferir/callback",
     method: "POST",
-    timeout: 10,
+    speechTimeout: "auto",
+    timeout: 6,
   });
 
   say(
     gather,
     "Lo sentimos, nuestro asesor no está disponible en este momento. " +
-      "Para que le devolvamos la llamada, presione uno. " +
-      "Para regresar al menú principal, presione dos."
+      "¿Desea que le devolvamos la llamada? Diga sí o no."
   );
 
-  // Fallback sin respuesta
   twiml.redirect({ method: "POST" }, "/voice");
+  return twiml.toString();
+}
 
+/**
+ * Responde la consulta y pregunta si el cliente necesita algo más.
+ * @param {string} mensajeRespuesta
+ * @returns {string} XML TwiML
+ */
+function preguntarSiNecesitaAlgoMas(mensajeRespuesta) {
+  const twiml = new VoiceResponse();
+  const gather = twiml.gather({
+    input: "speech",
+    language: "es-MX",
+    action: "/intent",
+    method: "POST",
+    speechTimeout: "auto",
+    timeout: 6,
+  });
+  say(gather, mensajeRespuesta + " ¿Hay algo más en lo que le pueda ayudar?");
+  say(twiml, "Gracias por llamar a Refacciones Franco. ¡Hasta luego!");
+  twiml.hangup();
   return twiml.toString();
 }
 
@@ -164,7 +182,7 @@ function confirmarPedido(pieza) {
       `SKU: ${pieza.sku}. ` +
       `Precio: ${formatearPrecio(pieza.precio)} pesos. ` +
       `En breve un asesor se pondrá en contacto para confirmar su pedido. ` +
-      `Gracias por preferir Refacciones Automotrices. ¡Hasta luego!`
+      `Gracias por preferir Refacciones Automotrices Franco. ¡Hasta luego!`
   );
 
   twiml.hangup();
@@ -184,11 +202,12 @@ function formatearPrecio(precio) {
 
 module.exports = {
   menuPrincipal,
-  solicitarEntrada,
+  solicitarPieza,
   responder,
   transferir,
   fallbackAsesor,
   confirmarPedido,
+  preguntarSiNecesitaAlgoMas,
   formatearPrecio,
   say,
 };

@@ -8,8 +8,24 @@ const app = express();
 const PORT = process.env.DASHBOARD_PORT || 4000;
 app.use(express.static(__dirname));
 
-const YEARS = ["2024","2023","2022","2021","2020"];
+const YEARS = (process.env.DASHBOARD_YEARS || "2024,2023,2022,2021,2020")
+  .split(",")
+  .map(y => y.trim());
 
+// ── Cache en memoria con TTL ──────────────────────────────────────
+const CACHE_TTL = (parseInt(process.env.CACHE_TTL_MIN) || 5) * 60 * 1000;
+const _cache = {};
+
+function getCached(key) {
+  const e = _cache[key];
+  if (!e) return null;
+  if (Date.now() - e.ts > CACHE_TTL) { delete _cache[key]; return null; }
+  return e.data;
+}
+function setCached(key, data) { _cache[key] = { data, ts: Date.now() }; }
+function clearCache() { Object.keys(_cache).forEach(k => delete _cache[k]); }
+
+// ── Google Sheets ─────────────────────────────────────────────────
 function getSheetsClient() {
   const auth = new google.auth.GoogleAuth({
     credentials: {
@@ -63,24 +79,28 @@ function findRowWithValue(rows, label, colIndex) {
   return withVal || matches[matches.length - 1];
 }
 
+// ── Endpoints de datos ────────────────────────────────────────────
 app.get("/api/estado-resultados", async (req, res) => {
+  const cached = getCached("estado-resultados");
+  if (cached) return res.json(cached);
   try {
     const rows = await getRange("ESTADO_DE_RESULTADOS", "A1:F25");
     const data = YEARS.map(function(ano, i) {
       return {
-        ano: ano,
-        ventasNetas:         parseMXN(findRow(rows,"Ventas Netas") && findRow(rows,"Ventas Netas")[i+1]),
-        costoVentas:         parseMXN(findRow(rows,"Costo de Ventas") && findRow(rows,"Costo de Ventas")[i+1]),
-        utilidadBruta:       parseMXN(findRow(rows,"Utilidad Bruta") && findRow(rows,"Utilidad Bruta")[i+1]),
-        gastosVenta:         parseMXN(findRow(rows,"Gasto de ventas") && findRow(rows,"Gasto de ventas")[i+1]),
-        utilidadOperativa:   parseMXN(findRow(rows,"Utilidad operativa") && findRow(rows,"Utilidad operativa")[i+1]),
-        otrosIngresos:       parseMXN(findRow(rows,"Otros Ingresos") && findRow(rows,"Otros Ingresos")[i+1]),
-        gastosFinancieros:   parseMXN(findRow(rows,"Gastos financieros") && findRow(rows,"Gastos financieros")[i+1]),
-        utilidadAntesImptos: parseMXN(findRow(rows,"Utilidad Antes") && findRow(rows,"Utilidad Antes")[i+1]),
-        impuestos:           parseMXN(findRow(rows,"Impuestos") && findRow(rows,"Impuestos")[i+1]),
-        utilidadNeta:        parseMXN(findRow(rows,"Utilidad Neta") && findRow(rows,"Utilidad Neta")[i+1]),
+        ano,
+        ventasNetas:         parseMXN(findRow(rows,"Ventas Netas")?.[i+1]),
+        costoVentas:         parseMXN(findRow(rows,"Costo de Ventas")?.[i+1]),
+        utilidadBruta:       parseMXN(findRow(rows,"Utilidad Bruta")?.[i+1]),
+        gastosVenta:         parseMXN(findRow(rows,"Gasto de ventas")?.[i+1]),
+        utilidadOperativa:   parseMXN(findRow(rows,"Utilidad operativa")?.[i+1]),
+        otrosIngresos:       parseMXN(findRow(rows,"Otros Ingresos")?.[i+1]),
+        gastosFinancieros:   parseMXN(findRow(rows,"Gastos financieros")?.[i+1]),
+        utilidadAntesImptos: parseMXN(findRow(rows,"Utilidad Antes")?.[i+1]),
+        impuestos:           parseMXN(findRow(rows,"Impuestos")?.[i+1]),
+        utilidadNeta:        parseMXN(findRow(rows,"Utilidad Neta")?.[i+1]),
       };
     });
+    setCached("estado-resultados", data);
     res.json(data);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -88,27 +108,30 @@ app.get("/api/estado-resultados", async (req, res) => {
 });
 
 app.get("/api/balance", async (req, res) => {
+  const cached = getCached("balance");
+  if (cached) return res.json(cached);
   try {
     const rows = await getRange("BALANCE_GENERAL", "A1:I45");
     const data = YEARS.map(function(ano, i) {
       const col = i + 4;
       return {
-        ano: ano,
-        cajaBancos:      parseMXN(findRow(rows,"Caja") && findRow(rows,"Caja")[col]),
-        inversionesFin:  parseMXN(findRow(rows,"Inversiones") && findRow(rows,"Inversiones")[col]),
-        cuentasCobrar:   parseMXN(findRow(rows,"Clientes") && findRow(rows,"Clientes")[col]),
-        otrasCuentas:    parseMXN(findRow(rows,"Otras Cuentas") && findRow(rows,"Otras Cuentas")[col]),
-        existencias:     parseMXN(findRow(rows,"Existencias") && findRow(rows,"Existencias")[col]),
-        gastosPagados:   parseMXN(findRow(rows,"Gastos Pagados") && findRow(rows,"Gastos Pagados")[col]),
-        totalCirculante: parseMXN(findRow(rows,"TOTAL ACTIVO CIRCULANTE") && findRow(rows,"TOTAL ACTIVO CIRCULANTE")[col]),
-        mobiliario:      parseMXN(findRow(rows,"Mobiliario") && findRow(rows,"Mobiliario")[col]),
-        totalFijo:       parseMXN(findRow(rows,"TOTAL ACTIVO FIJO") && findRow(rows,"TOTAL ACTIVO FIJO")[col]),
-        totalActivo:     parseMXN(findRow(rows,"TOTAL ACTIVO") && findRow(rows,"TOTAL ACTIVO")[col]),
-        proveedores:     parseMXN(findRow(rows,"Proveedores") && findRow(rows,"Proveedores")[col]),
-        impuestosPagar:  parseMXN(findRow(rows,"Impuestos por Pagar") && findRow(rows,"Impuestos por Pagar")[col]),
-        totalPasivoCP:   parseMXN(findRow(rows,"TOTAL PASIVO CORTO PLAZO") && findRow(rows,"TOTAL PASIVO CORTO PLAZO")[col]),
+        ano,
+        cajaBancos:      parseMXN(findRow(rows,"Caja")?.[col]),
+        inversionesFin:  parseMXN(findRow(rows,"Inversiones")?.[col]),
+        cuentasCobrar:   parseMXN(findRow(rows,"Clientes")?.[col]),
+        otrasCuentas:    parseMXN(findRow(rows,"Otras Cuentas")?.[col]),
+        existencias:     parseMXN(findRow(rows,"Existencias")?.[col]),
+        gastosPagados:   parseMXN(findRow(rows,"Gastos Pagados")?.[col]),
+        totalCirculante: parseMXN(findRow(rows,"TOTAL ACTIVO CIRCULANTE")?.[col]),
+        mobiliario:      parseMXN(findRow(rows,"Mobiliario")?.[col]),
+        totalFijo:       parseMXN(findRow(rows,"TOTAL ACTIVO FIJO")?.[col]),
+        totalActivo:     parseMXN(findRow(rows,"TOTAL ACTIVO")?.[col]),
+        proveedores:     parseMXN(findRow(rows,"Proveedores")?.[col]),
+        impuestosPagar:  parseMXN(findRow(rows,"Impuestos por Pagar")?.[col]),
+        totalPasivoCP:   parseMXN(findRow(rows,"TOTAL PASIVO CORTO PLAZO")?.[col]),
       };
     });
+    setCached("balance", data);
     res.json(data);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -116,23 +139,26 @@ app.get("/api/balance", async (req, res) => {
 });
 
 app.get("/api/resumen", async (req, res) => {
+  const cached = getCached("resumen");
+  if (cached) return res.json(cached);
   try {
     const rows = await getRange("RESUMEN", "A1:G50");
     const data = YEARS.map(function(ano, i) {
       return {
-        ano: ano,
-        roe:             parsePct(findRow(rows,"DUPONT") && findRow(rows,"DUPONT")[i+2]),
-        margenNeto:      parsePct(findRow(rows,"MRGEN NETO") && findRow(rows,"MRGEN NETO")[i+2]),
-        rotacionActivos: parseX(findRow(rows,"ROTACION ACTIVOS") && findRow(rows,"ROTACION ACTIVOS")[i+2]),
-        multiplicador:   parseX(findRow(rows,"MULTIPLICADOR") && findRow(rows,"MULTIPLICADOR")[i+2]),
-        crecNominal:     parsePct(findRow(rows,"CRECIMIENTO VENTAS NOMINAL") && findRow(rows,"CRECIMIENTO VENTAS NOMINAL")[i+2]),
-        crecReal:        parsePct(findRow(rows,"CRECIMIENTO VENTAS REAL") && findRow(rows,"CRECIMIENTO VENTAS REAL")[i+2]),
-        margenOperativo: parsePct(findRow(rows,"MARGEN OPERATIVO") && findRow(rows,"MARGEN OPERATIVO")[i+2]),
-        pctGastos:       parsePct(findRow(rows,"% GTOS") && findRow(rows,"% GTOS")[i+2]),
-        tasaImpuestos:   parsePct(findRow(rows,"TASA EFECTIVA") && findRow(rows,"TASA EFECTIVA")[i+2]),
-        ebitda:          parsePct(findRow(rows,"% EBITDA") && findRow(rows,"% EBITDA")[i+2]),
+        ano,
+        roe:             parsePct(findRow(rows,"DUPONT")?.[i+2]),
+        margenNeto:      parsePct(findRow(rows,"MRGEN NETO")?.[i+2]),
+        rotacionActivos: parseX(findRow(rows,"ROTACION ACTIVOS")?.[i+2]),
+        multiplicador:   parseX(findRow(rows,"MULTIPLICADOR")?.[i+2]),
+        crecNominal:     parsePct(findRow(rows,"CRECIMIENTO VENTAS NOMINAL")?.[i+2]),
+        crecReal:        parsePct(findRow(rows,"CRECIMIENTO VENTAS REAL")?.[i+2]),
+        margenOperativo: parsePct(findRow(rows,"MARGEN OPERATIVO")?.[i+2]),
+        pctGastos:       parsePct(findRow(rows,"% GTOS")?.[i+2]),
+        tasaImpuestos:   parsePct(findRow(rows,"TASA EFECTIVA")?.[i+2]),
+        ebitda:          parsePct(findRow(rows,"% EBITDA")?.[i+2]),
       };
     });
+    setCached("resumen", data);
     res.json(data);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -140,29 +166,47 @@ app.get("/api/resumen", async (req, res) => {
 });
 
 app.get("/api/ratios", async (req, res) => {
+  const cached = getCached("ratios");
+  if (cached) return res.json(cached);
   try {
     const rows = await getRange("RATIOS", "A1:F30");
     const data = YEARS.map(function(ano, i) {
       const col = i + 1;
       return {
-        ano: ano,
-        rentabilidadFin:  parsePct(findRowWithValue(rows,"Rentabilidad Financiera", col) && findRowWithValue(rows,"Rentabilidad Financiera", col)[col]),
-        rentabilidadEcon: parsePct(findRowWithValue(rows,"Rentabilidad Econ", col) && findRowWithValue(rows,"Rentabilidad Econ", col)[col]),
-        margenUtilidad:   parsePct(findRowWithValue(rows,"Margen Utilidad", col) && findRowWithValue(rows,"Margen Utilidad", col)[col]),
-        capitalTrabajo:   parseMXN(findRowWithValue(rows,"Capital de Trabajo", col) && findRowWithValue(rows,"Capital de Trabajo", col)[col]),
-        ratioFondo:       parsePct(findRowWithValue(rows,"Ratio Fondo", col) && findRowWithValue(rows,"Ratio Fondo", col)[col]),
-        liquidez:         parseX(findRowWithValue(rows,"Liquidez", col) && findRowWithValue(rows,"Liquidez", col)[col]),
-        endeudamiento:    parseX(findRowWithValue(rows,"Endeudamiento", col) && findRowWithValue(rows,"Endeudamiento", col)[col]),
-        autonomia:        parseX(findRowWithValue(rows,"Autonom", col) && findRowWithValue(rows,"Autonom", col)[col]),
-        solvencia:        parseX(findRowWithValue(rows,"Solvencia", col) && findRowWithValue(rows,"Solvencia", col)[col]),
-        rotacionActivo:   parseX(findRowWithValue(rows,"Rotación activo", col) && findRowWithValue(rows,"Rotación activo", col)[col]),
-        zScore:           parseMXN(findRowWithValue(rows,"Z SCORE", col) && findRowWithValue(rows,"Z SCORE", col)[col]),
+        ano,
+        rentabilidadFin:  parsePct(findRowWithValue(rows,"Rentabilidad Financiera", col)?.[col]),
+        rentabilidadEcon: parsePct(findRowWithValue(rows,"Rentabilidad Econ", col)?.[col]),
+        margenUtilidad:   parsePct(findRowWithValue(rows,"Margen Utilidad", col)?.[col]),
+        capitalTrabajo:   parseMXN(findRowWithValue(rows,"Capital de Trabajo", col)?.[col]),
+        ratioFondo:       parsePct(findRowWithValue(rows,"Ratio Fondo", col)?.[col]),
+        liquidez:         parseX(findRowWithValue(rows,"Liquidez", col)?.[col]),
+        endeudamiento:    parseX(findRowWithValue(rows,"Endeudamiento", col)?.[col]),
+        autonomia:        parseX(findRowWithValue(rows,"Autonom", col)?.[col]),
+        solvencia:        parseX(findRowWithValue(rows,"Solvencia", col)?.[col]),
+        rotacionActivo:   parseX(findRowWithValue(rows,"Rotación activo", col)?.[col]),
+        zScore:           parseMXN(findRowWithValue(rows,"Z SCORE", col)?.[col]),
       };
     });
+    setCached("ratios", data);
     res.json(data);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+// ── Meta: timestamps del cache ────────────────────────────────────
+app.get("/api/meta", (req, res) => {
+  const meta = {};
+  Object.keys(_cache).forEach(k => {
+    meta[k] = { cachedAt: new Date(_cache[k].ts).toISOString() };
+  });
+  res.json(meta);
+});
+
+// ── Forzar refresco del cache ─────────────────────────────────────
+app.post("/api/refresh", (req, res) => {
+  clearCache();
+  res.json({ ok: true, message: "Cache borrado", ts: new Date().toISOString() });
 });
 
 app.get("/", function(req, res) {

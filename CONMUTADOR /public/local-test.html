@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Probador local · Conmutador Franco</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0b1020;
+        --panel: #141b34;
+        --panel-2: #1b2447;
+        --accent: #60a5fa;
+        --accent-2: #34d399;
+        --text: #e5eefc;
+        --muted: #9fb0d1;
+        --danger: #fb7185;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: radial-gradient(circle at top, #16214d, var(--bg) 55%);
+        color: var(--text);
+        min-height: 100vh;
+      }
+
+      .wrap {
+        width: min(960px, calc(100% - 32px));
+        margin: 32px auto;
+      }
+
+      .hero,
+      .panel {
+        background: rgba(20, 27, 52, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 20px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(10px);
+      }
+
+      .hero {
+        padding: 28px;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+      }
+
+      .subtitle {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.5;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 20px;
+      }
+
+      .panel {
+        padding: 20px;
+      }
+
+      .conversation {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+        min-height: 420px;
+        max-height: 60vh;
+        overflow: auto;
+        padding-right: 6px;
+      }
+
+      .bubble {
+        max-width: 85%;
+        padding: 14px 16px;
+        border-radius: 16px;
+        line-height: 1.45;
+        white-space: pre-wrap;
+      }
+
+      .bubble.user {
+        align-self: flex-end;
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      }
+
+      .bubble.agent {
+        align-self: flex-start;
+        background: var(--panel-2);
+      }
+
+      .label {
+        font-size: 0.8rem;
+        color: var(--muted);
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      .controls {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      textarea {
+        width: 100%;
+        min-height: 120px;
+        resize: vertical;
+        background: #0f1630;
+        border: 1px solid rgba(255,255,255,0.08);
+        color: var(--text);
+        border-radius: 14px;
+        padding: 14px;
+        font: inherit;
+      }
+
+      button {
+        border: 0;
+        border-radius: 14px;
+        padding: 14px 18px;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 120ms ease, opacity 120ms ease;
+      }
+
+      button:hover { transform: translateY(-1px); }
+      button:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+      .primary { background: linear-gradient(135deg, var(--accent), #2563eb); color: white; }
+      .secondary { background: #22305f; color: var(--text); }
+      .success { background: linear-gradient(135deg, var(--accent-2), #059669); color: #032113; }
+
+      .status {
+        padding: 12px 14px;
+        border-radius: 12px;
+        background: #101938;
+        color: var(--muted);
+        min-height: 48px;
+      }
+
+      .tips {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.9rem;
+        color: var(--muted);
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+        background: var(--danger);
+      }
+
+      .dot.ok { background: var(--accent-2); }
+
+      @media (max-width: 880px) {
+        .grid { grid-template-columns: 1fr; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <section class="hero">
+        <h1>Probador local del conmutador</h1>
+        <p class="subtitle">
+          Habla desde tu micrófono o escribe un mensaje. El agente usa la misma lógica del conmutador y te responde con voz,
+          sin necesidad de una llamada telefónica.
+        </p>
+      </section>
+
+      <div class="grid">
+        <section class="panel">
+          <div class="label">Conversación</div>
+          <div id="conversation" class="conversation"></div>
+        </section>
+
+        <section class="panel controls">
+          <div>
+            <div class="label">Entrada</div>
+            <textarea id="manualInput" placeholder="Ejemplo: Quiero saber el precio de unas balatas"></textarea>
+          </div>
+
+          <div class="row">
+            <button id="speakButton" class="primary">🎤 Hablar</button>
+            <button id="sendButton" class="secondary">Enviar texto</button>
+            <button id="stopButton" class="success">🔊 Silenciar voz</button>
+          </div>
+
+          <div id="status" class="status">Listo para conversar.</div>
+
+          <div class="pill">
+            <span id="micDot" class="dot"></span>
+            <span id="micText">Micrófono inactivo</span>
+          </div>
+
+          <div>
+            <div class="label">Ideas para probar</div>
+            <ul class="tips">
+              <li>"Quiero saber el precio de una bomba de agua"</li>
+              <li>"¿Tienen balatas?"</li>
+              <li>"Quiero pedir un alternador"</li>
+              <li>"Quiero hablar con un asesor"</li>
+              <li>"Gracias, eso es todo"</li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <script>
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const apiBase = window.location.protocol === "file:" ? "http://127.0.0.1:3000" : "";
+      const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+      const conversation = document.getElementById("conversation");
+      const manualInput = document.getElementById("manualInput");
+      const speakButton = document.getElementById("speakButton");
+      const sendButton = document.getElementById("sendButton");
+      const stopButton = document.getElementById("stopButton");
+      const status = document.getElementById("status");
+      const micDot = document.getElementById("micDot");
+      const micText = document.getElementById("micText");
+      const sessionId = (window.crypto && crypto.randomUUID)
+        ? crypto.randomUUID()
+        : String(Date.now());
+
+      let pendingIntent = null;
+      let busy = false;
+
+      function addBubble(role, text) {
+        const bubble = document.createElement("div");
+        bubble.className = `bubble ${role}`;
+        bubble.textContent = text;
+        conversation.appendChild(bubble);
+        conversation.scrollTop = conversation.scrollHeight;
+      }
+
+      function setStatus(text) {
+        status.textContent = text;
+      }
+
+      function setMic(active, text) {
+        micDot.classList.toggle("ok", active);
+        micText.textContent = text;
+      }
+
+      function speakText(text) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = "es-MX";
+        utterance.rate = 1;
+        utterance.pitch = 1;
+        window.speechSynthesis.speak(utterance);
+      }
+
+      async function enviarMensaje(text) {
+        const trimmed = String(text || "").trim();
+        if (!trimmed || busy) return;
+
+        busy = true;
+        addBubble("user", trimmed);
+        setStatus("Procesando respuesta del agente...");
+        sendButton.disabled = true;
+        speakButton.disabled = true;
+
+        try {
+          const response = await fetch(`${apiBase}/local-test/intent`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ speech: trimmed, pendingIntent, sessionId }),
+          });
+
+          if (!response.ok) {
+            throw new Error("No se pudo procesar la solicitud.");
+          }
+
+          const data = await response.json();
+          pendingIntent = data.pendingIntent || null;
+          addBubble("agent", data.replyText);
+          speakText(data.replyText);
+          setStatus(data.ended ? "La respuesta terminó. Puedes iniciar otra prueba." : "Respuesta lista.");
+        } catch (error) {
+          addBubble("agent", "Hubo un problema al procesar la prueba local.");
+          setStatus(error.message || "Error inesperado.");
+        } finally {
+          busy = false;
+          sendButton.disabled = false;
+          speakButton.disabled = false;
+          manualInput.value = "";
+          manualInput.focus();
+        }
+      }
+
+      sendButton.addEventListener("click", () => enviarMensaje(manualInput.value));
+      manualInput.addEventListener("keydown", (event) => {
+        if ((event.metaKey || event.ctrlKey) && event.key === "Enter") {
+          enviarMensaje(manualInput.value);
+        }
+      });
+
+      stopButton.addEventListener("click", () => {
+        window.speechSynthesis.cancel();
+        setStatus("Voz detenida.");
+      });
+
+      if (!recognition) {
+        speakButton.disabled = true;
+        setMic(false, "Tu navegador no soporta reconocimiento de voz");
+      } else {
+        recognition.lang = "es-MX";
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        speakButton.addEventListener("click", () => {
+          if (busy) return;
+          recognition.start();
+        });
+
+        recognition.addEventListener("start", () => {
+          setMic(true, "Escuchando...");
+          setStatus("Habla ahora.");
+        });
+
+        recognition.addEventListener("result", (event) => {
+          const transcript = event.results?.[0]?.[0]?.transcript || "";
+          setMic(false, "Micrófono inactivo");
+          if (transcript) {
+            enviarMensaje(transcript);
+          }
+        });
+
+        recognition.addEventListener("error", (event) => {
+          setMic(false, "Micrófono inactivo");
+          setStatus(`Error de micrófono: ${event.error}`);
+        });
+
+        recognition.addEventListener("end", () => {
+          setMic(false, "Micrófono inactivo");
+        });
+      }
+
+      const bienvenida = window.location.protocol === "file:"
+        ? "Hola. Estoy abierto como archivo local. Para evitar restricciones del navegador, te recomiendo usar http://127.0.0.1:3000/local-test con el servidor prendido. Aun así intentaré hablar con el backend local."
+        : "Hola, soy el probador local de Refacciones Franco. Puedes hablarme por micrófono o escribir tu consulta.";
+      addBubble("agent", bienvenida);
+      speakText(bienvenida);
+
+      if (window.location.protocol === "file:") {
+        setStatus("Abierto como archivo local. Si ves errores de CORS, usa http://127.0.0.1:3000/local-test en tu navegador.");
+      }
+    </script>
+  </body>
+</html>
