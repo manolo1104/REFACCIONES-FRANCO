@@ -2,14 +2,26 @@
   "version": 2,
   "builds": [
     {
+      "src": "PAGINA/index.html",
+      "use": "@vercel/static"
+    },
+    {
       "src": "DASHBOARD/server.js",
       "use": "@vercel/node"
     }
   ],
   "routes": [
     {
-      "src": "/(.*)",
+      "src": "^/api/(.*)",
       "dest": "DASHBOARD/server.js"
+    },
+    {
+      "src": "^/dashboard$",
+      "dest": "DASHBOARD/server.js"
+    },
+    {
+      "src": "^/$",
+      "dest": "PAGINA/index.html"
     }
   ]
 }

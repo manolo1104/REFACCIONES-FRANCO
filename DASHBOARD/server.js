@@ -209,7 +209,7 @@ app.post("/api/refresh", (req, res) => {
   res.json({ ok: true, message: "Cache borrado", ts: new Date().toISOString() });
 });
 
-app.get("/", function(req, res) {
+app.get(["/", "/dashboard"], function(req, res) {
   res.sendFile(path.join(__dirname, "dashboard_refacciones_v2.html"));
 });
 
