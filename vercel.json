@@ -6,6 +6,10 @@
       "use": "@vercel/static"
     },
     {
+      "src": "PAGINA/IMAGENES/**",
+      "use": "@vercel/static"
+    },
+    {
       "src": "DASHBOARD/server.js",
       "use": "@vercel/node"
     }
@@ -22,6 +26,10 @@
     {
       "src": "^/$",
       "dest": "PAGINA/index.html"
+    },
+    {
+      "src": "^/(IMAGENES/.*)",
+      "dest": "PAGINA/$1"
     }
   ]
 }
