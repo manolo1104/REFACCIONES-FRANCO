@@ -14,10 +14,12 @@
    Tema: Industrial refinado con acentos de energía roja
    ============================================================ */
 :root {
-  --rf-red:        #E8151B;
-  --rf-red-dark:   #B50F14;
-  --rf-red-glow:   rgba(232,21,27,0.18);
-  --rf-red-dim:    rgba(232,21,27,0.09);
+  --rf-red:        #1B3580;
+  --rf-red-dark:   #112368;
+  --rf-red-glow:   rgba(27,53,128,0.18);
+  --rf-red-dim:    rgba(27,53,128,0.09);
+  --urgency:       #E8151B;
+  --urgency-dark:  #B50F14;
 
   --bg-base:       #F4F6F8;
   --bg-panel:      #FFFFFF;
@@ -47,7 +49,7 @@
 
   --transition:    0.22s cubic-bezier(.4,0,.2,1);
   --shadow-card:   0 2px 10px rgba(0,0,0,0.07), 0 1px 0 rgba(0,0,0,0.04);
-  --shadow-hover:  0 8px 32px rgba(0,0,0,0.12), 0 0 0 1px rgba(232,21,27,0.2);
+  --shadow-hover:  0 8px 32px rgba(0,0,0,0.12), 0 0 0 1px rgba(27,53,128,0.2);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
@@ -102,14 +104,7 @@ img { max-width:100%; }
   display: flex; align-items: center; gap: 10px;
   flex-shrink: 0; cursor: pointer;
 }
-.logo-mark {
-  width: 42px; height: 42px; border-radius: 6px;
-  background: var(--rf-red);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display); font-size: 22px; color: #fff;
-  letter-spacing: 0;
-  box-shadow: 0 0 20px var(--rf-red-glow);
-}
+.logo-img { height: 48px; width: auto; display: block; }
 .logo-text { line-height: 1.1; }
 .logo-name { font-family: var(--font-display); font-size: 20px; letter-spacing: 1px; color: var(--text-white); }
 .logo-sub  { font-size: 10px; color: var(--text-gray); font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase; }
@@ -234,7 +229,7 @@ img { max-width:100%; }
 .hero-bg {
   position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse 70% 80% at 60% 50%, rgba(232,21,27,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 80% at 60% 50%, rgba(27,53,128,0.07) 0%, transparent 60%),
     linear-gradient(to right, rgba(244,246,248,1) 30%, rgba(244,246,248,0.4) 100%);
   z-index: 1;
 }
@@ -253,7 +248,7 @@ img { max-width:100%; }
 .hero-engine-graphic {
   position: absolute; inset: 0;
   background:
-    radial-gradient(circle at 50% 50%, rgba(232,21,27,0.12) 0%, transparent 50%);
+    radial-gradient(circle at 50% 50%, rgba(27,53,128,0.12) 0%, transparent 50%);
 }
 
 .hero-content {
@@ -263,9 +258,9 @@ img { max-width:100%; }
 }
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 8px;
-  background: var(--rf-red-dim); border: 1px solid rgba(232,21,27,0.2);
+  background: var(--rf-red-dim); border: 1px solid rgba(27,53,128,0.2);
   border-radius: 20px; padding: 5px 14px;
-  font-size: 11px; font-weight: 600; color: #ff6b6e;
+  font-size: 11px; font-weight: 600; color: #2952CC;
   letter-spacing: 1.2px; text-transform: uppercase;
   margin-bottom: 20px;
 }
@@ -339,7 +334,7 @@ img { max-width:100%; }
 .trust-item:last-child { border-right: none; }
 .trust-icon {
   width: 38px; height: 38px; border-radius: var(--radius-md);
-  background: var(--rf-red-dim); border: 1px solid rgba(232,21,27,0.2);
+  background: var(--rf-red-dim); border: 1px solid rgba(27,53,128,0.2);
   display: flex; align-items: center; justify-content: center;
   font-size: 18px; flex-shrink: 0;
 }
@@ -374,14 +369,14 @@ img { max-width:100%; }
   background: linear-gradient(135deg, var(--rf-red-dim) 0%, transparent 60%);
   opacity:0; transition: opacity var(--transition);
 }
-.cat-card:hover { border-color: rgba(232,21,27,0.4); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+.cat-card:hover { border-color: rgba(27,53,128,0.4); transform: translateY(-2px); box-shadow: var(--shadow-hover); }
 .cat-card:hover::before { opacity:1; }
 .cat-card:hover .cat-icon { transform: scale(1.1); }
 
 .cat-icon { font-size: 34px; margin-bottom: 10px; display: block; transition: transform var(--transition); }
 .cat-name { font-size: 12px; font-weight: 600; color: var(--text-white); margin-bottom: 3px; }
 .cat-count { font-size: 10px; color: var(--text-muted); }
-.cat-card.featured { border-color: rgba(232,21,27,0.3); }
+.cat-card.featured { border-color: rgba(27,53,128,0.3); }
 .cat-card.featured .cat-icon { filter: drop-shadow(0 0 8px var(--rf-red-glow)); }
 
 /* Banners de oferta */
@@ -398,7 +393,7 @@ img { max-width:100%; }
   transition: transform var(--transition);
 }
 .offer-banner:hover { transform: translateY(-2px); }
-.offer-banner-1 { background: linear-gradient(135deg, #FEF2F2 0%, #FFF5F5 100%); border: 1px solid rgba(232,21,27,0.2); }
+.offer-banner-1 { background: linear-gradient(135deg, #EFF4FF 0%, #F5F9FF 100%); border: 1px solid rgba(27,53,128,0.2); }
 .offer-banner-2 { background: linear-gradient(135deg, #F0FDF4 0%, #F7FFF9 100%); border: 1px solid rgba(22,163,74,0.2); }
 .offer-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
 .offer-banner-1 .offer-eyebrow { color: var(--rf-red); }
@@ -431,7 +426,7 @@ img { max-width:100%; }
 }
 .product-img::after {
   content:''; position:absolute; inset:0;
-  background: radial-gradient(circle at 50% 60%, rgba(232,21,27,0.06) 0%, transparent 70%);
+  background: radial-gradient(circle at 50% 60%, rgba(27,53,128,0.06) 0%, transparent 70%);
 }
 
 .product-badge {
@@ -439,7 +434,7 @@ img { max-width:100%; }
   font-size: 9px; font-weight: 700; padding: 3px 8px; border-radius: 4px;
   text-transform: uppercase; letter-spacing: 0.5px;
 }
-.badge-hot  { background: var(--rf-red); color: #fff; }
+.badge-hot  { background: var(--urgency); color: #fff; }
 .badge-new  { background: var(--green); color: #000; }
 .badge-off  { background: var(--gold); color: #000; }
 .badge-stock { background: rgba(255,255,255,0.1); color: var(--text-gray); border: 1px solid var(--border); }
@@ -474,7 +469,7 @@ img { max-width:100%; }
   display: flex; align-items: center; justify-content: center;
   transition: color var(--transition), border-color var(--transition);
 }
-.btn-wish:hover { color: var(--rf-red); border-color: rgba(232,21,27,0.3); }
+.btn-wish:hover { color: var(--rf-red); border-color: rgba(27,53,128,0.3); }
 
 /* Buscador por vehículo */
 .vehicle-finder {
@@ -593,11 +588,11 @@ img { max-width:100%; }
 .active-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
 .filter-tag {
   display: inline-flex; align-items: center; gap: 5px;
-  background: var(--rf-red-dim); border: 1px solid rgba(232,21,27,0.25);
-  color: #ff8a8d; font-size: 11px; font-weight: 600;
+  background: var(--rf-red-dim); border: 1px solid rgba(27,53,128,0.25);
+  color: #2952CC; font-size: 11px; font-weight: 600;
   padding: 4px 10px; border-radius: 20px; cursor: pointer;
 }
-.filter-tag:hover { background: rgba(232,21,27,0.15); }
+.filter-tag:hover { background: rgba(27,53,128,0.15); }
 
 .catalog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 
@@ -648,8 +643,8 @@ img { max-width:100%; }
    PÁGINA 4 — MAYOREO / B2B
    ============================================================ */
 .b2b-hero {
-  background: linear-gradient(135deg, #FEF2F2 0%, #FFF8F8 100%);
-  border-bottom: 1px solid rgba(232,21,27,0.2);
+  background: linear-gradient(135deg, #EFF4FF 0%, #F5F9FF 100%);
+  border-bottom: 1px solid rgba(27,53,128,0.2);
   padding: 70px 0;
 }
 .b2b-inner { max-width:1400px; margin:0 auto; padding:0 24px; }
@@ -659,7 +654,7 @@ img { max-width:100%; }
   border-radius: var(--radius-lg); padding: 22px;
   transition: border-color var(--transition);
 }
-.b2b-card:hover { border-color: rgba(232,21,27,0.3); }
+.b2b-card:hover { border-color: rgba(27,53,128,0.3); }
 .b2b-num { font-family: var(--font-display); font-size: 40px; color: var(--rf-red); line-height:1; margin-bottom: 6px; }
 .b2b-label { font-size: 12px; color: var(--text-gray); font-weight: 500; }
 
@@ -706,7 +701,7 @@ img { max-width:100%; }
 }
 .blog-img::before {
   content:''; position:absolute; inset:0;
-  background: radial-gradient(circle at 50% 70%, rgba(232,21,27,0.08) 0%, transparent 60%);
+  background: radial-gradient(circle at 50% 70%, rgba(27,53,128,0.08) 0%, transparent 60%);
 }
 .blog-img-featured { height: 100%; min-height: 280px; }
 .blog-body { padding: 18px; }
@@ -729,7 +724,7 @@ img { max-width:100%; }
   border-radius: var(--radius-lg); padding: 18px; cursor: pointer;
   transition: border-color var(--transition);
 }
-.location-card:hover, .location-card.active { border-color: rgba(232,21,27,0.4); }
+.location-card:hover, .location-card.active { border-color: rgba(27,53,128,0.4); }
 .location-card.active { background: var(--rf-red-dim); }
 .location-name { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
 .location-address { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; line-height: 1.4; }
@@ -811,7 +806,7 @@ img { max-width:100%; }
    NEWSLETTER / CTA FINAL
    ============================================================ */
 .newsletter {
-  background: linear-gradient(135deg, #FEF2F2 0%, #F8F9FA 50%, #EFF6FF 100%);
+  background: linear-gradient(135deg, #EFF4FF 0%, #F8F9FA 50%, #EFF6FF 100%);
   border-top: 1px solid var(--border); padding: 64px 0;
 }
 .newsletter-inner {
@@ -969,6 +964,177 @@ img { max-width:100%; }
 }
 .hbtn-login svg { width:16px; height:16px; flex-shrink:0; }
 
+/* ============================================================
+   CARRUSEL DE MARCAS
+   ============================================================ */
+.brands-section {
+  background: var(--bg-panel);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 36px 0;
+}
+.brands-header {
+  max-width: 1400px; margin: 0 auto; padding: 0 24px 24px;
+  display: flex; align-items: center; gap: 16px;
+}
+.brands-header-title { font-family: var(--font-display); font-size: 26px; }
+.brands-header-title span { color: var(--rf-red); }
+.brands-header-line { flex: 1; height: 1px; background: var(--border); }
+
+.brands-carousel-wrap {
+  overflow: hidden; position: relative;
+}
+.brands-carousel-wrap::before,
+.brands-carousel-wrap::after {
+  content: ''; position: absolute; top: 0; bottom: 0; width: 100px; z-index: 2; pointer-events: none;
+}
+.brands-carousel-wrap::before { left: 0; background: linear-gradient(to right, var(--bg-panel) 0%, transparent 100%); }
+.brands-carousel-wrap::after  { right: 0; background: linear-gradient(to left,  var(--bg-panel) 0%, transparent 100%); }
+
+.brands-track {
+  display: flex; gap: 48px; align-items: center;
+  width: max-content;
+  animation: brandScroll 32s linear infinite;
+  padding: 0 24px;
+}
+.brands-track:hover { animation-play-state: paused; }
+@keyframes brandScroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+.brand-item {
+  height: 56px; display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; cursor: pointer;
+  transition: transform var(--transition), opacity var(--transition);
+}
+.brand-item img {
+  height: 100%; width: auto; max-width: 140px;
+  object-fit: contain;
+  filter: grayscale(100%); opacity: 0.55;
+  transition: filter 0.3s, opacity 0.3s;
+}
+.brand-item:hover img { filter: grayscale(0%); opacity: 1; }
+.brand-item:hover { transform: scale(1.05); }
+
+/* ============================================================
+   CARRITO — ESTADO VACÍO Y DINÁMICO
+   ============================================================ */
+.cart-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 60px 24px; text-align: center; gap: 12px; flex: 1;
+}
+.cart-empty-icon { font-size: 52px; opacity: 0.3; }
+.cart-empty-text { font-size: 15px; font-weight: 600; color: var(--text-white); }
+.cart-empty-sub  { font-size: 13px; color: var(--text-muted); }
+
+/* ============================================================
+   CHECKOUT / PASARELA DE PAGO
+   ============================================================ */
+.checkout-layout {
+  max-width: 1000px; margin: 0 auto; padding: 40px 24px;
+  display: grid; grid-template-columns: 1fr 420px; gap: 28px; align-items: start;
+}
+.checkout-section-title {
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--text-muted); margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+}
+.checkout-section-title::after { content:''; flex:1; height:1px; background:var(--border); }
+
+.checkout-card {
+  background: var(--bg-card); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 24px; margin-bottom: 16px;
+}
+
+/* Resumen del pedido */
+.order-summary-item {
+  display: flex; align-items: center; gap: 12px;
+  padding: 10px 0; border-bottom: 1px solid var(--border); font-size: 13px;
+}
+.order-summary-item:last-child { border-bottom: none; }
+.order-item-img {
+  width: 48px; height: 48px; background: var(--bg-hover); border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;
+}
+.order-item-name  { font-weight: 600; flex: 1; line-height: 1.3; }
+.order-item-price { font-family: var(--font-mono); font-weight: 600; }
+
+.order-totals { margin-top: 16px; }
+.order-total-row { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; color: var(--text-gray); }
+.order-total-row.grand { font-size: 17px; font-weight: 700; color: var(--text-white); padding-top: 12px; border-top: 1px solid var(--border); margin-top: 8px; }
+.order-total-row.grand .mono { font-family: var(--font-mono); color: var(--rf-red); }
+
+/* Tarjeta de pago */
+.card-field-wrap { position: relative; margin-bottom: 14px; }
+.card-field-label { font-size: 11px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 6px; display: block; }
+.card-field-input {
+  width: 100%; background: var(--bg-hover); border: 1.5px solid var(--border);
+  color: var(--text-white); font-family: var(--font-mono); font-size: 14px;
+  padding: 12px 14px; border-radius: var(--radius-md); outline: none;
+  transition: border-color var(--transition);
+}
+.card-field-input:focus { border-color: var(--rf-red); }
+.card-field-input.error { border-color: var(--urgency); }
+.card-field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.card-brand-icon {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  font-size: 20px; pointer-events: none;
+}
+.card-brand-icons { display: flex; gap: 6px; margin-bottom: 16px; }
+.card-brand-badge {
+  background: var(--bg-hover); border: 1px solid var(--border);
+  border-radius: 4px; padding: 4px 8px; font-size: 11px; font-weight: 700; color: var(--text-muted);
+}
+.card-brand-badge.active { border-color: var(--rf-red); color: var(--rf-red); }
+
+.test-mode-badge {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(180,83,9,0.08); border: 1px solid rgba(180,83,9,0.25);
+  border-radius: var(--radius-md); padding: 8px 12px; margin-bottom: 16px;
+  font-size: 11px; color: var(--gold); font-weight: 600;
+}
+
+/* Botón pagar */
+.btn-pay {
+  width: 100%; background: var(--rf-red); color: #fff; border: none;
+  border-radius: var(--radius-md); padding: 16px; font-size: 15px; font-weight: 700;
+  font-family: var(--font-body); cursor: pointer; letter-spacing: 0.3px;
+  transition: background var(--transition), transform var(--transition);
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  box-shadow: 0 4px 20px var(--rf-red-glow);
+}
+.btn-pay:hover { background: var(--rf-red-dark); transform: translateY(-1px); }
+.btn-pay:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+/* Modal pago exitoso */
+.payment-success-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none; transition: opacity 0.35s;
+}
+.payment-success-overlay.show { opacity: 1; pointer-events: all; }
+.payment-success-box {
+  background: var(--bg-panel); border-radius: 20px;
+  padding: 48px 40px; text-align: center; max-width: 420px; width: 90%;
+  transform: scale(0.85); transition: transform 0.35s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+}
+.payment-success-overlay.show .payment-success-box { transform: scale(1); }
+.success-check { font-size: 72px; margin-bottom: 16px; }
+.success-title { font-family: var(--font-display); font-size: 36px; margin-bottom: 8px; color: var(--green); }
+.success-sub { font-size: 14px; color: var(--text-gray); line-height: 1.6; margin-bottom: 8px; }
+.success-order { font-family: var(--font-mono); font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+
+.checkout-empty {
+  max-width: 500px; margin: 80px auto; text-align: center; padding: 0 24px;
+}
+.checkout-empty-icon { font-size: 64px; opacity: 0.25; margin-bottom: 16px; }
+
+@media (max-width: 768px) {
+  .checkout-layout { grid-template-columns: 1fr; }
+  .brands-track { gap: 32px; }
+}
+
 </style>
 </head>
 <body>
@@ -990,11 +1156,7 @@ img { max-width:100%; }
 <header class="header">
   <div class="header-inner">
     <div class="logo" onclick="showPage('home')">
-      <div class="logo-mark">RF</div>
-      <div class="logo-text">
-        <div class="logo-name">Refacciones Franco</div>
-        <div class="logo-sub">Desde 1987 · CDMX</div>
-      </div>
+      <img src="IMAGENES/logo.png" alt="Auto Refacciones Franco" class="logo-img">
     </div>
 
     <div class="search-wrap">
@@ -1032,7 +1194,7 @@ img { max-width:100%; }
     <button class="nav-tab active" onclick="showPage('home')" data-page="home"><i data-lucide="home" class="icon-sm"></i> Inicio</button>
     <button class="nav-tab" onclick="showPage('catalogo')" data-page="catalogo">
       <i data-lucide="package" class="icon-sm"></i> Catálogo
-      <span class="tab-badge">+18K</span>
+      <span class="tab-badge">+35K</span>
     </button>
     <button class="nav-tab" onclick="showPage('servicios')" data-page="servicios"><i data-lucide="settings" class="icon-sm"></i> Servicios</button>
     <button class="nav-tab" onclick="showPage('mayoreo')" data-page="mayoreo"><i data-lucide="building-2" class="icon-sm"></i> Mayoreo B2B</button>
@@ -1040,6 +1202,11 @@ img { max-width:100%; }
     <button class="nav-tab" onclick="showPage('sucursales')" data-page="sucursales"><i data-lucide="map-pin" class="icon-sm"></i> Sucursales</button>
     <div class="nav-separator"></div>
     <button class="nav-tab" style="color:var(--rf-red);font-weight:700;" onclick="showPage('catalogo')"><i data-lucide="flame" class="icon-sm"></i> Ofertas del mes</button>
+    <div class="nav-separator"></div>
+    <button class="nav-tab" id="nav-pago" onclick="showPage('pago')" data-page="pago" style="color:var(--green);font-weight:700;">
+      <i data-lucide="credit-card" class="icon-sm"></i> Pagar
+      <span class="tab-badge" id="cart-count-badge" style="background:var(--green);display:none;">0</span>
+    </button>
   </div>
 </nav>
 
@@ -1051,20 +1218,26 @@ img { max-width:100%; }
   <!-- Hero -->
   <div class="hero">
     <div class="hero-bg"></div>
-    <div class="hero-img">
-      <div class="hero-engine-graphic"></div>
-      <div class="hero-img-placeholder">RF</div>
+    <div class="hero-img" style="background:#0a0a1a;">
+      <iframe
+        src="https://www.youtube.com/embed/LNF1JZDc1oA?autoplay=1&mute=1&loop=1&playlist=LNF1JZDc1oA&controls=0&rel=0&showinfo=0&modestbranding=1&iv_load_policy=3"
+        frameborder="0"
+        allow="autoplay; encrypted-media"
+        allowfullscreen
+        style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);min-width:100%;min-height:100%;width:177.78vh;height:56.25vw;pointer-events:none;border:0;">
+      </iframe>
+      <div style="position:absolute;inset:0;background:linear-gradient(to left, transparent 60%, rgba(244,246,248,0.95) 100%);z-index:1;"></div>
     </div>
     <div class="hero-content">
       <div class="hero-eyebrow animate d1">
         <span class="hero-eyebrow-dot"></span>
-        37 años de experiencia
+        Más de 60 años de trayectoria
       </div>
       <h1 class="hero-title animate d2">
         TU TALLER<br>EMPIEZA<br><span>AQUÍ.</span>
       </h1>
       <p class="hero-subtitle animate d3">
-        Más de 18,000 refacciones originales y alternativas. Entrega el mismo día en CDMX. Atención de expertos que entienden tu auto.
+        Más de 35,000 refacciones originales y alternativas. Entrega el mismo día en CDMX. Atención de expertos que entienden tu auto.
       </p>
       <div class="hero-ctas animate d4">
         <button class="btn-primary" onclick="showPage('catalogo')">
@@ -1076,15 +1249,15 @@ img { max-width:100%; }
       </div>
       <div class="hero-stats animate d5">
         <div>
-          <div class="hero-stat-val">18<span>K+</span></div>
+          <div class="hero-stat-val">35<span>K+</span></div>
           <div class="hero-stat-label">Refacciones en stock</div>
         </div>
         <div>
-          <div class="hero-stat-val">37<span>+</span></div>
-          <div class="hero-stat-label">Años de experiencia</div>
+          <div class="hero-stat-val">60<span>+</span></div>
+          <div class="hero-stat-label">Años de trayectoria</div>
         </div>
         <div>
-          <div class="hero-stat-val">4<span></span></div>
+          <div class="hero-stat-val">2<span></span></div>
           <div class="hero-stat-label">Sucursales CDMX</div>
         </div>
         <div>
@@ -1221,7 +1394,7 @@ img { max-width:100%; }
         <div class="offer-desc">Solo durante mayo 2025. Stock limitado.</div>
         <button class="btn-primary">Ver ofertas →</button>
       </div>
-      <div class="offer-deco" style="color:rgba(232,21,27,0.12);"><i data-lucide="disc-3" style="width:120px;height:120px;stroke-width:0.8;"></i></div>
+      <div class="offer-deco" style="color:rgba(27,53,128,0.12);"><i data-lucide="disc-3" style="width:120px;height:120px;stroke-width:0.8;"></i></div>
     </div>
     <div class="offer-banner offer-banner-2" onclick="showPage('mayoreo')">
       <div>
@@ -1231,6 +1404,48 @@ img { max-width:100%; }
         <button class="btn-primary" style="background:var(--green);">Cotizar ahora →</button>
       </div>
       <div class="offer-deco" style="color:rgba(22,163,74,0.12);"><i data-lucide="wrench" style="width:120px;height:120px;stroke-width:0.8;"></i></div>
+    </div>
+  </div>
+
+  <!-- ===== CARRUSEL DE MARCAS ===== -->
+  <div class="brands-section">
+    <div class="brands-header">
+      <h2 class="brands-header-title">Marcas que <span>manejamos</span></h2>
+      <div class="brands-header-line"></div>
+    </div>
+    <div class="brands-carousel-wrap">
+      <div class="brands-track" id="brands-track">
+        <!-- logos set 1 -->
+        <div class="brand-item"><img src="IMAGENES/LOGOS/Monroe_logo.png" alt="Monroe"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/moresa-logo.png" alt="Moresa"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/MOTORAD_large.png" alt="MotoRad"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/png_federal-mogul.png" alt="Federal Mogul"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/573613f697b75_262x147.png" alt="Permatex"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/268.png" alt="Econoflow"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/343.png" alt="Melling"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/FRA.png" alt="Fraco"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/images.jpg" alt="Metalbond"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/images.png" alt="KEM"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/knadian-logo-png_seeklogo-270084.png" alt="Knadian"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/uniflow.png" alt="Uniflow"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/87.png" alt="Lusac"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/96.png" alt="Tomco"></div>
+        <!-- logos set 2 (duplicado para loop continuo) -->
+        <div class="brand-item"><img src="IMAGENES/LOGOS/Monroe_logo.png" alt="Monroe"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/moresa-logo.png" alt="Moresa"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/MOTORAD_large.png" alt="MotoRad"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/png_federal-mogul.png" alt="Federal Mogul"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/573613f697b75_262x147.png" alt="Permatex"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/268.png" alt="Econoflow"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/343.png" alt="Melling"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/FRA.png" alt="Fraco"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/images.jpg" alt="Metalbond"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/images.png" alt="KEM"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/knadian-logo-png_seeklogo-270084.png" alt="Knadian"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/uniflow.png" alt="Uniflow"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/87.png" alt="Lusac"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/96.png" alt="Tomco"></div>
+      </div>
     </div>
   </div>
 
@@ -1304,7 +1519,7 @@ img { max-width:100%; }
   <div class="page-header-band">
     <div class="page-header-inner">
       <h2>Catálogo de Refacciones</h2>
-      <p>Más de 18,000 piezas originales y alternativas con disponibilidad inmediata</p>
+      <p>Más de 35,000 piezas originales y alternativas con disponibilidad inmediata</p>
     </div>
   </div>
   <div class="catalog-layout">
@@ -1404,7 +1619,7 @@ img { max-width:100%; }
   <div class="services-grid">
     <div class="service-card"><span class="service-icon"><i data-lucide="scan-search" style="width:40px;height:40px;stroke-width:1.4;"></i></span><div class="service-name">Diagnóstico Gratuito</div><div class="service-desc">Escáner OBD2 sin costo. Identificamos el problema exacto de tu auto antes de que compres cualquier pieza. Sin compromisos.</div><span class="service-tag">GRATIS</span></div>
     <div class="service-card"><span class="service-icon"><i data-lucide="truck" style="width:40px;height:40px;stroke-width:1.4;"></i></span><div class="service-name">Entrega Express</div><div class="service-desc">Envío el mismo día en CDMX para pedidos antes de las 2pm. Seguimiento en tiempo real de tu paquete.</div><span class="service-tag">CDMX</span></div>
-    <div class="service-card"><span class="service-icon"><i data-lucide="wrench" style="width:40px;height:40px;stroke-width:1.4;"></i></span><div class="service-name">Asesoría Técnica</div><div class="service-desc">Nuestros expertos resuelven tus dudas técnicas sin costo. Llamada, WhatsApp o en sucursal. 37 años de experiencia.</div><span class="service-tag">GRATIS</span></div>
+    <div class="service-card"><span class="service-icon"><i data-lucide="wrench" style="width:40px;height:40px;stroke-width:1.4;"></i></span><div class="service-name">Asesoría Técnica</div><div class="service-desc">Nuestros expertos resuelven tus dudas técnicas sin costo. Llamada, WhatsApp o en sucursal. Más de 60 años de experiencia.</div><span class="service-tag">GRATIS</span></div>
     <div class="service-card"><span class="service-icon">🔄</span><div class="service-name">Devoluciones Fáciles</div><div class="service-desc">30 días para devolver sin preguntas. Si la refacción no es la correcta, te la cambiamos de inmediato.</div><span class="service-tag">30 DÍAS</span></div>
     <div class="service-card"><span class="service-icon">💳</span><div class="service-name">Crédito para Talleres</div><div class="service-desc">Línea de crédito a 30 y 60 días para talleres y distribuidores registrados. Trámite en 48 horas.</div><span class="service-tag">B2B</span></div>
     <div class="service-card"><span class="service-icon"><i data-lucide="package-search" style="width:40px;height:40px;stroke-width:1.4;"></i></span><div class="service-name">Pedido Especial</div><div class="service-desc">Si no tenemos tu pieza en stock, la conseguimos. Importación directa de USA, Japón y Corea en 5–10 días hábiles.</div><span class="service-tag">IMPORTACIÓN</span></div>
@@ -1433,19 +1648,19 @@ img { max-width:100%; }
       <h3 style="font-family:var(--font-display);font-size:36px;margin-bottom:16px;">¿Por qué elegir <span style="color:var(--rf-red);">Franco Mayoreo?</span></h3>
       <div style="display:flex;flex-direction:column;gap:16px;">
         <div style="display:flex;gap:14px;align-items:flex-start;">
-          <div style="width:36px;height:36px;background:var(--rf-red-dim);border:1px solid rgba(232,21,27,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">💰</div>
+          <div style="width:36px;height:36px;background:var(--rf-red-dim);border:1px solid rgba(27,53,128,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">💰</div>
           <div><div style="font-weight:700;margin-bottom:3px;">Precios de distribuidor</div><div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Hasta 30% por debajo del precio de mostrador. Entre más compras, mayor tu descuento.</div></div>
         </div>
         <div style="display:flex;gap:14px;align-items:flex-start;">
-          <div style="width:36px;height:36px;background:var(--rf-red-dim);border:1px solid rgba(232,21,27,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📞</div>
+          <div style="width:36px;height:36px;background:var(--rf-red-dim);border:1px solid rgba(27,53,128,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📞</div>
           <div><div style="font-weight:700;margin-bottom:3px;">Ejecutivo de cuenta dedicado</div><div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Una persona que conoce tu negocio y resuelve tus pedidos de inmediato. WhatsApp directo, 6am-8pm.</div></div>
         </div>
         <div style="display:flex;gap:14px;align-items:flex-start;">
-          <div style="width:36px;height:36px;background:var(--rf-red-dim);border:1px solid rgba(232,21,27,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🚚</div>
+          <div style="width:36px;height:36px;background:var(--rf-red-dim);border:1px solid rgba(27,53,128,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🚚</div>
           <div><div style="font-weight:700;margin-bottom:3px;">Entrega diaria en tu negocio</div><div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Ruta de reparto propio en CDMX y área metro. Sin costo mínimo de entrega para clientes registrados.</div></div>
         </div>
         <div style="display:flex;gap:14px;align-items:flex-start;">
-          <div style="width:36px;height:36px;background:var(--rf-red-dim);border:1px solid rgba(232,21,27,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📄</div>
+          <div style="width:36px;height:36px;background:var(--rf-red-dim);border:1px solid rgba(27,53,128,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📄</div>
           <div><div style="font-weight:700;margin-bottom:3px;">Facturación automática</div><div style="font-size:13px;color:var(--text-muted);line-height:1.5;">CFDI 4.0 inmediato, estado de cuenta en línea y reportes mensuales de compras.</div></div>
         </div>
       </div>
@@ -1567,58 +1782,191 @@ img { max-width:100%; }
   <div class="page-header-band">
     <div class="page-header-inner">
       <h2>📍 Nuestras Sucursales</h2>
-      <p>4 ubicaciones en CDMX y área metropolitana con el mismo inventario completo</p>
+      <p>2 sucursales en Col. Doctores, Del. Cuauhtémoc, CDMX — más de 60 años sirviendo a la ciudad</p>
     </div>
   </div>
   <div class="locations-layout">
     <div class="location-list">
-      <div class="location-card active" data-map="https://maps.google.com/maps?q=Av.+Ermita+Iztapalapa+1240+Iztapalapa+CDMX+Mexico&output=embed&z=15&hl=es">
-        <div class="location-name">🏪 Sucursal Iztapalapa</div>
-        <div class="location-address">Av. Ermita Iztapalapa 1240, Col. Santa María Aztahuacán, Iztapalapa, CDMX</div>
+
+      <!-- SUCURSAL PRINCIPAL — VERTIZ 331 -->
+      <div class="location-card active" data-map="https://maps.google.com/maps?q=Vertiz+331+Colonia+Doctores+Del+Cuauhtemoc+Ciudad+de+Mexico&output=embed&z=16&hl=es">
+        <div class="location-name">🏪 Sucursal Principal — Vértiz 331</div>
+        <div class="location-address">Vértiz 331, Col. Doctores, Del. Cuauhtémoc, México D.F.</div>
         <div class="location-tags">
           <span class="location-tag">Matriz</span>
           <span class="location-tag">Mayoreo</span>
-          <span class="location-tag">Estacionamiento</span>
+          <span class="location-tag">Refacciones generales</span>
         </div>
-        <div class="location-hours">🟢 Abierto · Lunes–Sábado 8am–7pm · Dom 9am–3pm</div>
-        <button class="btn-secondary" style="margin-top:12px;width:100%;justify-content:center;font-size:12px;padding:10px;">📞 55 1234-5678 · Cómo llegar →</button>
+        <div class="location-hours">🟢 Lunes–Sábado 8am–7pm · Dom 9am–3pm</div>
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--text-muted);">
+          <div><i data-lucide="phone" class="icon-xs"></i> 55-5519-6040 &nbsp;|&nbsp; 55-5519-6060</div>
+          <div><i data-lucide="phone" class="icon-xs"></i> 55-5519-5303 &nbsp;|&nbsp; 55-5519-4046</div>
+          <div><i data-lucide="mail" class="icon-xs"></i> ventas331vertiz@refaccionesfranco.mx</div>
+        </div>
+        <button class="btn-secondary" style="margin-top:12px;width:100%;justify-content:center;font-size:12px;padding:10px;"
+          onclick="window.open('https://maps.google.com/?q=Vertiz+331+Colonia+Doctores+Del+Cuauhtemoc+Ciudad+de+Mexico','_blank')">
+          📍 Cómo llegar →
+        </button>
       </div>
-      <div class="location-card" data-map="https://maps.google.com/maps?q=Blvd.+Lopez+Portillo+892+Nezahualcoyotl+Estado+de+Mexico&output=embed&z=15&hl=es">
-        <div class="location-name">🏪 Sucursal Neza</div>
-        <div class="location-address">Blvd. López Portillo 892, Col. Ciudad Nezahualcóyotl, Estado de México</div>
+
+      <!-- SUCURSAL SECUNDARIA — VERTIZ 343 (FRENOS) -->
+      <div class="location-card" data-map="https://maps.google.com/maps?q=Vertiz+343+Colonia+Doctores+Del+Cuauhtemoc+Ciudad+de+Mexico&output=embed&z=16&hl=es">
+        <div class="location-name">🛞 Sucursal Frenos — Vértiz 343</div>
+        <div class="location-address">Vértiz 343, Col. Doctores, Del. Cuauhtémoc, México D.F.</div>
         <div class="location-tags">
-          <span class="location-tag">Entrega express</span>
-          <span class="location-tag">Estacionamiento</span>
+          <span class="location-tag">Especialistas en frenos</span>
+          <span class="location-tag">Balatas &amp; Discos</span>
         </div>
-        <div class="location-hours">🟢 Abierto · Lunes–Sábado 8am–7pm</div>
-        <button class="btn-secondary" style="margin-top:12px;width:100%;justify-content:center;font-size:12px;padding:10px;">📞 55 8765-4321 · Cómo llegar →</button>
-      </div>
-      <div class="location-card" data-map="https://maps.google.com/maps?q=Av.+Central+445+Las+Americas+Ecatepec+Estado+de+Mexico&output=embed&z=15&hl=es">
-        <div class="location-name">🏪 Sucursal Ecatepec</div>
-        <div class="location-address">Av. Central 445, Col. Las Américas, Ecatepec, Estado de México</div>
-        <div class="location-tags">
-          <span class="location-tag">Refacciones industriales</span>
+        <div class="location-hours">🟢 Lunes–Sábado 8am–7pm</div>
+        <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--text-muted);">
+          <div><i data-lucide="phone" class="icon-xs"></i> 55-5440-8063 &nbsp;|&nbsp; 55-5440-6948</div>
+          <div><i data-lucide="mail" class="icon-xs"></i> ventas343vertiz@refaccionesfranco.mx</div>
         </div>
-        <div class="location-hours">🟢 Abierto · Lunes–Sábado 8am–6:30pm</div>
-        <button class="btn-secondary" style="margin-top:12px;width:100%;justify-content:center;font-size:12px;padding:10px;">📞 55 2345-6789 · Cómo llegar →</button>
+        <button class="btn-secondary" style="margin-top:12px;width:100%;justify-content:center;font-size:12px;padding:10px;"
+          onclick="window.open('https://maps.google.com/?q=Vertiz+343+Colonia+Doctores+Del+Cuauhtemoc+Ciudad+de+Mexico','_blank')">
+          📍 Cómo llegar →
+        </button>
       </div>
-      <div class="location-card" data-map="https://maps.google.com/maps?q=Av.+Gustavo+Baz+1890+San+Pedro+Barrientos+Tlalnepantla+Estado+de+Mexico&output=embed&z=15&hl=es">
-        <div class="location-name">🏪 Sucursal Tlalnepantla</div>
-        <div class="location-address">Av. Gustavo Baz 1890, Col. San Pedro Barrientos, Tlalnepantla, Estado de México</div>
-        <div class="location-tags">
-          <span class="location-tag">Centro de distribución</span>
-          <span class="location-tag">Mayoreo</span>
-        </div>
-        <div class="location-hours">🟢 Abierto · Lunes–Viernes 7am–7pm · Sáb 8am–5pm</div>
-        <button class="btn-secondary" style="margin-top:12px;width:100%;justify-content:center;font-size:12px;padding:10px;">📞 55 9876-5432 · Cómo llegar →</button>
-      </div>
+
     </div>
     <div class="map-container">
       <iframe id="branch-map"
-        src="https://maps.google.com/maps?q=Av.+Ermita+Iztapalapa+1240+Iztapalapa+CDMX+Mexico&output=embed&z=15&hl=es"
+        src="https://maps.google.com/maps?q=Vertiz+331+Colonia+Doctores+Del+Cuauhtemoc+Ciudad+de+Mexico&output=embed&z=16&hl=es"
         allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade">
       </iframe>
     </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     PÁGINA: PAGO / CHECKOUT
+     ============================================================ -->
+<div class="page" id="page-pago">
+  <div class="page-header-band">
+    <div class="page-header-inner">
+      <h2>💳 Finalizar Compra</h2>
+      <p>Revisa tu pedido y completa el pago de forma segura</p>
+    </div>
+  </div>
+
+  <!-- Estado vacío -->
+  <div id="checkout-empty-state" class="checkout-empty" style="display:none;">
+    <div class="checkout-empty-icon">🛒</div>
+    <h3 style="font-family:var(--font-display);font-size:28px;margin-bottom:8px;">Carrito vacío</h3>
+    <p style="color:var(--text-muted);margin-bottom:24px;">Agrega productos al carrito antes de proceder al pago.</p>
+    <button class="btn-primary" onclick="showPage('catalogo')"><i data-lucide="package" class="icon-sm"></i> Ir al catálogo</button>
+  </div>
+
+  <!-- Layout de checkout -->
+  <div class="checkout-layout" id="checkout-content">
+    <!-- Columna izquierda: resumen + datos -->
+    <div>
+      <div class="checkout-section-title"><i data-lucide="package" class="icon-xs"></i> Resumen del pedido</div>
+      <div class="checkout-card" id="checkout-order-items">
+        <!-- generado por JS -->
+      </div>
+
+      <div class="checkout-section-title" style="margin-top:8px;"><i data-lucide="map-pin" class="icon-xs"></i> Datos de entrega</div>
+      <div class="checkout-card">
+        <div class="card-field-row">
+          <div class="card-field-wrap">
+            <label class="card-field-label">Nombre completo</label>
+            <input class="card-field-input" id="delivery-name" type="text" placeholder="Juan García">
+          </div>
+          <div class="card-field-wrap">
+            <label class="card-field-label">Teléfono</label>
+            <input class="card-field-input" id="delivery-phone" type="tel" placeholder="55 1234 5678">
+          </div>
+        </div>
+        <div class="card-field-wrap">
+          <label class="card-field-label">Dirección de entrega</label>
+          <input class="card-field-input" id="delivery-address" type="text" placeholder="Calle, número, colonia, alcaldía, CDMX">
+        </div>
+        <div class="card-field-row">
+          <div class="card-field-wrap">
+            <label class="card-field-label">Ciudad</label>
+            <input class="card-field-input" value="Ciudad de México" type="text">
+          </div>
+          <div class="card-field-wrap">
+            <label class="card-field-label">Código Postal</label>
+            <input class="card-field-input" id="delivery-cp" type="text" placeholder="06720">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Columna derecha: pago -->
+    <div>
+      <div class="checkout-section-title"><i data-lucide="credit-card" class="icon-xs"></i> Información de pago</div>
+      <div class="checkout-card">
+
+        <div class="test-mode-badge">
+          <i data-lucide="flask-conical" style="width:14px;height:14px;"></i>
+          MODO PRUEBA — Usa cualquier tarjeta para probar el flujo
+        </div>
+
+        <div class="card-brand-icons">
+          <span class="card-brand-badge" id="badge-visa">VISA</span>
+          <span class="card-brand-badge" id="badge-mc">MC</span>
+          <span class="card-brand-badge" id="badge-amex">AMEX</span>
+        </div>
+
+        <div class="card-field-wrap" style="position:relative;">
+          <label class="card-field-label">Número de tarjeta</label>
+          <input class="card-field-input" id="card-number" type="text" placeholder="0000 0000 0000 0000" maxlength="19" autocomplete="cc-number">
+          <span class="card-brand-icon" id="card-type-icon">💳</span>
+        </div>
+
+        <div class="card-field-wrap">
+          <label class="card-field-label">Nombre en la tarjeta</label>
+          <input class="card-field-input" id="card-name" type="text" placeholder="JUAN GARCIA" style="font-family:var(--font-body);text-transform:uppercase;">
+        </div>
+
+        <div class="card-field-row">
+          <div class="card-field-wrap">
+            <label class="card-field-label">Fecha de vencimiento</label>
+            <input class="card-field-input" id="card-expiry" type="text" placeholder="MM/AA" maxlength="5">
+          </div>
+          <div class="card-field-wrap">
+            <label class="card-field-label">CVV</label>
+            <input class="card-field-input" id="card-cvv" type="text" placeholder="000" maxlength="4">
+          </div>
+        </div>
+      </div>
+
+      <!-- Totales -->
+      <div class="checkout-card" id="checkout-totals">
+        <div class="order-totals">
+          <div class="order-total-row"><span>Subtotal</span><span id="chk-subtotal">$0.00</span></div>
+          <div class="order-total-row"><span>IVA (16%)</span><span id="chk-iva">$0.00</span></div>
+          <div class="order-total-row"><span>Envío</span><span style="color:var(--green);">GRATIS</span></div>
+          <div class="order-total-row grand"><span>Total a pagar</span><span class="mono" id="chk-total">$0.00</span></div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text-muted);margin-bottom:14px;">
+        <i data-lucide="lock" style="width:14px;height:14px;color:var(--green);"></i>
+        Pago 100% seguro · Encriptación SSL · Tus datos están protegidos
+      </div>
+
+      <button class="btn-pay" id="btn-pay-now" onclick="processPayment()">
+        <i data-lucide="lock" style="width:18px;height:18px;"></i>
+        Pagar <span id="pay-total-btn">$0.00</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: Pago Exitoso -->
+<div class="payment-success-overlay" id="payment-success">
+  <div class="payment-success-box">
+    <div class="success-check">✅</div>
+    <div class="success-title">¡Pago Exitoso!</div>
+    <p class="success-sub">Tu pedido ha sido recibido y está siendo procesado.<br>Recibirás confirmación en tu correo.</p>
+    <p class="success-order" id="success-order-num">Orden #RF-000000</p>
+    <button class="btn-primary" style="width:100%;justify-content:center;" onclick="closePaymentSuccess()">
+      <i data-lucide="home" class="icon-sm"></i> Volver al inicio
+    </button>
   </div>
 </div>
 
@@ -1628,49 +1976,30 @@ img { max-width:100%; }
 <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
 <div class="cart-sidebar" id="cart-sidebar">
   <div class="cart-header">
-    <div class="cart-header-title">🛒 Mi carrito (2)</div>
+    <div class="cart-header-title">🛒 Mi carrito (<span id="cart-count">0</span>)</div>
     <button class="cart-close" onclick="toggleCart()">✕</button>
   </div>
-  <div class="cart-body">
-    <div class="cart-item">
-      <div class="cart-item-img"><i data-lucide="cog" style="width:28px;height:28px;stroke-width:1.4;color:#9CA3AF;"></i></div>
-      <div style="flex:1;">
-        <div class="cart-item-name">Balatas Bosch Premium</div>
-        <div class="cart-item-brand">Bosch · Nissan Versa 2019–2023</div>
-        <div class="cart-item-price">$890.00</div>
-        <div class="cart-qty">
-          <button class="qty-btn">−</button>
-          <span class="qty-val">1</span>
-          <button class="qty-btn">+</button>
-          <span style="margin-left:auto;font-size:11px;color:var(--text-muted);cursor:pointer;">Eliminar</span>
-        </div>
-      </div>
+  <div class="cart-body" id="cart-body">
+    <div class="cart-empty" id="cart-empty-state">
+      <div class="cart-empty-icon">🛒</div>
+      <div class="cart-empty-text">Tu carrito está vacío</div>
+      <div class="cart-empty-sub">Agrega productos desde el catálogo</div>
+      <button class="btn-primary" style="margin-top:16px;font-size:13px;" onclick="toggleCart();showPage('catalogo')">Ver catálogo →</button>
     </div>
-    <div class="cart-item">
-      <div class="cart-item-img"><i data-lucide="droplets" style="width:28px;height:28px;stroke-width:1.4;color:#9CA3AF;"></i></div>
-      <div style="flex:1;">
-        <div class="cart-item-name">Kit de Empaques Motor</div>
-        <div class="cart-item-brand">ACDelco · Chevrolet Aveo</div>
-        <div class="cart-item-price">$1,240.00</div>
-        <div class="cart-qty">
-          <button class="qty-btn">−</button>
-          <span class="qty-val">2</span>
-          <button class="qty-btn">+</button>
-          <span style="margin-left:auto;font-size:11px;color:var(--text-muted);cursor:pointer;">Eliminar</span>
-        </div>
-      </div>
-    </div>
-    <div style="background:var(--green-dim);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:10px 14px;margin-top:14px;font-size:12px;color:var(--green);font-weight:600;">
+    <div id="cart-items-list"></div>
+    <div id="cart-shipping-note" style="display:none;background:var(--green-dim);border:1px solid rgba(34,197,94,0.2);border-radius:8px;padding:10px 14px;margin-top:14px;font-size:12px;color:var(--green);font-weight:600;">
       <i data-lucide="package-check" class="icon-xs"></i> Envío gratis incluido · Entrega hoy si ordenas antes de las 2pm
     </div>
   </div>
-  <div class="cart-footer">
-    <div class="cart-subtotal"><span style="color:var(--text-muted);">Subtotal</span><span>$3,370.00</span></div>
-    <div class="cart-subtotal"><span style="color:var(--text-muted);">IVA (16%)</span><span>$539.20</span></div>
+  <div class="cart-footer" id="cart-footer" style="display:none;">
+    <div class="cart-subtotal"><span style="color:var(--text-muted);">Subtotal</span><span id="cart-subtotal-val">$0.00</span></div>
+    <div class="cart-subtotal"><span style="color:var(--text-muted);">IVA (16%)</span><span id="cart-iva-val">$0.00</span></div>
     <div class="cart-subtotal"><span style="color:var(--text-muted);">Envío</span><span style="color:var(--green);">GRATIS</span></div>
-    <div class="cart-total"><span>Total</span><span class="cart-total-val">$3,909.20</span></div>
+    <div class="cart-total"><span>Total</span><span class="cart-total-val" id="cart-total-val">$0.00</span></div>
     <div class="cart-note">🔒 Pago 100% seguro · SSL encriptado</div>
-    <button class="btn-primary" style="width:100%;justify-content:center;padding:15px;font-size:15px;">Proceder al pago →</button>
+    <button class="btn-primary" style="width:100%;justify-content:center;padding:15px;font-size:15px;" onclick="toggleCart();showPage('pago')">
+      <i data-lucide="credit-card" style="width:18px;height:18px;"></i> Proceder al pago →
+    </button>
     <button class="btn-secondary" style="width:100%;justify-content:center;margin-top:8px;font-size:13px;" onclick="toggleCart()">Seguir comprando</button>
   </div>
 </div>
@@ -1689,13 +2018,9 @@ img { max-width:100%; }
     <div class="footer-grid">
       <div class="footer-brand">
         <div class="logo" style="margin-bottom:12px;">
-          <div class="logo-mark" style="width:34px;height:34px;font-size:16px;">RF</div>
-          <div class="logo-text">
-            <div class="logo-name">Refacciones Franco</div>
-            <div class="logo-sub">Desde 1987 · CDMX</div>
-          </div>
+          <img src="IMAGENES/logo.png" alt="Auto Refacciones Franco" style="height:44px;width:auto;">
         </div>
-        <p class="footer-brand-desc">Más de 37 años siendo la refaccionaria de confianza en CDMX y área metropolitana. Más de 18,000 piezas, 4 sucursales y entrega el mismo día.</p>
+        <p class="footer-brand-desc">Más de 60 años siendo la refaccionaria de confianza en CDMX. Más de 35,000 piezas, 2 sucursales especializadas y entrega el mismo día.</p>
         <div class="footer-social">
           <button class="social-btn">📘</button>
           <button class="social-btn">📸</button>
@@ -1730,11 +2055,14 @@ img { max-width:100%; }
       </div>
       <div>
         <div class="footer-col-title">Contacto</div>
-        <div class="footer-link"><i data-lucide="phone" class="icon-xs"></i> 55 1234-5678</div>
-        <div class="footer-link"><i data-lucide="message-circle" class="icon-xs"></i> WhatsApp: 55 9876-5432</div>
-        <div class="footer-link"><i data-lucide="mail" class="icon-xs"></i> ventas@refaccionesfranco.mx</div>
-        <div class="footer-link" style="margin-top:14px;"><i data-lucide="clock" class="icon-xs"></i> Lun–Sáb 8am–7pm</div>
-        <div class="footer-link"><i data-lucide="clock" class="icon-xs"></i> Dom 9am–3pm</div>
+        <div class="footer-link" style="font-weight:600;font-size:11px;color:var(--text-white);margin-bottom:4px;">Vértiz 331 (Principal)</div>
+        <div class="footer-link"><i data-lucide="phone" class="icon-xs"></i> 55-5519-6040 · 55-5519-6060</div>
+        <div class="footer-link"><i data-lucide="phone" class="icon-xs"></i> 55-5519-5303 · 55-5519-4046</div>
+        <div class="footer-link"><i data-lucide="mail" class="icon-xs"></i> ventas331vertiz@refaccionesfranco.mx</div>
+        <div class="footer-link" style="font-weight:600;font-size:11px;color:var(--text-white);margin-top:10px;margin-bottom:4px;">Vértiz 343 (Frenos)</div>
+        <div class="footer-link"><i data-lucide="phone" class="icon-xs"></i> 55-5440-8063 · 55-5440-6948</div>
+        <div class="footer-link"><i data-lucide="mail" class="icon-xs"></i> ventas343vertiz@refaccionesfranco.mx</div>
+        <div class="footer-link" style="margin-top:10px;"><i data-lucide="clock" class="icon-xs"></i> Lun–Sáb 8am–7pm · Dom 9am–3pm</div>
       </div>
     </div>
     <div class="footer-bottom">
@@ -1755,30 +2083,137 @@ img { max-width:100%; }
      ============================================================ -->
 <script>
 
-/* ── ICONOS LUCIDE POR CATEGORÍA ── */
+/* ════════════════════════════════════════════════════════════
+   ICONOS POR CATEGORÍA
+   ════════════════════════════════════════════════════════════ */
 const catIcon = {
-  frenos:    'disc-3',
-  motor:     'cog',
-  electrico: 'zap',
-  suspension:'wrench',
-  ac:        'wind',
-  default:   'package',
+  frenos:'disc-3', motor:'cog', electrico:'zap',
+  suspension:'wrench', ac:'wind', default:'package',
 };
 
-/* ── DATOS DE PRODUCTOS ── */
+/* ════════════════════════════════════════════════════════════
+   CATÁLOGO DE PRODUCTOS
+   ════════════════════════════════════════════════════════════ */
 const products = [
-  { id:1, brand:'Bosch', name:'Balatas Premium Delanteras', compat:'Nissan Versa 2018–2023', price:890, orig:1100, discount:19, badge:'hot', cat:'frenos', img:'IMAGENES/COMPONENTES/BALATAS/shopping.webp' },
-  { id:2, brand:'ACDelco', name:'Kit de Empaques Motor Completo', compat:'Chevrolet Aveo 2016–2022', price:1240, orig:1580, discount:21, badge:'off', cat:'motor', img:'IMAGENES/COMPONENTES/MOTOR/shopping.webp' },
-  { id:3, brand:'Denso', name:'Bobina de Encendido OEM', compat:'Honda Civic 2012–2020', price:680, orig:null, discount:null, badge:'new', cat:'electrico', img:'IMAGENES/COMPONENTES/BOBINA%20ENCENDIDO/shopping.webp' },
-  { id:4, brand:'Monroe', name:'Amortiguadores Delanteros Par', compat:'Volkswagen Jetta 2015–2021', price:2340, orig:2800, discount:16, badge:'hot', cat:'suspension', img:'IMAGENES/COMPONENTES/AMORTIGUADORES/AMORTIGUADORES.jpg' },
-  { id:5, brand:'Gates', name:'Kit Banda de Distribución', compat:'Toyota Corolla 2014–2022', price:1890, orig:2200, discount:14, badge:'off', cat:'motor', img:'IMAGENES/COMPONENTES/BANDAS%20DE%20DISTRIBUCION/shopping.webp' },
-  { id:6, brand:'Bosch', name:'Batería 15 Placas 45Ah', compat:'Universal · Todos los modelos', price:1650, orig:null, discount:null, badge:'new', cat:'electrico', img:'IMAGENES/COMPONENTES/BATERIA/shopping.webp' },
-  { id:7, brand:'Sanden', name:'Compresor A/C Remanufacturado', compat:'Ford Fusion 2013–2019', price:3200, orig:3900, discount:18, badge:'hot', cat:'ac', img:'IMAGENES/COMPONENTES/COMPRESORES%20A%3AC/shopping.webp' },
-  { id:8, brand:'SKF', name:'Balero de Rueda Trasero', compat:'Kia Sportage 2010–2016', price:420, orig:520, discount:19, badge:'stock', cat:'suspension', img:'IMAGENES/COMPONENTES/BALEROS/shopping.webp' },
+  { id:1, brand:'Bosch',   name:'Balatas Premium Delanteras',    compat:'Nissan Versa 2018–2023',       price:890,  orig:1100, discount:19, badge:'hot',   cat:'frenos',    img:'IMAGENES/COMPONENTES/BALATAS/shopping.webp' },
+  { id:2, brand:'ACDelco', name:'Kit de Empaques Motor Completo',compat:'Chevrolet Aveo 2016–2022',      price:1240, orig:1580, discount:21, badge:'off',   cat:'motor',     img:'IMAGENES/COMPONENTES/MOTOR/shopping.webp' },
+  { id:3, brand:'Denso',   name:'Bobina de Encendido OEM',       compat:'Honda Civic 2012–2020',         price:680,  orig:null, discount:null,badge:'new',  cat:'electrico', img:'IMAGENES/COMPONENTES/BOBINA%20ENCENDIDO/shopping.webp' },
+  { id:4, brand:'Monroe',  name:'Amortiguadores Delanteros Par',  compat:'Volkswagen Jetta 2015–2021',    price:2340, orig:2800, discount:16, badge:'hot',   cat:'suspension', img:'IMAGENES/COMPONENTES/AMORTIGUADORES/AMORTIGUADORES.jpg' },
+  { id:5, brand:'Gates',   name:'Kit Banda de Distribución',     compat:'Toyota Corolla 2014–2022',      price:1890, orig:2200, discount:14, badge:'off',   cat:'motor',     img:'IMAGENES/COMPONENTES/BANDAS%20DE%20DISTRIBUCION/shopping.webp' },
+  { id:6, brand:'Bosch',   name:'Batería 15 Placas 45Ah',        compat:'Universal · Todos los modelos', price:1650, orig:null, discount:null,badge:'new',  cat:'electrico', img:'IMAGENES/COMPONENTES/BATERIA/shopping.webp' },
+  { id:7, brand:'Sanden',  name:'Compresor A/C Remanufacturado', compat:'Ford Fusion 2013–2019',         price:3200, orig:3900, discount:18, badge:'hot',   cat:'ac',        img:'IMAGENES/COMPONENTES/COMPRESORES%20A%3AC/shopping.webp' },
+  { id:8, brand:'SKF',     name:'Balero de Rueda Trasero',       compat:'Kia Sportage 2010–2016',        price:420,  orig:520,  discount:19, badge:'stock', cat:'suspension', img:'IMAGENES/COMPONENTES/BALEROS/shopping.webp' },
 ];
 
-function createProductCard(p, size='normal') {
-  const badgeMap = { hot:'badge-hot', new:'badge-new', off:'badge-off', stock:'badge-stock' };
+/* ════════════════════════════════════════════════════════════
+   CARRITO — estado reactivo
+   ════════════════════════════════════════════════════════════ */
+let cart = [];   // [ { product, qty } ]
+
+function fmt(n) { return '$' + n.toLocaleString('es-MX', {minimumFractionDigits:2}); }
+
+function cartSubtotal() { return cart.reduce((s,i) => s + i.product.price * i.qty, 0); }
+function cartCount()    { return cart.reduce((s,i) => s + i.qty, 0); }
+
+function renderCart() {
+  const count       = cartCount();
+  const subtotal    = cartSubtotal();
+  const iva         = subtotal * 0.16;
+  const total       = subtotal + iva;
+
+  /* header count */
+  document.getElementById('cart-count').textContent = count;
+
+  /* badge en botón carrito del header */
+  const hbadge = document.querySelector('.hbtn-badge');
+  if (hbadge) hbadge.setAttribute('data-count', count);
+
+  /* badge en pestaña Pagar */
+  const navBadge = document.getElementById('cart-count-badge');
+  if (navBadge) {
+    navBadge.textContent = count;
+    navBadge.style.display = count > 0 ? '' : 'none';
+  }
+
+  const emptyState = document.getElementById('cart-empty-state');
+  const itemsList  = document.getElementById('cart-items-list');
+  const footer     = document.getElementById('cart-footer');
+  const shipping   = document.getElementById('cart-shipping-note');
+
+  if (count === 0) {
+    emptyState.style.display = '';
+    itemsList.innerHTML = '';
+    footer.style.display = 'none';
+    shipping.style.display = 'none';
+    return;
+  }
+
+  emptyState.style.display = 'none';
+  footer.style.display = '';
+  shipping.style.display = '';
+
+  itemsList.innerHTML = cart.map((item, idx) => `
+    <div class="cart-item">
+      <div class="cart-item-img">
+        ${item.product.img
+          ? `<img src="${item.product.img}" style="width:100%;height:100%;object-fit:contain;padding:4px;">`
+          : `<span style="font-size:24px;">📦</span>`}
+      </div>
+      <div style="flex:1;">
+        <div class="cart-item-name">${item.product.name}</div>
+        <div class="cart-item-brand">${item.product.brand} · ${item.product.compat}</div>
+        <div class="cart-item-price">${fmt(item.product.price)}</div>
+        <div class="cart-qty">
+          <button class="qty-btn" onclick="changeQty(${idx}, -1)">−</button>
+          <span class="qty-val">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${idx}, 1)">+</button>
+          <span style="margin-left:auto;font-size:11px;color:var(--text-muted);cursor:pointer;" onclick="removeFromCart(${idx})">Eliminar</span>
+        </div>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('cart-subtotal-val').textContent = fmt(subtotal);
+  document.getElementById('cart-iva-val').textContent      = fmt(iva);
+  document.getElementById('cart-total-val').textContent    = fmt(total);
+
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+
+function addToCart(productId, btnEl) {
+  const p = products.find(x => x.id === productId);
+  if (!p) return;
+  const existing = cart.find(i => i.product.id === productId);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ product: p, qty: 1 });
+  }
+  renderCart();
+  if (btnEl) {
+    const orig = btnEl.textContent;
+    btnEl.textContent = '✅ Agregado';
+    btnEl.style.background = 'var(--green)';
+    setTimeout(() => { btnEl.textContent = orig; btnEl.style.background = ''; }, 1400);
+  }
+}
+
+function changeQty(idx, delta) {
+  cart[idx].qty += delta;
+  if (cart[idx].qty <= 0) cart.splice(idx, 1);
+  renderCart();
+}
+
+function removeFromCart(idx) {
+  cart.splice(idx, 1);
+  renderCart();
+}
+
+/* ════════════════════════════════════════════════════════════
+   PRODUCTO CARDS
+   ════════════════════════════════════════════════════════════ */
+function createProductCard(p) {
+  const badgeMap  = { hot:'badge-hot', new:'badge-new', off:'badge-off', stock:'badge-stock' };
   const badgeText = { hot:'TOP', new:'NUEVO', off:`-${p.discount}%`, stock:'ÚLTIMAS' };
   const icon = catIcon[p.cat] || catIcon.default;
   return `
@@ -1787,20 +2222,19 @@ function createProductCard(p, size='normal') {
         <span class="product-badge ${badgeMap[p.badge]}">${badgeText[p.badge]}</span>
         ${p.img
           ? `<img src="${p.img}" alt="${p.name}" style="width:100%;height:100%;object-fit:contain;padding:14px;">`
-          : `<i data-lucide="${icon}" style="width:60px;height:60px;stroke-width:1.2;color:#9CA3AF;"></i>`
-        }
+          : `<i data-lucide="${icon}" style="width:60px;height:60px;stroke-width:1.2;color:#9CA3AF;"></i>`}
       </div>
       <div class="product-body">
         <div class="product-brand">${p.brand}</div>
         <div class="product-name">${p.name}</div>
         <div class="product-compat"><i data-lucide="map-pin" style="width:11px;height:11px;vertical-align:middle;"></i> ${p.compat}</div>
         <div class="product-price-wrap">
-          <div class="product-price">$${p.price.toLocaleString('es-MX')}</div>
-          ${p.orig ? `<div class="product-price-orig">$${p.orig.toLocaleString('es-MX')}</div>` : ''}
+          <div class="product-price">${fmt(p.price)}</div>
+          ${p.orig ? `<div class="product-price-orig">${fmt(p.orig)}</div>` : ''}
           ${p.discount ? `<div class="product-discount">−${p.discount}%</div>` : ''}
         </div>
         <div class="product-footer">
-          <button class="btn-cart" onclick="addToCart('${p.name}')">Agregar al carrito</button>
+          <button class="btn-cart" onclick="addToCart(${p.id}, this)">Agregar al carrito</button>
           <button class="btn-wish">♡</button>
         </div>
       </div>
@@ -1808,16 +2242,17 @@ function createProductCard(p, size='normal') {
   `;
 }
 
-/* ── RENDER PRODUCTOS ── */
 function renderProducts() {
   const featuredEl = document.getElementById('featured-products');
   const catalogEl  = document.getElementById('catalog-products');
-  if (featuredEl) featuredEl.innerHTML = products.slice(0,4).map(p => createProductCard(p)).join('');
-  if (catalogEl)  catalogEl.innerHTML  = products.map(p => createProductCard(p)).join('');
+  if (featuredEl) featuredEl.innerHTML = products.slice(0,4).map(createProductCard).join('');
+  if (catalogEl)  catalogEl.innerHTML  = products.map(createProductCard).join('');
   if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
-/* ── NAVEGACIÓN ENTRE PÁGINAS ── */
+/* ════════════════════════════════════════════════════════════
+   NAVEGACIÓN
+   ════════════════════════════════════════════════════════════ */
 function showPage(pageId) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
@@ -1825,29 +2260,146 @@ function showPage(pageId) {
   const tab  = document.querySelector(`[data-page="${pageId}"]`);
   if (page) { page.classList.add('active'); window.scrollTo({ top: 0, behavior: 'smooth' }); }
   if (tab)  tab.classList.add('active');
+  if (pageId === 'pago') renderCheckout();
 }
 
-/* ── CARRITO ── */
+/* ════════════════════════════════════════════════════════════
+   CARRITO SIDEBAR (toggle)
+   ════════════════════════════════════════════════════════════ */
 function toggleCart() {
-  const cart    = document.getElementById('cart-sidebar');
-  const overlay = document.getElementById('cart-overlay');
-  const isOpen  = cart.classList.contains('open');
-  cart.classList.toggle('open', !isOpen);
+  const sidebar  = document.getElementById('cart-sidebar');
+  const overlay  = document.getElementById('cart-overlay');
+  const isOpen   = sidebar.classList.contains('open');
+  sidebar.classList.toggle('open', !isOpen);
   overlay.classList.toggle('open', !isOpen);
   document.body.style.overflow = isOpen ? '' : 'hidden';
 }
 
-function addToCart(name) {
-  const btn = event?.target;
-  if (btn) {
-    const orig = btn.textContent;
-    btn.textContent = '✅ Agregado';
-    btn.style.background = 'var(--green)';
-    setTimeout(() => { btn.textContent = orig; btn.style.background = ''; }, 1200);
+/* ════════════════════════════════════════════════════════════
+   CHECKOUT — render y lógica
+   ════════════════════════════════════════════════════════════ */
+function renderCheckout() {
+  const empty   = document.getElementById('checkout-empty-state');
+  const content = document.getElementById('checkout-content');
+  const count   = cartCount();
+
+  if (count === 0) {
+    empty.style.display   = '';
+    content.style.display = 'none';
+    return;
   }
+  empty.style.display   = 'none';
+  content.style.display = '';
+
+  const subtotal = cartSubtotal();
+  const iva      = subtotal * 0.16;
+  const total    = subtotal + iva;
+
+  /* Ítems del pedido */
+  document.getElementById('checkout-order-items').innerHTML =
+    cart.map(item => `
+      <div class="order-summary-item">
+        <div class="order-item-img">
+          ${item.product.img
+            ? `<img src="${item.product.img}" style="width:100%;height:100%;object-fit:contain;padding:4px;">`
+            : '📦'}
+        </div>
+        <div class="order-item-name">${item.product.name}<br><small style="color:var(--text-muted);font-weight:400;">${item.product.brand} · x${item.qty}</small></div>
+        <div class="order-item-price">${fmt(item.product.price * item.qty)}</div>
+      </div>
+    `).join('');
+
+  /* Totales */
+  document.getElementById('chk-subtotal').textContent = fmt(subtotal);
+  document.getElementById('chk-iva').textContent      = fmt(iva);
+  document.getElementById('chk-total').textContent    = fmt(total);
+  document.getElementById('pay-total-btn').textContent = fmt(total);
+
+  if (typeof lucide !== 'undefined') lucide.createIcons();
 }
 
-/* ── LOCATION CARDS ── */
+/* ── Formato y detección de tarjeta ── */
+const cardInput = () => document.getElementById('card-number');
+
+function detectCardType(num) {
+  const n = num.replace(/\s/g,'');
+  if (/^4/.test(n))          return 'visa';
+  if (/^5[1-5]/.test(n))     return 'mc';
+  if (/^3[47]/.test(n))      return 'amex';
+  return null;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const numEl    = document.getElementById('card-number');
+  const expiryEl = document.getElementById('card-expiry');
+  const nameEl   = document.getElementById('card-name');
+
+  if (numEl) numEl.addEventListener('input', function() {
+    let val = this.value.replace(/\D/g,'').slice(0,16);
+    this.value = val.replace(/(.{4})/g,'$1 ').trim();
+    const type = detectCardType(val);
+    const icons = { visa:'💳', mc:'🔵', amex:'🟡', null:'💳' };
+    document.getElementById('card-type-icon').textContent = icons[type] || '💳';
+    ['visa','mc','amex'].forEach(b => {
+      document.getElementById('badge-'+b)?.classList.toggle('active', b === type);
+    });
+  });
+
+  if (expiryEl) expiryEl.addEventListener('input', function() {
+    let val = this.value.replace(/\D/g,'').slice(0,4);
+    if (val.length >= 2) val = val.slice(0,2) + '/' + val.slice(2);
+    this.value = val;
+  });
+
+  if (nameEl) nameEl.addEventListener('input', function() {
+    this.value = this.value.toUpperCase();
+  });
+});
+
+/* ── Procesar pago (simulación) ── */
+function processPayment() {
+  const num    = (document.getElementById('card-number')?.value || '').replace(/\s/g,'');
+  const name   = document.getElementById('card-name')?.value?.trim();
+  const expiry = document.getElementById('card-expiry')?.value?.trim();
+  const cvv    = document.getElementById('card-cvv')?.value?.trim();
+
+  /* Validación básica de campos */
+  let hasError = false;
+  [['card-number', num.length < 13],
+   ['card-name',   !name],
+   ['card-expiry', expiry.length < 5],
+   ['card-cvv',    cvv.length < 3]].forEach(([id, bad]) => {
+    const el = document.getElementById(id);
+    if (el) el.classList.toggle('error', bad);
+    if (bad) hasError = true;
+  });
+  if (hasError) return;
+
+  /* Simular procesamiento */
+  const btn = document.getElementById('btn-pay-now');
+  btn.disabled = true;
+  btn.innerHTML = '<span style="animation:spin 1s linear infinite;display:inline-block;">⏳</span> Procesando...';
+
+  setTimeout(() => {
+    btn.disabled = false;
+    btn.innerHTML = '<i data-lucide="lock" style="width:18px;height:18px;"></i> Pagar';
+    const orderNum = 'RF-' + Math.floor(100000 + Math.random() * 900000);
+    document.getElementById('success-order-num').textContent = 'Orden ' + orderNum;
+    document.getElementById('payment-success').classList.add('show');
+    lucide.createIcons();
+  }, 2200);
+}
+
+function closePaymentSuccess() {
+  document.getElementById('payment-success').classList.remove('show');
+  cart = [];
+  renderCart();
+  showPage('home');
+}
+
+/* ════════════════════════════════════════════════════════════
+   SUCURSALES — mapa dinámico
+   ════════════════════════════════════════════════════════════ */
 document.querySelectorAll('.location-card').forEach(card => {
   card.addEventListener('click', () => {
     document.querySelectorAll('.location-card').forEach(c => c.classList.remove('active'));
@@ -1860,10 +2412,13 @@ document.querySelectorAll('.location-card').forEach(card => {
   });
 });
 
-/* ── INIT ── */
+/* ════════════════════════════════════════════════════════════
+   INIT
+   ════════════════════════════════════════════════════════════ */
 renderProducts();
+renderCart();
 lucide.createIcons();
-showPage('catalogo');
+showPage('home');
 </script>
 </body>
 </html>
