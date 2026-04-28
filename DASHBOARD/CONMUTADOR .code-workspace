@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "../CONMUTADOR "
+		},
+		{
+			"path": "."
+		},
+		{
+			"path": "../PAGINA "
+		},
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "DASHBOARD"
+	}
+}
