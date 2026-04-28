@@ -1135,6 +1135,118 @@ img { max-width:100%; }
   .brands-track { gap: 32px; }
 }
 
+/* ── Botón buscador animado ── */
+.btn-vf-search { position: relative; overflow: hidden; }
+.btn-vf-arrow  { transition: transform 0.3s; display: inline-block; }
+.btn-vf-search:hover .btn-vf-arrow { transform: translateX(4px); }
+@keyframes vfPulse {
+  0%,100% { box-shadow: 0 4px 20px var(--rf-red-glow); transform: translateY(0); }
+  50%      { box-shadow: 0 8px 36px var(--rf-red-glow), 0 0 0 6px rgba(27,53,128,0.12); transform: translateY(-2px); }
+}
+.btn-vf-search.idle { animation: vfPulse 2.4s ease-in-out infinite; }
+.btn-vf-search.ready {
+  background: linear-gradient(135deg, var(--rf-red) 0%, #2a52c8 100%) !important;
+  animation: none;
+}
+
+/* ── Stock badges ── */
+.stock-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px;
+  text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 6px;
+}
+.stock-disponible { background: rgba(22,163,74,0.1);  color: var(--green);  border: 1px solid rgba(22,163,74,0.25); }
+.stock-pedido     { background: rgba(180,83,9,0.1);   color: var(--gold);   border: 1px solid rgba(180,83,9,0.25); }
+.stock-agotado    { background: rgba(0,0,0,0.05);     color: var(--text-muted); border: 1px solid var(--border); }
+
+/* ── Número de parte OEM ── */
+.product-sku {
+  font-family: var(--font-mono); font-size: 10px; color: var(--rf-red);
+  background: var(--rf-red-dim); border: 1px solid rgba(27,53,128,0.15);
+  padding: 2px 7px; border-radius: 4px; display: inline-block;
+  margin-bottom: 5px; letter-spacing: 0.5px;
+}
+
+/* ── Garantía — sección en catálogo ── */
+.warranty-banner {
+  background: linear-gradient(135deg, rgba(22,163,74,0.06) 0%, rgba(27,53,128,0.06) 100%);
+  border: 1px solid rgba(22,163,74,0.2); border-radius: var(--radius-lg);
+  padding: 20px 24px; margin-bottom: 20px;
+  display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;
+}
+.warranty-item { display: flex; gap: 10px; align-items: flex-start; flex: 1; min-width: 180px; }
+.warranty-icon {
+  width: 36px; height: 36px; border-radius: var(--radius-md); flex-shrink: 0;
+  background: rgba(22,163,74,0.12); border: 1px solid rgba(22,163,74,0.25);
+  display: flex; align-items: center; justify-content: center; font-size: 16px;
+}
+.warranty-title { font-size: 12px; font-weight: 700; color: var(--text-white); margin-bottom: 2px; }
+.warranty-desc  { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+
+/* ── Diferenciador de tipos de marca ── */
+.brand-types-bar {
+  display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap;
+}
+.brand-type-chip {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 20px;
+  border: 1px solid var(--border); background: var(--bg-card); cursor: pointer;
+  transition: all var(--transition); white-space: nowrap;
+}
+.brand-type-chip.oem    { border-color: rgba(27,53,128,0.3); color: var(--rf-red); }
+.brand-type-chip.alt    { border-color: rgba(180,83,9,0.3);  color: var(--gold); }
+.brand-type-chip.gen    { border-color: var(--border);       color: var(--text-gray); }
+.brand-type-chip .dot   { width: 8px; height: 8px; border-radius: 50%; }
+.brand-type-chip.oem .dot { background: var(--rf-red); }
+.brand-type-chip.alt .dot { background: var(--gold); }
+.brand-type-chip.gen .dot { background: var(--text-muted); }
+
+/* ── Popup WhatsApp ── */
+.wa-popup {
+  position: fixed; bottom: 90px; right: 24px; z-index: 400;
+  width: 300px; background: var(--bg-panel);
+  border: 1px solid var(--border); border-radius: 16px;
+  padding: 20px; box-shadow: 0 12px 48px rgba(0,0,0,0.15);
+  transform: translateY(20px) scale(0.95); opacity: 0; pointer-events: none;
+  transition: all 0.3s cubic-bezier(.4,0,.2,1);
+}
+.wa-popup.show { transform: translateY(0) scale(1); opacity: 1; pointer-events: all; }
+.wa-popup-close {
+  position: absolute; top: 10px; right: 12px;
+  background: none; border: none; font-size: 16px; cursor: pointer; color: var(--text-muted);
+}
+.wa-popup-icon { font-size: 32px; margin-bottom: 8px; }
+.wa-popup-title { font-size: 15px; font-weight: 700; margin-bottom: 4px; }
+.wa-popup-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5; }
+.btn-wa-go {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  width: 100%; background: #25D366; color: #fff; border: none;
+  border-radius: var(--radius-md); padding: 11px; font-size: 13px; font-weight: 700;
+  font-family: var(--font-body); cursor: pointer; text-decoration: none;
+  transition: background 0.2s;
+}
+.btn-wa-go:hover { background: #1ebe5d; }
+
+/* ── Mejoras mobile ── */
+@media (max-width: 480px) {
+  .hero-ctas { flex-direction: column; }
+  .hero-ctas .btn-primary,
+  .hero-ctas .btn-secondary { width: 100%; justify-content: center; }
+  .hero-stats { gap: 16px; }
+  .hero-stat-val { font-size: 26px; }
+  .cat-grid { grid-template-columns: repeat(2, 1fr); }
+  .offer-grid { padding: 0 16px 32px; }
+  .section { padding: 32px 16px; }
+  .nav-inner { padding: 0 8px; }
+  .header-inner { padding: 0 12px; gap: 10px; }
+  .hbtn span { display: none; }
+  .brands-header { padding: 0 16px 18px; }
+  .wa-popup { width: calc(100vw - 32px); right: 16px; }
+  .checkout-layout { padding: 20px 16px; }
+  .cart-sidebar { width: 100%; }
+  .trust-bar-inner { grid-template-columns: 1fr 1fr; }
+}
+
 </style>
 </head>
 <body>
@@ -1148,7 +1260,7 @@ img { max-width:100%; }
       <span><i data-lucide="shield-check" class="icon-xs"></i> 12 meses de garantía</span>
       <span><i data-lucide="phone" class="icon-xs"></i> Asesoría técnica gratis</span>
     </div>
-    <div class="topbar-promo"><i data-lucide="tag" class="icon-xs"></i> MAYO: 20% OFF en frenos y suspensión</div>
+    <div class="topbar-promo"><i data-lucide="tag" class="icon-xs"></i> MAYO 2026: 20% OFF en frenos y suspensión</div>
   </div>
 </div>
 
@@ -1226,7 +1338,6 @@ img { max-width:100%; }
         allowfullscreen
         style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);min-width:100%;min-height:100%;width:177.78vh;height:56.25vw;pointer-events:none;border:0;">
       </iframe>
-      <div style="position:absolute;inset:0;background:linear-gradient(to left, transparent 60%, rgba(244,246,248,0.95) 100%);z-index:1;"></div>
     </div>
     <div class="hero-content">
       <div class="hero-eyebrow animate d1">
@@ -1264,6 +1375,47 @@ img { max-width:100%; }
           <div class="hero-stat-val">98<span>%</span></div>
           <div class="hero-stat-label">Clientes satisfechos</div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CARRUSEL DE MARCAS (inmediatamente bajo el hero) ===== -->
+  <div class="brands-section">
+    <div class="brands-header">
+      <h2 class="brands-header-title">Marcas que <span>manejamos</span></h2>
+      <div class="brands-header-line"></div>
+    </div>
+    <div class="brands-carousel-wrap">
+      <div class="brands-track" id="brands-track">
+        <div class="brand-item"><img src="IMAGENES/LOGOS/Monroe_logo.png" alt="Monroe"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/moresa-logo.png" alt="Moresa"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/MOTORAD_large.png" alt="MotoRad"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/png_federal-mogul.png" alt="Federal Mogul"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/573613f697b75_262x147.png" alt="Permatex"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/268.png" alt="Econoflow"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/343.png" alt="Melling"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/FRA.png" alt="Fraco"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/images.jpg" alt="Metalbond"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/images.png" alt="KEM"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/knadian-logo-png_seeklogo-270084.png" alt="Knadian"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/uniflow.png" alt="Uniflow"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/87.png" alt="Lusac"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/96.png" alt="Tomco"></div>
+        <!-- duplicado para loop infinito -->
+        <div class="brand-item"><img src="IMAGENES/LOGOS/Monroe_logo.png" alt="Monroe"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/moresa-logo.png" alt="Moresa"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/MOTORAD_large.png" alt="MotoRad"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/png_federal-mogul.png" alt="Federal Mogul"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/573613f697b75_262x147.png" alt="Permatex"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/268.png" alt="Econoflow"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/343.png" alt="Melling"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/FRA.png" alt="Fraco"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/images.jpg" alt="Metalbond"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/images.png" alt="KEM"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/knadian-logo-png_seeklogo-270084.png" alt="Knadian"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/uniflow.png" alt="Uniflow"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/87.png" alt="Lusac"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/96.png" alt="Tomco"></div>
       </div>
     </div>
   </div>
@@ -1338,8 +1490,10 @@ img { max-width:100%; }
             <option>Eléctrico</option><option>Transmisión</option><option>Carrocería</option>
           </select>
         </div>
-        <button class="btn-primary" style="width:100%;justify-content:center;" onclick="showPage('catalogo')">
-          <i data-lucide="search" class="icon-sm"></i> Buscar refacciones compatibles
+        <button class="btn-primary btn-vf-search" id="btn-vf" style="width:100%;justify-content:center;" onclick="showPage('catalogo')">
+          <i data-lucide="search" class="icon-sm"></i>
+          <span id="btn-vf-text">Buscar refacciones compatibles</span>
+          <span class="btn-vf-arrow">→</span>
         </button>
       </div>
     </div>
@@ -1391,7 +1545,7 @@ img { max-width:100%; }
       <div>
         <div class="offer-eyebrow"><i data-lucide="flame" class="icon-xs"></i> Oferta de temporada</div>
         <div class="offer-title">20% OFF<br>Frenos & Suspensión</div>
-        <div class="offer-desc">Solo durante mayo 2025. Stock limitado.</div>
+        <div class="offer-desc">Solo durante mayo 2026. Stock limitado.</div>
         <button class="btn-primary">Ver ofertas →</button>
       </div>
       <div class="offer-deco" style="color:rgba(27,53,128,0.12);"><i data-lucide="disc-3" style="width:120px;height:120px;stroke-width:0.8;"></i></div>
@@ -1404,48 +1558,6 @@ img { max-width:100%; }
         <button class="btn-primary" style="background:var(--green);">Cotizar ahora →</button>
       </div>
       <div class="offer-deco" style="color:rgba(22,163,74,0.12);"><i data-lucide="wrench" style="width:120px;height:120px;stroke-width:0.8;"></i></div>
-    </div>
-  </div>
-
-  <!-- ===== CARRUSEL DE MARCAS ===== -->
-  <div class="brands-section">
-    <div class="brands-header">
-      <h2 class="brands-header-title">Marcas que <span>manejamos</span></h2>
-      <div class="brands-header-line"></div>
-    </div>
-    <div class="brands-carousel-wrap">
-      <div class="brands-track" id="brands-track">
-        <!-- logos set 1 -->
-        <div class="brand-item"><img src="IMAGENES/LOGOS/Monroe_logo.png" alt="Monroe"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/moresa-logo.png" alt="Moresa"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/MOTORAD_large.png" alt="MotoRad"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/png_federal-mogul.png" alt="Federal Mogul"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/573613f697b75_262x147.png" alt="Permatex"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/268.png" alt="Econoflow"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/343.png" alt="Melling"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/FRA.png" alt="Fraco"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/images.jpg" alt="Metalbond"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/images.png" alt="KEM"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/knadian-logo-png_seeklogo-270084.png" alt="Knadian"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/uniflow.png" alt="Uniflow"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/87.png" alt="Lusac"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/96.png" alt="Tomco"></div>
-        <!-- logos set 2 (duplicado para loop continuo) -->
-        <div class="brand-item"><img src="IMAGENES/LOGOS/Monroe_logo.png" alt="Monroe"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/moresa-logo.png" alt="Moresa"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/MOTORAD_large.png" alt="MotoRad"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/png_federal-mogul.png" alt="Federal Mogul"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/573613f697b75_262x147.png" alt="Permatex"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/268.png" alt="Econoflow"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/343.png" alt="Melling"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/FRA.png" alt="Fraco"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/images.jpg" alt="Metalbond"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/images.png" alt="KEM"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/knadian-logo-png_seeklogo-270084.png" alt="Knadian"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/uniflow.png" alt="Uniflow"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/87.png" alt="Lusac"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/96.png" alt="Tomco"></div>
-      </div>
     </div>
   </div>
 
@@ -1572,6 +1684,40 @@ img { max-width:100%; }
     </aside>
 
     <div class="catalog-main">
+
+      <!-- Garantía visible -->
+      <div class="warranty-banner">
+        <div class="warranty-item">
+          <div class="warranty-icon">🛡️</div>
+          <div>
+            <div class="warranty-title">12 meses de garantía</div>
+            <div class="warranty-desc">Todas las piezas originales y alternativas incluyen garantía contra defectos de fabricación.</div>
+          </div>
+        </div>
+        <div class="warranty-item">
+          <div class="warranty-icon">🔄</div>
+          <div>
+            <div class="warranty-title">¿Cómo hacer válida?</div>
+            <div class="warranty-desc">Presenta tu ticket de compra en sucursal o llámanos. Cambio o devolución en máx. 48 h.</div>
+          </div>
+        </div>
+        <div class="warranty-item">
+          <div class="warranty-icon">⚙️</div>
+          <div>
+            <div class="warranty-title">¿Qué cubre?</div>
+            <div class="warranty-desc">Defectos de fabricación, material o funcionamiento. No cubre mal uso o instalación incorrecta.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tipos de marca -->
+      <div class="brand-types-bar">
+        <span style="font-size:11px;font-weight:600;color:var(--text-muted);align-self:center;">Tipo de pieza:</span>
+        <div class="brand-type-chip oem"><span class="dot"></span> Original OEM — misma calidad que agencia</div>
+        <div class="brand-type-chip alt"><span class="dot"></span> Alternativa — marca reconocida, menor precio</div>
+        <div class="brand-type-chip gen"><span class="dot"></span> Genérica — económica, funcional</div>
+      </div>
+
       <div class="active-filters">
         <span class="filter-tag">Motor ✕</span>
         <span class="filter-tag">En stock ✕</span>
@@ -1729,7 +1875,7 @@ img { max-width:100%; }
         <h3 class="blog-title blog-title-lg">Cómo leer los códigos OBD2 y qué refacciones necesitas según cada falla</h3>
         <p class="blog-excerpt">Los códigos P0300, P0420 o C0040 pueden parecer crípticos, pero cada uno apunta a una pieza específica. En esta guía te explicamos los 20 códigos más comunes y qué comprar para resolverlos.</p>
         <div class="blog-meta">
-          <span><i data-lucide="calendar" class="icon-xs"></i> 15 abril 2025</span>
+          <span><i data-lucide="calendar" class="icon-xs"></i> 15 mayo 2026</span>
           <span><i data-lucide="clock" class="icon-xs"></i> 8 min lectura</span>
           <span><i data-lucide="eye" class="icon-xs"></i> 12,400 vistas</span>
         </div>
@@ -1742,7 +1888,7 @@ img { max-width:100%; }
         <div class="blog-cat"><i data-lucide="disc-3" class="icon-xs"></i> Frenos</div>
         <h3 class="blog-title">Cuándo cambiar balatas y discos: señales que no debes ignorar</h3>
         <p class="blog-excerpt">El sistema de frenos es lo más importante de tu auto. Aprende a identificar cuándo es momento de cambiar las piezas antes de que sea un problema de seguridad.</p>
-        <div class="blog-meta"><span><i data-lucide="calendar" class="icon-xs"></i> 10 abril 2025</span><span><i data-lucide="clock" class="icon-xs"></i> 5 min</span></div>
+        <div class="blog-meta"><span><i data-lucide="calendar" class="icon-xs"></i> 8 mayo 2026</span><span><i data-lucide="clock" class="icon-xs"></i> 5 min</span></div>
       </div>
     </div>
     <div class="blog-card">
@@ -1751,7 +1897,7 @@ img { max-width:100%; }
         <div class="blog-cat"><i data-lucide="wind" class="icon-xs"></i> A/C y Clima</div>
         <h3 class="blog-title">Por qué tu A/C ya no enfría y cómo diagnosticarlo tú mismo</h3>
         <p class="blog-excerpt">Compresor, condensador, válvula de expansión o simplemente gas. Te explicamos cómo identificar el origen del problema antes de ir al taller.</p>
-        <div class="blog-meta"><span><i data-lucide="calendar" class="icon-xs"></i> 5 abril 2025</span><span><i data-lucide="clock" class="icon-xs"></i> 6 min</span></div>
+        <div class="blog-meta"><span><i data-lucide="calendar" class="icon-xs"></i> 2 mayo 2026</span><span><i data-lucide="clock" class="icon-xs"></i> 6 min</span></div>
       </div>
     </div>
     <div class="blog-card">
@@ -1760,7 +1906,7 @@ img { max-width:100%; }
         <div class="blog-cat"><i data-lucide="cog" class="icon-xs"></i> Motor</div>
         <h3 class="blog-title">Guía completa: mantenimiento preventivo cada 10,000 km</h3>
         <p class="blog-excerpt">La lista exacta de piezas que debes revisar o cambiar en cada servicio para evitar fallas costosas a largo plazo.</p>
-        <div class="blog-meta"><span><i data-lucide="calendar" class="icon-xs"></i> 1 abril 2025</span><span><i data-lucide="clock" class="icon-xs"></i> 7 min</span></div>
+        <div class="blog-meta"><span><i data-lucide="calendar" class="icon-xs"></i> 28 abril 2026</span><span><i data-lucide="clock" class="icon-xs"></i> 7 min</span></div>
       </div>
     </div>
     <div class="blog-card">
@@ -1769,7 +1915,7 @@ img { max-width:100%; }
         <div class="blog-cat"><i data-lucide="zap" class="icon-xs"></i> Eléctrico</div>
         <h3 class="blog-title">Batería, alternador o motor de arranque: ¿cuál es el problema?</h3>
         <p class="blog-excerpt">Síntomas que confunden hasta a los mecánicos. Una guía práctica para diagnosticar el sistema eléctrico sin escáner.</p>
-        <div class="blog-meta"><span><i data-lucide="calendar" class="icon-xs"></i> 28 marzo 2025</span><span><i data-lucide="clock" class="icon-xs"></i> 4 min</span></div>
+        <div class="blog-meta"><span><i data-lucide="calendar" class="icon-xs"></i> 20 abril 2026</span><span><i data-lucide="clock" class="icon-xs"></i> 4 min</span></div>
       </div>
     </div>
   </div>
@@ -2004,8 +2150,20 @@ img { max-width:100%; }
   </div>
 </div>
 
+<!-- Popup WhatsApp -->
+<div class="wa-popup" id="wa-popup">
+  <button class="wa-popup-close" onclick="closeWaPopup()">✕</button>
+  <div class="wa-popup-icon">💬</div>
+  <div class="wa-popup-title">¿Encontraste lo que necesitabas?</div>
+  <div class="wa-popup-sub">Nuestros asesores especializados te ayudan a encontrar la refacción exacta para tu auto en segundos.</div>
+  <a class="btn-wa-go" href="https://wa.me/525555196040?text=Hola%2C%20necesito%20ayuda%20para%20encontrar%20una%20refacci%C3%B3n" target="_blank" rel="noopener">
+    <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#fff;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+    Chatear con un asesor ahora
+  </a>
+</div>
+
 <!-- WhatsApp flotante -->
-<button class="wa-btn" onclick="alert('Redirigiendo a WhatsApp...')">
+<button class="wa-btn" id="wa-btn" onclick="toggleWaPopup()">
   <i data-lucide="message-circle" style="width:28px;height:28px;stroke-width:2;color:#fff;"></i>
   <div class="wa-tooltip">¿Necesitas ayuda? Escríbenos</div>
 </button>
@@ -2066,7 +2224,7 @@ img { max-width:100%; }
       </div>
     </div>
     <div class="footer-bottom">
-      <span>© 2025 Refacciones Franco. Todos los derechos reservados.</span>
+      <span>© 2026 Refacciones Franco. Todos los derechos reservados.</span>
       <div class="footer-payments">
         <span class="payment-badge">VISA</span>
         <span class="payment-badge">MC</span>
@@ -2095,14 +2253,14 @@ const catIcon = {
    CATÁLOGO DE PRODUCTOS
    ════════════════════════════════════════════════════════════ */
 const products = [
-  { id:1, brand:'Bosch',   name:'Balatas Premium Delanteras',    compat:'Nissan Versa 2018–2023',       price:890,  orig:1100, discount:19, badge:'hot',   cat:'frenos',    img:'IMAGENES/COMPONENTES/BALATAS/shopping.webp' },
-  { id:2, brand:'ACDelco', name:'Kit de Empaques Motor Completo',compat:'Chevrolet Aveo 2016–2022',      price:1240, orig:1580, discount:21, badge:'off',   cat:'motor',     img:'IMAGENES/COMPONENTES/MOTOR/shopping.webp' },
-  { id:3, brand:'Denso',   name:'Bobina de Encendido OEM',       compat:'Honda Civic 2012–2020',         price:680,  orig:null, discount:null,badge:'new',  cat:'electrico', img:'IMAGENES/COMPONENTES/BOBINA%20ENCENDIDO/shopping.webp' },
-  { id:4, brand:'Monroe',  name:'Amortiguadores Delanteros Par',  compat:'Volkswagen Jetta 2015–2021',    price:2340, orig:2800, discount:16, badge:'hot',   cat:'suspension', img:'IMAGENES/COMPONENTES/AMORTIGUADORES/AMORTIGUADORES.jpg' },
-  { id:5, brand:'Gates',   name:'Kit Banda de Distribución',     compat:'Toyota Corolla 2014–2022',      price:1890, orig:2200, discount:14, badge:'off',   cat:'motor',     img:'IMAGENES/COMPONENTES/BANDAS%20DE%20DISTRIBUCION/shopping.webp' },
-  { id:6, brand:'Bosch',   name:'Batería 15 Placas 45Ah',        compat:'Universal · Todos los modelos', price:1650, orig:null, discount:null,badge:'new',  cat:'electrico', img:'IMAGENES/COMPONENTES/BATERIA/shopping.webp' },
-  { id:7, brand:'Sanden',  name:'Compresor A/C Remanufacturado', compat:'Ford Fusion 2013–2019',         price:3200, orig:3900, discount:18, badge:'hot',   cat:'ac',        img:'IMAGENES/COMPONENTES/COMPRESORES%20A%3AC/shopping.webp' },
-  { id:8, brand:'SKF',     name:'Balero de Rueda Trasero',       compat:'Kia Sportage 2010–2016',        price:420,  orig:520,  discount:19, badge:'stock', cat:'suspension', img:'IMAGENES/COMPONENTES/BALEROS/shopping.webp' },
+  { id:1, brand:'Bosch',   sku:'BP-568',       oem:'D1060-ET00A',    tipo:'alt', stock:'disponible', name:'Balatas Premium Delanteras',    compat:'Nissan Versa 2018–2023',       price:890,  orig:1100, discount:19,  badge:'hot',   cat:'frenos',    img:'IMAGENES/COMPONENTES/BALATAS/shopping.webp' },
+  { id:2, brand:'ACDelco', sku:'MS-9729',       oem:'55596919',       tipo:'oem', stock:'disponible', name:'Kit de Empaques Motor Completo',compat:'Chevrolet Aveo 2016–2022',      price:1240, orig:1580, discount:21,  badge:'off',   cat:'motor',     img:'IMAGENES/COMPONENTES/MOTOR/shopping.webp' },
+  { id:3, brand:'Denso',   sku:'673-1308',      oem:'30521-RNA-A01',  tipo:'oem', stock:'pedido',     name:'Bobina de Encendido OEM',       compat:'Honda Civic 2012–2020',         price:680,  orig:null, discount:null, badge:'new',  cat:'electrico', img:'IMAGENES/COMPONENTES/BOBINA%20ENCENDIDO/shopping.webp' },
+  { id:4, brand:'Monroe',  sku:'71466',         oem:'1J0413031BK',    tipo:'alt', stock:'disponible', name:'Amortiguadores Delanteros Par',  compat:'Volkswagen Jetta 2015–2021',    price:2340, orig:2800, discount:16,  badge:'hot',   cat:'suspension',img:'IMAGENES/COMPONENTES/AMORTIGUADORES/AMORTIGUADORES.jpg' },
+  { id:5, brand:'Gates',   sku:'TCK328',        oem:'13568-0D010',    tipo:'alt', stock:'pedido',     name:'Kit Banda de Distribución',     compat:'Toyota Corolla 2014–2022',      price:1890, orig:2200, discount:14,  badge:'off',   cat:'motor',     img:'IMAGENES/COMPONENTES/BANDAS%20DE%20DISTRIBUCION/shopping.webp' },
+  { id:6, brand:'Bosch',   sku:'AL14JA',        oem:'31500-SDA-A00',  tipo:'oem', stock:'disponible', name:'Batería 15 Placas 45Ah',        compat:'Universal · Todos los modelos', price:1650, orig:null, discount:null, badge:'new',  cat:'electrico', img:'IMAGENES/COMPONENTES/BATERIA/shopping.webp' },
+  { id:7, brand:'Sanden',  sku:'4782',          oem:'9L8Z-19703-B',   tipo:'alt', stock:'disponible', name:'Compresor A/C Remanufacturado', compat:'Ford Fusion 2013–2019',         price:3200, orig:3900, discount:18,  badge:'hot',   cat:'ac',        img:'IMAGENES/COMPONENTES/COMPRESORES%20A%3AC/shopping.webp' },
+  { id:8, brand:'SKF',     sku:'BR930489',      oem:'52730-2E000',    tipo:'oem', stock:'agotado',    name:'Balero de Rueda Trasero',       compat:'Kia Sportage 2010–2016',        price:420,  orig:520,  discount:19,  badge:'stock', cat:'suspension',img:'IMAGENES/COMPONENTES/BALEROS/shopping.webp' },
 ];
 
 /* ════════════════════════════════════════════════════════════
@@ -2212,12 +2370,30 @@ function removeFromCart(idx) {
 /* ════════════════════════════════════════════════════════════
    PRODUCTO CARDS
    ════════════════════════════════════════════════════════════ */
+function stockBadge(s) {
+  const map = {
+    disponible: `<span class="stock-badge stock-disponible">🟢 En stock</span>`,
+    pedido:     `<span class="stock-badge stock-pedido">🟡 Bajo pedido</span>`,
+    agotado:    `<span class="stock-badge stock-agotado">⚫ Agotado</span>`,
+  };
+  return map[s] || '';
+}
+function tipoBadge(t) {
+  const map = {
+    oem: `<span style="font-size:9px;font-weight:700;color:var(--rf-red);background:var(--rf-red-dim);padding:1px 5px;border-radius:3px;letter-spacing:0.3px;">OEM</span>`,
+    alt: `<span style="font-size:9px;font-weight:700;color:var(--gold);background:rgba(180,83,9,0.08);padding:1px 5px;border-radius:3px;">ALT</span>`,
+    gen: `<span style="font-size:9px;font-weight:700;color:var(--text-muted);background:var(--bg-hover);padding:1px 5px;border-radius:3px;">GEN</span>`,
+  };
+  return map[t] || '';
+}
+
 function createProductCard(p) {
   const badgeMap  = { hot:'badge-hot', new:'badge-new', off:'badge-off', stock:'badge-stock' };
   const badgeText = { hot:'TOP', new:'NUEVO', off:`-${p.discount}%`, stock:'ÚLTIMAS' };
-  const icon = catIcon[p.cat] || catIcon.default;
+  const icon      = catIcon[p.cat] || catIcon.default;
+  const isAgotado = p.stock === 'agotado';
   return `
-    <div class="product-card">
+    <div class="product-card" style="${isAgotado ? 'opacity:0.7;' : ''}">
       <div class="product-img">
         <span class="product-badge ${badgeMap[p.badge]}">${badgeText[p.badge]}</span>
         ${p.img
@@ -2225,16 +2401,25 @@ function createProductCard(p) {
           : `<i data-lucide="${icon}" style="width:60px;height:60px;stroke-width:1.2;color:#9CA3AF;"></i>`}
       </div>
       <div class="product-body">
-        <div class="product-brand">${p.brand}</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;">
+          <div class="product-brand">${p.brand}</div>
+          ${tipoBadge(p.tipo)}
+        </div>
+        <div class="product-sku" title="SKU interno: ${p.sku} · OEM: ${p.oem}">
+          # ${p.sku} &nbsp;|&nbsp; OEM: ${p.oem}
+        </div>
         <div class="product-name">${p.name}</div>
         <div class="product-compat"><i data-lucide="map-pin" style="width:11px;height:11px;vertical-align:middle;"></i> ${p.compat}</div>
+        ${stockBadge(p.stock)}
         <div class="product-price-wrap">
           <div class="product-price">${fmt(p.price)}</div>
           ${p.orig ? `<div class="product-price-orig">${fmt(p.orig)}</div>` : ''}
           ${p.discount ? `<div class="product-discount">−${p.discount}%</div>` : ''}
         </div>
         <div class="product-footer">
-          <button class="btn-cart" onclick="addToCart(${p.id}, this)">Agregar al carrito</button>
+          <button class="btn-cart" onclick="addToCart(${p.id}, this)" ${isAgotado ? 'disabled style="opacity:0.5;cursor:not-allowed;"' : ''}>
+            ${isAgotado ? 'Agotado' : 'Agregar al carrito'}
+          </button>
           <button class="btn-wish">♡</button>
         </div>
       </div>
@@ -2419,6 +2604,75 @@ renderProducts();
 renderCart();
 lucide.createIcons();
 showPage('home');
+
+/* ════════════════════════════════════════════════════════════
+   POPUP WHATSAPP
+   ════════════════════════════════════════════════════════════ */
+let waPopupShown = false;
+let waPopupDismissed = false;
+
+function toggleWaPopup() {
+  const p = document.getElementById('wa-popup');
+  if (p.classList.contains('show')) {
+    closeWaPopup();
+  } else {
+    p.classList.add('show');
+    waPopupShown = true;
+  }
+}
+function closeWaPopup() {
+  document.getElementById('wa-popup').classList.remove('show');
+  waPopupDismissed = true;
+}
+
+/* Mostrar popup automáticamente a los 30s si no fue ya mostrado */
+setTimeout(() => {
+  if (!waPopupShown && !waPopupDismissed) {
+    document.getElementById('wa-popup').classList.add('show');
+    waPopupShown = true;
+  }
+}, 30000);
+
+/* También al hacer scroll del 60% */
+window.addEventListener('scroll', function onScroll() {
+  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
+  if (pct > 0.6 && !waPopupShown && !waPopupDismissed) {
+    document.getElementById('wa-popup').classList.add('show');
+    waPopupShown = true;
+    window.removeEventListener('scroll', onScroll);
+  }
+}, { passive: true });
+
+/* ════════════════════════════════════════════════════════════
+   BOTÓN BUSCADOR ANIMADO
+   ════════════════════════════════════════════════════════════ */
+(function initVFButton() {
+  const btn = document.getElementById('btn-vf');
+  const selects = document.querySelectorAll('.vf-select');
+  if (!btn) return;
+
+  /* Pulsa mientras ningún select tiene valor */
+  function updateBtnState() {
+    const anySelected = Array.from(selects).some(s => s.value);
+    if (anySelected) {
+      btn.classList.remove('idle');
+      btn.classList.add('ready');
+      document.getElementById('btn-vf-text').textContent = 'Ver refacciones compatibles';
+    } else {
+      btn.classList.add('idle');
+      btn.classList.remove('ready');
+      document.getElementById('btn-vf-text').textContent = 'Buscar refacciones compatibles';
+    }
+  }
+  selects.forEach(s => s.addEventListener('change', updateBtnState));
+  /* Arranca pulsando después de 2s */
+  setTimeout(() => btn.classList.add('idle'), 2000);
+})();
+
+/* ── CSS spin helper ── */
+const styleEl = document.createElement('style');
+styleEl.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
+document.head.appendChild(styleEl);
 </script>
 </body>
 </html>
