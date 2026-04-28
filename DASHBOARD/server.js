@@ -3,10 +3,12 @@ require("dotenv").config({ path: require("path").join(__dirname, "../.env") });
 const express = require("express");
 const path = require("path");
 const { google } = require("googleapis");
+const Anthropic = require("@anthropic-ai/sdk");
 
 const app = express();
 const PORT = process.env.DASHBOARD_PORT || 4000;
 app.use(express.static(__dirname));
+app.use(express.json());
 
 const YEARS = (process.env.DASHBOARD_YEARS || "2024,2023,2022,2021,2020")
   .split(",")
@@ -348,6 +350,88 @@ app.get("/api/crm", (req, res) => {
       ]
     }
   });
+});
+
+// ── Chat con Claude — Asesor del Dashboard ───────────────────────
+const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+function buildDashboardContext() {
+  return `
+EMPRESA: Auto Refacciones Franco
+FECHA HOY: ${new Date().toLocaleDateString("es-MX", { weekday:"long", year:"numeric", month:"long", day:"numeric" })}
+
+═══ DATOS DEL DASHBOARD (snapshot actual) ═══
+
+📊 OPERACIONES / INVENTARIO
+• Valor inventario: $64,200,000 MXN
+• Rotación inventario: 6.8x | DIO: 53.7 días
+• SKUs en quiebre: 142 de 4,820 totales
+• Distribución por categoría: Motor 34%, Frenos 22%, Suspensión 18%, Eléctrico 15%, Otros 11%
+
+🚚 PROVEEDORES
+• Nivel de servicio: 91.4% (348 de 347 órdenes a tiempo)
+• Proveedores activos: 62 | Exposición USD: $1,240,000
+• Ahorro por negociación: $2,800,000 MXN
+• Variación de precios últimos 5 meses: 4.1%, 8.2%, 5.6%, 6.8%, 5.9%
+
+💰 VENTAS (YTD hasta Abril 2026)
+• Venta diaria hoy: $842,600 | Transacciones: 52
+• Mezcla de pago hoy: Transferencia $495K, Efectivo $218K, Tarjeta $130K
+• Últimos 7 días: promedio ~$766K/día
+• Vendedores top: Carlos Ramírez (114% meta), Sofía Morales (106%), Javier Herrera (99%)
+• Vendedores bajo meta: María López (88%), Diego Vargas (82%)
+
+📦 COMPRAS (YTD)
+• Órdenes abiertas: 3 pendientes (Bosch $211K, Denso $187K, Monroe $94K)
+• Sugerencias compra urgentes: Filtro Aceite ACDelco (8 uds, mínimo 100), Balata Bosch (12 uds, mínimo 50)
+• Márgenes por línea: Motor 35.0%, Suspensión 32.6%, Eléctrico 31.0%, Frenos 30.5%
+
+👥 CRM
+• Total contactos: 5,413 | Interacciones este mes: 847
+• Cotizaciones abiertas: 163 | Clientes sin actividad 30 días: 412
+• Cartera total CXC: $379,338 | DSO: 18 días | Cartera vencida: 4.1%
+• Cliente en riesgo: Servi-Car Puebla (68 días vencido, $38,400)
+
+📈 FINANZAS (año más reciente disponible)
+• ROE, márgenes y ratios disponibles vía Google Sheets (pueden estar cargando si la sesión es nueva)
+
+═══════════════════════════════════════════`;
+}
+
+app.post("/api/chat", async (req, res) => {
+  try {
+    const { messages } = req.body;
+    if (!messages || !Array.isArray(messages)) {
+      return res.status(400).json({ error: "Se requiere el campo messages[]" });
+    }
+
+    const systemPrompt = `Eres el asesor de inteligencia de negocios de *Auto Refacciones Franco*, una refaccionaria con 60+ años en CDMX.
+
+Tu trabajo es ayudar al dueño a interpretar los datos del dashboard, detectar oportunidades y problemas, y recomendar acciones concretas. Hablas como un consultor de negocios experimentado pero accesible — directo, sin rodeos, en español.
+
+${buildDashboardContext()}
+
+INSTRUCCIONES:
+• Usa los datos del dashboard para respaldar tus respuestas con números reales
+• Cuando detectes un problema (quiebre, cartera vencida, vendedor bajo meta, etc.), menciona el impacto y sugiere una acción específica
+• Si te preguntan algo que no está en los datos, sé honesto: "Eso no está en el dashboard actual, pero puedo ayudarte a pensarlo con la info disponible"
+• Respuestas concisas y con estructura clara. Usa listas cuando ayuden a la lectura
+• No uses emojis en exceso — solo donde den claridad real
+• Si el dueño pide una opinión, dala con criterio, no con vaguedades`;
+
+    const response = await anthropic.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 1024,
+      system: systemPrompt,
+      messages: messages.map(m => ({ role: m.role, content: m.content }))
+    });
+
+    const text = response.content.find(b => b.type === "text")?.text || "";
+    res.json({ reply: text });
+  } catch (err) {
+    console.error("Chat error:", err.message);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 app.get(["/", "/dashboard"], function(req, res) {
