@@ -671,6 +671,84 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
   font-weight: 400; letter-spacing: 0.4px;
   margin-left: 8px;
 }
+
+/* ============================================================
+   CRM & CLIENTES — estilos específicos
+   ============================================================ */
+
+/* Filas de segmentación por nivel */
+.seg-a > td { background-color: rgba(22,163,74,0.10) !important; }
+.seg-b > td { background-color: rgba(134,239,172,0.07) !important; }
+/* seg-c: sin fondo especial (default de tabla) */
+
+/* Badge de nivel A / B / C */
+.nivel-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 22px; height: 22px; border-radius: 50%;
+  font-size: 10px; font-weight: 700; letter-spacing: 0;
+}
+.nivel-a { background: var(--green-dim); color: var(--green-400); border: 1px solid var(--green-border); }
+.nivel-b { background: rgba(134,239,172,0.15); color: #16a34a; border: 1px solid rgba(134,239,172,0.4); }
+.nivel-c { background: rgba(156,163,175,0.12); color: var(--text-secondary); border: 1px solid rgba(156,163,175,0.25); }
+
+/* Barra de cumplimiento crédito */
+.credit-bar { display:flex; align-items:center; gap:6px; min-width:80px; }
+.credit-bg  { flex:1; height:3px; background:var(--bg-overlay); border-radius:2px; overflow:hidden; min-width:40px; }
+.credit-fill{ height:3px; border-radius:2px; }
+
+/* Badge de estatus CxC */
+.estatus-ok   { color: var(--green-400); font-weight:600; font-size:11px; }
+.estatus-warn { color: var(--amber-400); font-weight:600; font-size:11px; }
+.estatus-err  { color: var(--red-400);   font-weight:600; font-size:11px; }
+
+/* Badge de tipo interacción */
+.tipo-badge {
+  display: inline-flex; align-items: center; padding: 2px 8px;
+  border-radius: 12px; font-size: 10px; font-weight: 600; letter-spacing: 0.2px;
+}
+.tipo-llamada  { background: var(--blue-dim); color: var(--blue-400); }
+.tipo-cotizacion { background: var(--green-dim); color: var(--green-400); }
+.tipo-visita   { background: var(--amber-dim); color: var(--amber-400); }
+.tipo-email    { background: var(--purple-dim); color: var(--purple-400); }
+
+/* Barra de búsqueda */
+.search-wrap {
+  position: relative; margin-bottom: 14px;
+}
+.search-wrap svg {
+  position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+  width: 13px; height: 13px; color: var(--text-muted); pointer-events: none;
+}
+.search-input {
+  width: 100%; padding: 8px 12px 8px 32px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  background: var(--bg-elevated);
+  font-family: 'Sora', sans-serif; font-size: 12px;
+  color: var(--text-primary); outline: none;
+  transition: border-color var(--transition-fast);
+}
+.search-input:focus { border-color: var(--blue-400); }
+.search-input::placeholder { color: var(--text-muted); }
+
+/* Barra antigüedad horizontal */
+.aging-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+.aging-label { font-size:11px; color:var(--text-secondary); min-width:52px; }
+.aging-bg { flex:1; height:8px; background:var(--bg-overlay); border-radius:4px; overflow:hidden; }
+.aging-fill { height:8px; border-radius:4px; transition: width 0.6s cubic-bezier(.4,0,.2,1); }
+.aging-val { font-size:11px; font-family:'IBM Plex Mono',monospace; font-weight:500; min-width:54px; text-align:right; color:var(--text-primary); }
+
+/* Tag nacional / importación */
+.tag { display:inline-flex; align-items:center; padding:2px 8px; border-radius:12px; font-size:10px; font-weight:600; }
+.tag-nac  { background:rgba(37,99,235,0.08); color:var(--blue-500); }
+.tag-imp  { background:rgba(124,58,237,0.08); color:var(--purple-500); }
+
+/* Grid 3 columnas para KPI cards del corte */
+.grid-3c {
+  display:grid; grid-template-columns: repeat(3,1fr); gap:12px;
+}
+@media (max-width: 639px) { .grid-3c { grid-template-columns: 1fr; } }
+@media (min-width:640px) and (max-width:1023px) { .grid-3c { grid-template-columns: repeat(2,1fr); } }
 </style>
 </head>
 <body>
@@ -726,6 +804,9 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
   </button>
   <button class="tab-btn" data-tab="operaciones">
     <span class="tab-icon">⚙️</span> Operaciones
+  </button>
+  <button class="tab-btn" data-tab="crm">
+    <span class="tab-icon">👥</span> CRM &amp; Clientes
   </button>
 </nav>
 
@@ -1220,6 +1301,249 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
   </div>
 
   </div> <!-- /tab-operaciones -->
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB: CRM & CLIENTES
+     ══════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-crm">
+
+  <!-- ── SECCIÓN: SEGMENTACIÓN ── -->
+  <div class="section-label">Segmentación de Clientes</div>
+
+  <!-- KPI resumen por nivel -->
+  <div class="grid-3" style="margin-bottom:14px;">
+    <div class="card accent-green fade-in delay-1">
+      <div class="kpi-label">Segmento A — Cuentas clave</div>
+      <div class="kpi-value" style="font-size:26px;">73</div>
+      <div class="kpi-delta pos">48.13% de ventas con factura</div>
+      <div class="kpi-sub">Selecto + Destacado + Comprometido</div>
+    </div>
+    <div class="card accent-blue fade-in delay-2">
+      <div class="kpi-label">Segmento B — Desarrollo</div>
+      <div class="kpi-value" style="font-size:26px;">815</div>
+      <div class="kpi-delta pos">+36.87% adicional (acum. 85%)</div>
+      <div class="kpi-sub">Entusiasta + Estratégico + Potencial + Mini</div>
+    </div>
+    <div class="card accent-amber fade-in delay-3">
+      <div class="kpi-label">Segmento C / PG Ampliado</div>
+      <div class="kpi-value" style="font-size:26px;">+10K</div>
+      <div class="kpi-delta neu">43.3% ventas sin factura identificada</div>
+      <div class="kpi-sub">Micro + PG Ampliado (base de mercado)</div>
+    </div>
+  </div>
+
+  <div class="grid-21" style="margin-top:0;">
+    <!-- Tabla de segmentos -->
+    <div class="card fade-in delay-1" style="overflow-x:auto;">
+      <div class="card-title">Pirámide de clientes — Escalas de compra anuales</div>
+      <table id="crm-seg-table" style="min-width:600px;">
+        <thead>
+          <tr>
+            <th>Escala de Compras / Año</th>
+            <th style="text-align:right;"># Clientes</th>
+            <th style="text-align:right;">Contrib. Ventas</th>
+            <th style="text-align:right;">Acumulado</th>
+            <th>Segmento</th>
+            <th style="text-align:center;">Nivel</th>
+          </tr>
+        </thead>
+        <tbody id="crm-seg-tbody">
+          <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:16px;">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Donut A/B/C -->
+    <div class="card fade-in delay-2">
+      <div class="card-title">Distribución de ventas por nivel</div>
+      <div class="chart-wrap" style="height:200px;">
+        <canvas id="chartCrmSeg"></canvas>
+      </div>
+      <div class="donut-legend" style="margin-top:12px;">
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#16a34a;"></span>Nivel A — 48.1%</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#60a5fa;"></span>Nivel B — 36.9%</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#9CA3AF;"></span>Nivel C — 15.0%</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN: GESTIÓN DE CONTACTOS ── -->
+  <div class="section-label">Gestión de Contactos &amp; Interacciones</div>
+
+  <div class="grid-4">
+    <div class="card accent-blue fade-in delay-1">
+      <div class="kpi-label">Total Contactos Registrados</div>
+      <div class="kpi-value" id="crm-total-contactos">—</div>
+    </div>
+    <div class="card accent-green fade-in delay-2">
+      <div class="kpi-label">Interacciones este Mes</div>
+      <div class="kpi-value" id="crm-interacciones-mes">—</div>
+      <div class="kpi-delta pos">▲ +12.4% vs mes anterior</div>
+    </div>
+    <div class="card accent-amber fade-in delay-3">
+      <div class="kpi-label">Cotizaciones Abiertas</div>
+      <div class="kpi-value" id="crm-cotizaciones">—</div>
+      <div class="kpi-delta neu">▲ +8 esta semana</div>
+    </div>
+    <div class="card accent-red fade-in delay-4">
+      <div class="kpi-label">Sin Actividad 30+ días</div>
+      <div class="kpi-value" id="crm-sin-actividad">—</div>
+      <div class="kpi-delta neg">Requieren seguimiento</div>
+    </div>
+  </div>
+
+  <div class="card fade-in delay-1" style="margin-top:12px;">
+    <div class="card-title">Últimas Interacciones</div>
+    <!-- Buscador -->
+    <div class="search-wrap">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" class="search-input" id="crm-search" placeholder="Buscar por cliente o segmento…">
+    </div>
+    <div style="overflow-x:auto;">
+      <table style="min-width:600px;">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Segmento</th>
+            <th>Tipo</th>
+            <th>Fecha</th>
+            <th>Responsable</th>
+            <th style="text-align:right;">Estatus</th>
+          </tr>
+        </thead>
+        <tbody id="crm-interact-tbody">
+          <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:16px;">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN: CUENTAS POR COBRAR ── -->
+  <div class="section-label">Cuentas por Cobrar</div>
+
+  <div class="grid-4">
+    <div class="card accent-blue fade-in delay-1">
+      <div class="kpi-label">Saldo Total CxC</div>
+      <div class="kpi-value" id="crm-cxc-saldo">—</div>
+      <div class="kpi-sub">Dato real Balance 2024</div>
+    </div>
+    <div class="card accent-amber fade-in delay-2">
+      <div class="kpi-label">Cartera Vencida</div>
+      <div class="kpi-value" id="crm-cxc-vencida">—</div>
+      <div class="kpi-delta neg">▲ +0.6pp vs 2023</div>
+      <div class="kpi-sub">Límite política: 5%</div>
+    </div>
+    <div class="card accent-green fade-in delay-3">
+      <div class="kpi-label">Clientes con Crédito Activo</div>
+      <div class="kpi-value" id="crm-cxc-credito">—</div>
+    </div>
+    <div class="card accent-purple fade-in delay-4">
+      <div class="kpi-label">DSO — Días Promedio Cobro</div>
+      <div class="kpi-value" id="crm-cxc-dso">—</div>
+      <div class="kpi-sub">días</div>
+    </div>
+  </div>
+
+  <div class="grid-21" style="margin-top:12px;">
+
+    <!-- Tabla clientes con saldo -->
+    <div class="card fade-in delay-1" style="overflow-x:auto;">
+      <div class="card-title">Clientes con Saldo Pendiente</div>
+      <table style="min-width:560px;">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Seg.</th>
+            <th style="text-align:right;">Límite Crédito</th>
+            <th style="text-align:right;">Saldo MXN</th>
+            <th style="text-align:right;">Días Venc.</th>
+            <th style="text-align:right;">Estatus</th>
+          </tr>
+        </thead>
+        <tbody id="crm-cxc-tbody">
+          <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:16px;">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Antigüedad de saldos -->
+    <div class="card fade-in delay-2">
+      <div class="card-title">Antigüedad de Saldos</div>
+      <div id="crm-aging-bars" style="margin-top:8px;">
+        <!-- Renderizado por JS -->
+      </div>
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border-subtle);">
+        <div class="mini-stat">
+          <span class="mini-label">Saldo total en cartera</span>
+          <span class="mini-val" id="crm-aging-total">—</span>
+        </div>
+        <div class="mini-stat">
+          <span class="mini-label">% Al corriente (0-30d)</span>
+          <span class="mini-val" style="color:var(--green-400);" id="crm-aging-pct">—</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── SECCIÓN: CORTE DIARIO ── -->
+  <div class="section-label">Corte Diario / Caja — Hoy</div>
+
+  <div class="grid-4">
+    <div class="card accent-blue fade-in delay-1">
+      <div class="kpi-label">Ventas del Día</div>
+      <div class="kpi-value" id="crm-dia-ventas">—</div>
+    </div>
+    <div class="card accent-green fade-in delay-2">
+      <div class="kpi-label">Cobros en Efectivo</div>
+      <div class="kpi-value" id="crm-dia-efectivo">—</div>
+    </div>
+    <div class="card accent-blue fade-in delay-3">
+      <div class="kpi-label">Transferencias</div>
+      <div class="kpi-value" id="crm-dia-transferencia">—</div>
+    </div>
+    <div class="card accent-amber fade-in delay-4">
+      <div class="kpi-label">Cobros con Tarjeta</div>
+      <div class="kpi-value" id="crm-dia-tarjeta">—</div>
+    </div>
+  </div>
+
+  <div class="grid-21" style="margin-top:12px;">
+
+    <div class="card fade-in delay-1" style="overflow-x:auto;">
+      <div class="card-title">Resumen últimos 7 días</div>
+      <table style="min-width:520px;">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th style="text-align:right;">Ventas MXN</th>
+            <th style="text-align:right;">Efectivo</th>
+            <th style="text-align:right;">Transferencia</th>
+            <th style="text-align:right;">Tarjeta</th>
+            <th style="text-align:right;">Transacc.</th>
+          </tr>
+        </thead>
+        <tbody id="crm-corte-tbody">
+          <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:16px;">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card fade-in delay-2">
+      <div class="card-title">Mix de forma de pago — Hoy</div>
+      <div class="chart-wrap" style="height:180px;">
+        <canvas id="chartCrmPago"></canvas>
+      </div>
+      <div class="donut-legend" style="margin-top:10px;">
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#16a34a;"></span>Transferencia</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#2563eb;"></span>Efectivo</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#d97706;"></span>Tarjeta</span>
+      </div>
+    </div>
+
+  </div>
+
+</div> <!-- /tab-crm -->
 
 </main>
 
@@ -2134,6 +2458,208 @@ cargarBalanceGeneral();
 cargarResumen();
 cargarEstadoResultados();
 cargarRatios();
+cargarCRM();
+
+/* ── CRM & CLIENTES ── */
+let chartCrmSeg  = null;
+let chartCrmPago = null;
+
+function fmtMXNcrm(n) {
+  if (n == null || isNaN(n)) return '—';
+  if (n >= 1_000_000) return '$' + (n / 1_000_000).toFixed(2) + 'M';
+  if (n >= 1_000)     return '$' + (n / 1_000).toFixed(1) + 'K';
+  return '$' + Math.round(n).toLocaleString('es-MX');
+}
+
+function tipoClass(tipo) {
+  if (tipo === 'Llamada')       return 'tipo-llamada';
+  if (tipo === 'Cotización')    return 'tipo-cotizacion';
+  if (tipo === 'Visita Sucursal') return 'tipo-visita';
+  return 'tipo-email';
+}
+
+function estatusClass(e) {
+  if (e === 'Cerrado')    return 'estatus-ok';
+  if (e === 'Pendiente')  return 'estatus-warn';
+  return 'estatus-warn'; /* Seguimiento */
+}
+
+function cxcEstatusClass(e) {
+  if (e === 'Vencido')        return 'estatus-err';
+  if (e === 'En seguimiento') return 'estatus-warn';
+  return 'estatus-ok';
+}
+
+async function cargarCRM() {
+  try {
+    const res  = await fetch('/api/crm');
+    const d    = await res.json();
+
+    /* ── Segmentación ── */
+    const tbody = document.getElementById('crm-seg-tbody');
+    if (tbody) {
+      tbody.innerHTML = d.segmentacion.map(s => {
+        const cls = s.nivel === 'A' ? 'seg-a' : s.nivel === 'B' ? 'seg-b' : '';
+        const nivelCls = s.nivel === 'A' ? 'nivel-a' : s.nivel === 'B' ? 'nivel-b' : 'nivel-c';
+        return `<tr class="${cls}">
+          <td style="font-size:12px;">${s.escala}</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">${s.clientes.toLocaleString('es-MX')}</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">${s.contribVentas.toFixed(2)}%</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">${s.contribAcum.toFixed(2)}%</td>
+          <td style="font-weight:500;">${s.segmento}</td>
+          <td style="text-align:center;"><span class="nivel-badge ${nivelCls}">${s.nivel}</span></td>
+        </tr>`;
+      }).join('');
+    }
+
+    /* Donut segmentación */
+    const cSegCtx = document.getElementById('chartCrmSeg');
+    if (cSegCtx) {
+      if (chartCrmSeg) chartCrmSeg.destroy();
+      chartCrmSeg = new Chart(cSegCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Nivel A','Nivel B','Nivel C'],
+          datasets: [{ data: [48.1, 36.9, 15.0],
+            backgroundColor: [C.green, '#60a5fa', '#9CA3AF'],
+            borderWidth: 2, borderColor: C.border, hoverOffset: 6 }]
+        },
+        options: { responsive:true, maintainAspectRatio:false, cutout:'68%',
+          animation: C.animation,
+          plugins: { legend:{ display:false },
+            tooltip: { ...C.tooltip, callbacks:{ label: ctx=>` ${ctx.label}: ${ctx.parsed}%` } } }
+        }
+      });
+    }
+
+    /* ── KPIs gestión contactos ── */
+    const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+    set('crm-total-contactos', d.kpisCrm.totalContactos.toLocaleString('es-MX'));
+    set('crm-interacciones-mes', d.kpisCrm.interaccionesMes.toLocaleString('es-MX'));
+    set('crm-cotizaciones', d.kpisCrm.cotizacionesAbiertas);
+    set('crm-sin-actividad', d.kpisCrm.sinActividad30d.toLocaleString('es-MX'));
+
+    /* ── Tabla interacciones ── */
+    const itbody = document.getElementById('crm-interact-tbody');
+    if (itbody) {
+      itbody.innerHTML = d.interacciones.map(i => {
+        const nivelCls = i.segmento === 'A' ? 'nivel-a' : i.segmento === 'B' ? 'nivel-b' : 'nivel-c';
+        const eCls = i.estatus === 'Cerrado' ? 'estatus-ok' : 'estatus-warn';
+        return `<tr>
+          <td style="font-weight:500;">${i.cliente}</td>
+          <td><span class="nivel-badge ${nivelCls}">${i.segmento}</span></td>
+          <td><span class="tipo-badge ${tipoClass(i.tipo)}">${i.tipo}</span></td>
+          <td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">${i.fecha}</td>
+          <td style="color:var(--text-secondary);">${i.responsable}</td>
+          <td style="text-align:right;"><span class="${eCls}">${i.estatus}</span></td>
+        </tr>`;
+      }).join('');
+    }
+
+    /* Búsqueda en tabla de interacciones */
+    document.getElementById('crm-search')?.addEventListener('input', function() {
+      const q = this.value.toLowerCase();
+      document.querySelectorAll('#crm-interact-tbody tr').forEach(row => {
+        row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+      });
+    });
+
+    /* ── CxC KPIs ── */
+    set('crm-cxc-saldo',   fmtMXNcrm(d.cxc.saldoTotal));
+    set('crm-cxc-vencida', d.cxc.carteraVencidaPct + '%');
+    set('crm-cxc-credito', d.cxc.clientesCredito);
+    set('crm-cxc-dso',     d.cxc.dso);
+
+    /* ── Tabla CxC ── */
+    const cxcTbody = document.getElementById('crm-cxc-tbody');
+    if (cxcTbody) {
+      cxcTbody.innerHTML = d.clientesPendientes.map(c => {
+        const nivelCls = c.segmento === 'A' ? 'nivel-a' : c.segmento === 'B' ? 'nivel-b' : 'nivel-c';
+        const pct = Math.min(100, Math.round((c.saldoActual / c.limiteCredito) * 100));
+        const fillColor = pct > 85 ? C.red : pct > 65 ? C.amber : C.blue;
+        const eCls = cxcEstatusClass(c.estatus);
+        const diasTxt = c.diasVencido === 0 ? '—' : c.diasVencido + 'd';
+        return `<tr>
+          <td style="font-weight:500;">${c.cliente}</td>
+          <td><span class="nivel-badge ${nivelCls}">${c.segmento}</span></td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">${fmtMXNcrm(c.limiteCredito)}</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">${fmtMXNcrm(c.saldoActual)}</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">${diasTxt}</td>
+          <td style="text-align:right;"><span class="${eCls}">${c.estatus}</span></td>
+        </tr>`;
+      }).join('');
+    }
+
+    /* ── Antigüedad de saldos (barras horizontales) ── */
+    const ag = d.antigüedadSaldos;
+    const agTotal = Object.values(ag).reduce((a,b) => a+b, 0);
+    const agColors = { '0-30d': C.green, '31-60d': C.amber, '61-90d': C.red, '+90d': '#7c3aed' };
+    const agContainer = document.getElementById('crm-aging-bars');
+    if (agContainer) {
+      agContainer.innerHTML = Object.entries(ag).map(([label, val]) => {
+        const pct = agTotal > 0 ? ((val/agTotal)*100).toFixed(1) : 0;
+        const w   = agTotal > 0 ? Math.round((val/agTotal)*100) : 0;
+        const color = agColors[label] || C.gray;
+        return `<div class="aging-row">
+          <span class="aging-label">${label}</span>
+          <div class="aging-bg"><div class="aging-fill" style="width:${w}%;background:${color};"></div></div>
+          <span class="aging-val">${fmtMXNcrm(val)} <span style="color:var(--text-muted);font-size:10px;">${pct}%</span></span>
+        </div>`;
+      }).join('');
+    }
+    set('crm-aging-total', fmtMXNcrm(agTotal));
+    const pct030 = agTotal > 0 ? ((ag['0-30d']/agTotal)*100).toFixed(1) : 0;
+    set('crm-aging-pct', pct030 + '%');
+
+    /* ── Corte diario ── */
+    const cd = d.corteDiario;
+    set('crm-dia-ventas',       fmtMXNcrm(cd.ventasHoy));
+    set('crm-dia-efectivo',     fmtMXNcrm(cd.efectivo));
+    set('crm-dia-transferencia',fmtMXNcrm(cd.transferencia));
+    set('crm-dia-tarjeta',      fmtMXNcrm(cd.tarjeta));
+
+    /* Tabla últimos 7 días */
+    const corTbody = document.getElementById('crm-corte-tbody');
+    if (corTbody) {
+      corTbody.innerHTML = cd.ultimos7dias.map((r, idx) => {
+        const isHoy = idx === cd.ultimos7dias.length - 1;
+        const boldStyle = isHoy ? 'font-weight:700;' : '';
+        return `<tr>
+          <td style="font-weight:${isHoy?'700':'400'};">${r.fecha}${isHoy?' <span style="font-size:10px;color:var(--blue-400);font-family:\'Sora\',sans-serif;font-weight:600;">HOY</span>':''}</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;${boldStyle}">${fmtMXNcrm(r.ventas)}</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">${fmtMXNcrm(r.efectivo)}</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">${fmtMXNcrm(r.transferencia)}</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">${fmtMXNcrm(r.tarjeta)}</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">${r.tx}</td>
+        </tr>`;
+      }).join('');
+    }
+
+    /* Donut forma de pago */
+    const cPagoCtx = document.getElementById('chartCrmPago');
+    if (cPagoCtx) {
+      if (chartCrmPago) chartCrmPago.destroy();
+      chartCrmPago = new Chart(cPagoCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Transferencia','Efectivo','Tarjeta'],
+          datasets: [{ data: [cd.transferencia, cd.efectivo, cd.tarjeta],
+            backgroundColor: [C.green, C.blue, C.amber],
+            borderWidth: 2, borderColor: C.border, hoverOffset: 6 }]
+        },
+        options: { responsive:true, maintainAspectRatio:false, cutout:'68%',
+          animation: C.animation,
+          plugins: { legend:{ display:false },
+            tooltip: { ...C.tooltip, callbacks:{ label: ctx=>` ${ctx.label}: ${fmtMXNcrm(ctx.parsed)}` } } }
+        }
+      });
+    }
+
+  } catch (err) {
+    showError('CRM: ' + err.message);
+    console.warn('CRM:', err.message);
+  }
+}
 
 /* ── GSAP ANIMACIONES DE ENTRADA ── */
 gsap.registerPlugin(ScrollTrigger);
