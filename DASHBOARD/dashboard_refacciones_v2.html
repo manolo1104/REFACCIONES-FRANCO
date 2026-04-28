@@ -980,69 +980,6 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
      ══════════════════════════════════════════════════════════ -->
 <div class="tab-panel" id="tab-operaciones">
 
-  <!-- ── SECCIÓN: KPIs FINANCIEROS ── -->
-  <div class="section-label">KPIs Financieros — Año más reciente Google Sheets<span class="data-ts" id="sheets-ts-op"></span></div>
-  <div class="grid-4">
-
-    <div class="card accent-blue fade-in delay-1">
-      <div class="kpi-label">Ventas Netas</div>
-      <div class="kpi-value" id="op-ventas">$182.4M</div>
-      <div class="kpi-delta pos" id="op-ventas-delta">▲ +11.3% vs año anterior</div>
-      <div class="kpi-sub">MXN · año más reciente</div>
-    </div>
-
-    <div class="card accent-green fade-in delay-2">
-      <div class="kpi-label">Margen Bruto</div>
-      <div class="kpi-value" id="op-margen">34.7%</div>
-      <div class="kpi-delta pos" id="op-margen-delta">▲ +1.2pp vs año anterior</div>
-      <div class="kpi-sub">Utilidad Bruta / Ventas</div>
-    </div>
-
-    <div class="card accent-blue fade-in delay-3">
-      <div class="kpi-label">EBITDA</div>
-      <div class="kpi-value" id="op-ebitda">$28.6M</div>
-      <div class="kpi-delta pos" id="op-ebitda-delta">▲ +8.7% vs año anterior</div>
-      <div class="kpi-sub">% EBITDA × Ventas Netas</div>
-    </div>
-
-    <div class="card accent-amber fade-in delay-4">
-      <div class="kpi-label">Cartera Vencida</div>
-      <div class="kpi-value">4.1%</div>
-      <div class="kpi-delta neg">▲ +0.6pp vs 2024</div>
-      <div class="kpi-sub">Límite política interna: 5%</div>
-    </div>
-
-  </div>
-
-  <!-- Charts financieros -->
-  <div class="grid-2" style="margin-top:12px;">
-
-    <div class="card fade-in delay-1">
-      <div class="card-title">Ventas anuales · MXN millones + Margen bruto %</div>
-      <div class="chart-legend">
-        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>Ventas MXN</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#22c55e;"></span>Margen bruto %</span>
-      </div>
-      <div class="chart-wrap" style="height:220px;">
-        <canvas id="chartVentas"></canvas>
-      </div>
-    </div>
-
-    <div class="card fade-in delay-2">
-      <div class="card-title">EBITDA vs Utilidad neta · MXN millones</div>
-      <div class="chart-legend">
-        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>EBITDA</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#f59e0b;"></span>Utilidad neta</span>
-      </div>
-      <div class="chart-wrap" style="height:220px;">
-        <canvas id="chartEbitda"></canvas>
-      </div>
-    </div>
-
-  </div>
-
-
-
   <div class="section-label">Inventario &amp; Rotación</div>
   <div class="grid-4">
 
@@ -1243,66 +1180,6 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
       </div>
 
     </div>
-  </div>
-
-  <!-- ── SECCIÓN: VENTAS & CLIENTES ── -->
-  <div class="section-label">Ventas &amp; Clientes</div>
-  <div class="grid-4">
-
-    <div class="card accent-blue fade-in delay-1">
-      <div class="kpi-label">Pedidos del Mes</div>
-      <div class="kpi-value">2,841</div>
-      <div class="kpi-delta pos">▲ +7.2% vs abr 2024</div>
-    </div>
-
-    <div class="card accent-green fade-in delay-2">
-      <div class="kpi-label">Ticket Promedio</div>
-      <div class="kpi-value">$16,180</div>
-      <div class="kpi-delta pos">▲ +3.4% vs abr 2024</div>
-      <div class="kpi-sub">MXN por pedido</div>
-    </div>
-
-    <div class="card accent-blue fade-in delay-3">
-      <div class="kpi-label">Clientes Activos (90 días)</div>
-      <div class="kpi-value">1,247</div>
-      <div class="kpi-delta pos">▲ +82 nuevos clientes</div>
-    </div>
-
-    <div class="card accent-amber fade-in delay-4">
-      <div class="kpi-label">Fill Rate</div>
-      <div class="kpi-value">94.8%</div>
-      <div class="kpi-delta neg">▼ −0.9pp vs meta</div>
-      <div class="kpi-sub">Objetivo: 95.7%</div>
-    </div>
-
-  </div>
-
-  <div class="grid-2" style="margin-top:12px;">
-
-    <div class="card fade-in delay-1">
-      <div class="card-title">Ventas mensuales 2025 vs 2024 · MXN millones</div>
-      <div class="chart-legend">
-        <span class="legend-item"><span class="legend-swatch" style="background:#3b82f6;"></span>2025</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#2d3748;"></span>2024</span>
-      </div>
-      <div class="chart-wrap" style="height:210px;">
-        <canvas id="chartMensual"></canvas>
-      </div>
-    </div>
-
-    <div class="card fade-in delay-2">
-      <div class="card-title">Ventas por canal — participación % 2025</div>
-      <div class="chart-wrap" style="height:175px;">
-        <canvas id="chartCanal"></canvas>
-      </div>
-      <div class="donut-legend" style="margin-top:12px;">
-        <span class="donut-legend-item"><span class="donut-swatch" style="background:#3b82f6;"></span>Mayoristas 48%</span>
-        <span class="donut-legend-item"><span class="donut-swatch" style="background:#22c55e;"></span>Talleres 31%</span>
-        <span class="donut-legend-item"><span class="donut-swatch" style="background:#f59e0b;"></span>E-commerce 13%</span>
-        <span class="donut-legend-item"><span class="donut-swatch" style="background:#4a5568;"></span>Otros 8%</span>
-      </div>
-    </div>
-
   </div>
 
   </div> <!-- /tab-operaciones -->
@@ -1703,103 +1580,6 @@ const C = {
   }
 };
 
-/* ── GRÁFICA 1: Ventas anuales + Margen bruto (doble eje) ── */
-let chartVentasInst = new Chart(document.getElementById('chartVentas'), {
-  data: {
-    labels: C.anos,
-    datasets: [
-      {
-        type: 'bar', label: 'Ventas MXN (M)',
-        data: [285, 324, 381, 428, 490],
-        backgroundColor: 'rgba(59,130,246,0.65)',
-        hoverBackgroundColor: 'rgba(59,130,246,0.9)',
-        borderRadius: 5, borderSkipped: false, yAxisID: 'y',
-      },
-      {
-        type: 'line', label: 'Margen bruto %',
-        data: [31.2, 32.1, 33.4, 33.5, 34.7],
-        borderColor: C.green, backgroundColor: 'transparent',
-        pointBackgroundColor: C.green, pointRadius: 4,
-        pointHoverRadius: 6, tension: 0.4, yAxisID: 'y2',
-        borderWidth: 2,
-      }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: false,
-    animation: C.animation,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        ...C.tooltip,
-        callbacks: {
-          title:  ctx => `Año ${ctx[0].label}`,
-          label:  ctx => ctx.dataset.yAxisID === 'y2'
-            ? ` Margen bruto: ${ctx.parsed.y}%`
-            : ` Ventas: $${ctx.parsed.y}M MXN`,
-        }
-      }
-    },
-    scales: {
-      x: C.scales().x,
-      y: { ...C.scales().y, ticks:{ ...C.scales().y.ticks, callback: v => '$'+v+'M' } },
-      y2: {
-        position: 'right',
-        ticks:  { color:C.text, font:{size:11}, callback:v=>v+'%' },
-        grid:   { display:false }, border:{ display:false },
-      }
-    }
-  }
-});
-
-/* ── GRÁFICA 2: EBITDA vs Utilidad Neta ── */
-let chartEbitdaInst = new Chart(document.getElementById('chartEbitda'), {
-  data: {
-    labels: C.anos,
-    datasets: [
-      {
-        type:'bar', label:'EBITDA',
-        data:[38,47,58,68,82],
-        backgroundColor:'rgba(59,130,246,0.65)',
-        hoverBackgroundColor:'rgba(59,130,246,0.9)',
-        borderRadius:5,
-      },
-      {
-        type:'bar', label:'Utilidad neta',
-        data:[18,22,28,34,42],
-        backgroundColor:'rgba(245,158,11,0.65)',
-        hoverBackgroundColor:'rgba(245,158,11,0.9)',
-        borderRadius:5,
-      }
-    ]
-  },
-  options: {
-    responsive:true, maintainAspectRatio:false,
-    animation:C.animation,
-    plugins:{
-      legend:{ display:false },
-      tooltip:{
-        ...C.tooltip,
-        callbacks:{
-          title:  ctx=>`Año ${ctx[0].label}`,
-          label:  ctx=>` ${ctx.dataset.label}: $${ctx.parsed.y}M MXN`,
-          afterLabel: ctx => {
-            if(ctx.datasetIndex===0){
-              const margen = [13.3,14.5,15.2,15.9,16.7];
-              return `   Margen EBITDA: ${margen[ctx.dataIndex]}%`;
-            }
-            return '';
-          }
-        }
-      }
-    },
-    scales:{
-      x:C.scales().x,
-      y:{ ...C.scales().y, ticks:{...C.scales().y.ticks, callback:v=>'$'+v+'M'} }
-    }
-  }
-});
-
 /* ── GRÁFICA 3: DIO tendencia ── */
 new Chart(document.getElementById('chartDIO'), {
   type:'line',
@@ -1913,86 +1693,6 @@ new Chart(document.getElementById('chartProv'), {
     scales:{
       x:C.scales().x,
       y:{...C.scales().y, ticks:{...C.scales().y.ticks, callback:v=>v+'%'}}
-    }
-  }
-});
-
-/* ── GRÁFICA 6: Ventas mensuales 2025 vs 2024 ── */
-new Chart(document.getElementById('chartMensual'), {
-  type:'bar',
-  data:{
-    labels:['Enero','Febrero','Marzo','Abril'],
-    datasets:[
-      {
-        label:'2025',
-        data:[44.2,46.8,45.1,46.3],
-        backgroundColor:'rgba(59,130,246,0.72)',
-        hoverBackgroundColor:'rgba(59,130,246,0.95)',
-        borderRadius:5,
-      },
-      {
-        label:'2024',
-        data:[39.8,41.2,40.3,41.5],
-        backgroundColor:'rgba(45,55,72,0.7)',
-        hoverBackgroundColor:'rgba(45,55,72,0.95)',
-        borderRadius:5,
-      }
-    ]
-  },
-  options:{
-    responsive:true, maintainAspectRatio:false,
-    animation:C.animation,
-    plugins:{
-      legend:{display:false},
-      tooltip:{
-        ...C.tooltip,
-        mode:'index', intersect:false,
-        callbacks:{
-          title:  ctx=>`${ctx[0].label} — Ventas`,
-          label:  ctx=>` ${ctx.dataset.label}: $${ctx.parsed.y}M MXN`,
-          afterBody: ctx => {
-            const v25=ctx[0]?.parsed?.y, v24=ctx[1]?.parsed?.y;
-            if(v25&&v24){
-              const crecimiento=(((v25-v24)/v24)*100).toFixed(1);
-              return [`  Variación YoY: +${crecimiento}%`];
-            }
-            return [];
-          }
-        }
-      }
-    },
-    scales:{
-      x:{...C.scales().x, ticks:{...C.scales().x.ticks, autoSkip:false}},
-      y:{...C.scales().y, ticks:{...C.scales().y.ticks, callback:v=>'$'+v+'M'}}
-    }
-  }
-});
-
-/* ── GRÁFICA 7: Canal de ventas (donut) ── */
-new Chart(document.getElementById('chartCanal'), {
-  type:'doughnut',
-  data:{
-    labels:['Mayoristas','Talleres directos','E-commerce','Otros'],
-    datasets:[{
-      data:[48,31,13,8],
-      backgroundColor:[C.blue,C.green,C.amber,C.gray],
-      hoverBackgroundColor:['#60a5fa','#4ade80','#fcd34d','#718096'],
-      borderWidth:2, borderColor:C.border,
-      hoverOffset:6,
-    }]
-  },
-  options:{
-    responsive:true, maintainAspectRatio:false,
-    animation:C.animation,
-    cutout:'68%',
-    plugins:{
-      legend:{display:false},
-      tooltip:{
-        ...C.tooltip,
-        callbacks:{
-          label: ctx=>` ${ctx.label}: ${ctx.parsed}% de ventas`,
-        }
-      }
     }
   }
 });
@@ -2207,10 +1907,6 @@ async function cargarResumen() {
         options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:C.scales().x, y:{...C.scales().y, ticks:{...C.scales().y.ticks, callback:v=>v+'%'}} } }
       });
     }
-    if (erData.length) {
-      actualizarKPIsOperaciones(erData, resumenData);
-      actualizarChartsOperaciones(erData, resumenData);
-    }
   } catch (e) {
     showError('Resumen financiero: ' + e.message);
     console.warn('Resumen:', e.message);
@@ -2270,8 +1966,6 @@ async function cargarEstadoResultados() {
         options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, scales:{ x:C.scales().x, y:{...C.scales().y, ticks:{...C.scales().y.ticks, callback:v=>'$'+v+'M'}} } }
       });
     }
-    actualizarKPIsOperaciones(erData, resumenData);
-    actualizarChartsOperaciones(erData, resumenData);
     cargarMeta();
   } catch (e) {
     showError('Estado de Resultados: ' + e.message);
@@ -2350,84 +2044,6 @@ async function cargarRatios() {
   } catch (e) {
     showError('Ratios Financieros: ' + e.message);
     console.warn('Ratios:', e.message);
-  }
-}
-
-/* ── OPERACIONES — KPIs desde Google Sheets ── */
-function actualizarKPIsOperaciones(erD, resD) {
-  if (!erD || !erD.length) return;
-  const ultimo   = erD[0];
-  const anterior = erD[1];
-  if (!ultimo) return;
-
-  const setKpi = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
-  const setDelta = (id, pct, ref) => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    const pos = parseFloat(pct) >= 0;
-    el.textContent = (pos ? '▲ +' : '▼ ') + pct + '% vs ' + ref;
-    el.className = 'kpi-delta ' + (pos ? 'pos' : 'neg');
-  };
-
-  if (ultimo.ventasNetas != null) {
-    setKpi('op-ventas', fmtMXN(ultimo.ventasNetas));
-    if (anterior?.ventasNetas) setDelta('op-ventas-delta', pctDelta(ultimo.ventasNetas, anterior.ventasNetas), anterior.ano);
-  }
-
-  if (ultimo.ventasNetas && ultimo.utilidadBruta != null) {
-    const mg = ((ultimo.utilidadBruta / ultimo.ventasNetas) * 100).toFixed(1);
-    setKpi('op-margen', mg + '%');
-    if (anterior?.ventasNetas && anterior?.utilidadBruta != null) {
-      const mgAnt = ((anterior.utilidadBruta / anterior.ventasNetas) * 100).toFixed(1);
-      const diff  = (parseFloat(mg) - parseFloat(mgAnt)).toFixed(1);
-      const el = document.getElementById('op-margen-delta');
-      if (el) {
-        const pos = parseFloat(diff) >= 0;
-        el.textContent = (pos ? '▲ +' : '▼ ') + diff + 'pp vs ' + anterior.ano;
-        el.className = 'kpi-delta ' + (pos ? 'pos' : 'neg');
-      }
-    }
-  }
-
-  const resUlt = resD?.find(r => String(r.ano || r.año) === String(ultimo.ano));
-  if (resUlt?.ebitda != null && ultimo.ventasNetas) {
-    const ebitdaMXN = (resUlt.ebitda / 100) * ultimo.ventasNetas;
-    setKpi('op-ebitda', fmtMXN(ebitdaMXN));
-    if (anterior?.ventasNetas) {
-      const resAnt = resD?.find(r => String(r.ano || r.año) === String(anterior.ano));
-      if (resAnt?.ebitda != null) {
-        const ebitdaAnt = (resAnt.ebitda / 100) * anterior.ventasNetas;
-        setDelta('op-ebitda-delta', pctDelta(ebitdaMXN, ebitdaAnt), anterior.ano);
-      }
-    }
-  }
-}
-
-function actualizarChartsOperaciones(erD, resD) {
-  if (!erD || !erD.length) return;
-  const rev      = [...erD].reverse();
-  const labels   = rev.map(d => d.ano);
-  const ventas   = rev.map(d => d.ventasNetas != null ? parseFloat((d.ventasNetas / 1_000_000).toFixed(2)) : null);
-  const margenBr = rev.map(d => (d.ventasNetas && d.utilidadBruta != null)
-    ? parseFloat(((d.utilidadBruta / d.ventasNetas) * 100).toFixed(1)) : null);
-  const utilNeta = rev.map(d => d.utilidadNeta != null ? parseFloat((d.utilidadNeta / 1_000_000).toFixed(2)) : null);
-  const ebitdaArr = rev.map(d => {
-    const r = resD?.find(x => String(x.ano || x.año) === String(d.ano));
-    return (r?.ebitda != null && d.ventasNetas != null)
-      ? parseFloat(((r.ebitda / 100) * d.ventasNetas / 1_000_000).toFixed(2)) : null;
-  });
-
-  if (chartVentasInst) {
-    chartVentasInst.data.labels = labels;
-    chartVentasInst.data.datasets[0].data = ventas;
-    chartVentasInst.data.datasets[1].data = margenBr;
-    chartVentasInst.update();
-  }
-  if (chartEbitdaInst) {
-    chartEbitdaInst.data.labels = labels;
-    chartEbitdaInst.data.datasets[0].data = ebitdaArr;
-    chartEbitdaInst.data.datasets[1].data = utilNeta;
-    chartEbitdaInst.update();
   }
 }
 
