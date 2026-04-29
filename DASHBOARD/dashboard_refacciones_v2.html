@@ -1330,126 +1330,447 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
   <!-- ══ C. REPORTES DE VENTAS ══ -->
   <div class="section-label">Reportes de Ventas</div>
 
-  <div class="grid-2">
-    <!-- Comisiones por vendedor -->
-    <div class="card fade-in delay-1" style="overflow-x:auto;">
-      <div class="card-title">Comisiones por Vendedor — Abril 2025</div>
-      <table style="min-width:480px;">
-        <thead>
-          <tr>
-            <th>Vendedor</th>
-            <th style="text-align:right;">Ventas MXN</th>
-            <th style="text-align:right;">Meta</th>
-            <th style="text-align:right;">Cumplimiento</th>
-            <th style="text-align:right;">Comisión MXN</th>
-            <th style="text-align:center;"></th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="font-weight:500;">Carlos Ramírez</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$2,840,000</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$2,500,000</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);font-weight:600;">113.6%</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$142,000</td>
-            <td style="text-align:center;">✅</td>
-          </tr>
-          <tr>
-            <td style="font-weight:500;">María López</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$2,210,000</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$2,500,000</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--amber-400);font-weight:600;">88.4%</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$88,400</td>
-            <td style="text-align:center;">⚠️</td>
-          </tr>
-          <tr>
-            <td style="font-weight:500;">Javier Herrera</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1,980,000</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$2,000,000</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--amber-400);font-weight:600;">99.0%</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$79,200</td>
-            <td style="text-align:center;">⚠️</td>
-          </tr>
-          <tr>
-            <td style="font-weight:500;">Sofía Morales</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$2,640,000</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$2,500,000</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);font-weight:600;">105.6%</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$132,000</td>
-            <td style="text-align:center;">✅</td>
-          </tr>
-          <tr>
-            <td style="font-weight:500;">Diego Vargas</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1,640,000</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$2,000,000</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--red-400);font-weight:600;">82.0%</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$65,600</td>
-            <td style="text-align:center;">❌</td>
-          </tr>
-          <tr>
-            <td style="font-weight:500;">Lucía Castro</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$2,320,000</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$2,200,000</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);font-weight:600;">105.5%</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$116,000</td>
-            <td style="text-align:center;">✅</td>
-          </tr>
-        </tbody>
-      </table>
+  <!-- Comisiones por Vendedor — tabla completa -->
+  <div class="card fade-in delay-1" style="overflow-x:auto; margin-bottom:16px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+      <div class="card-title" style="margin-bottom:0;">Comisiones por Vendedor</div>
+      <div style="font-size:11px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace;">% Comisión: 1.00% sobre venta neta</div>
     </div>
+    <table style="min-width:820px;">
+      <thead>
+        <tr>
+          <th style="width:36px;">#</th>
+          <th>Nombre</th>
+          <th style="text-align:right;"># Ventas</th>
+          <th style="text-align:right;">$ Ventas</th>
+          <th style="text-align:right;"># Dev.</th>
+          <th style="text-align:right;">$ Devoluciones</th>
+          <th style="text-align:right;">$ Total Neto</th>
+          <th style="text-align:right;">$ Comisión</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="color:var(--text-muted);font-size:11px;">11</td>
+          <td style="font-weight:500;">JORGE RAMIREZ</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">982</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1,451,954.15</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">82</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$66,348.12</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$1,385,606.03</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$13,856.06</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:11px;">12</td>
+          <td style="font-weight:500;">MIGUEL ANGEL GONZALEZ</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">949</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1,569,665.77</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">66</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$56,238.99</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$1,513,426.78</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$15,134.27</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:11px;">13</td>
+          <td style="font-weight:500;">GERARDO SANTANA</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">1,458</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1,773,348.46</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">152</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$119,724.36</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$1,653,624.10</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$16,536.24</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:11px;">14</td>
+          <td style="font-weight:500;">SAMUEL E. ORTIZ GONZALES</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">1,322</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1,317,671.63</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">153</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$94,751.81</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$1,222,919.82</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$12,229.20</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:11px;">16</td>
+          <td style="font-weight:500;">CESAR MARTINEZ</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">995</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1,703,899.41</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">73</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$80,216.30</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$1,623,683.11</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$16,236.83</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:11px;">2</td>
+          <td style="font-weight:500;">CASILDO LOPEZ</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">1,719</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$3,163,696.03</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">174</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$184,854.63</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$2,978,841.40</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$29,788.41</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:11px;">20</td>
+          <td style="font-weight:500;">ANTONIO DOMINGUEZ</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">8</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$4,941.20</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">0</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$0.00</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$4,941.20</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$49.41</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:11px;">22</td>
+          <td style="font-weight:500;">GUILLERMO FRANCO</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">314</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$769,637.37</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">7</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$9,390.24</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$760,247.13</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$7,602.48</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:11px;">3</td>
+          <td style="font-weight:500;">MIGUEL MEDINA</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">1,142</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1,884,853.52</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">77</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$76,517.97</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$1,808,335.55</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$18,083.36</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:11px;">4</td>
+          <td style="font-weight:500;">JOSE LUIS BADILLO</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">1,447</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$3,869,620.64</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">167</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$205,563.38</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$3,664,057.26</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$36,640.57</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:11px;">7</td>
+          <td style="font-weight:500;">OLIMPO ORTIZ NAVARRO</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">1,225</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1,750,762.49</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">134</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$88,403.96</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$1,662,358.53</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$16,623.59</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:11px;">2</td>
+          <td style="font-weight:500;">GUILLERMO RAMIREZ</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">64</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$32,695.49</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">4</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$2,520.24</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$30,175.25</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$301.75</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:11px;">3</td>
+          <td style="font-weight:500;">HUMBERTO SANTANA BARRERA</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">1,871</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1,816,163.78</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">120</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$92,335.43</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$1,723,828.35</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$17,238.28</td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:11px;">4</td>
+          <td style="font-weight:500;">ERICK ANGELES</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">970</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$837,858.58</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">104</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$87,560.89</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$750,297.69</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$7,502.98</td>
+        </tr>
+        <!-- TOTALES -->
+        <tr class="total">
+          <td colspan="2" style="font-weight:700;">TOTALES</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;">11,522</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;">$19,137,854.15</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;">1,084</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;">$979,341.86</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;">$18,158,512.29</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;color:var(--blue-500);">$181,585.12</td>
+        </tr>
+        <!-- SIN MOVIMIENTOS EN EL PERÍODO -->
+        <tr>
+          <td colspan="8" style="padding:10px 0 4px;font-size:11px;color:var(--text-muted);border-top:2px solid var(--border-default);font-weight:600;text-transform:uppercase;letter-spacing:0.05em;">
+            Sin movimientos en el período
+          </td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">AYALA AVILES RILMA YOLANDA</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">HERNANDEZ SOLIS ERENDIRA</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">LOPEZ YAÑEZ JOSE LUIS</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">NAVARRETE RAMIREZ MARICELA</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">NAVARRETE RAMIREZ PERLA</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">MARTINEZ VAZQUEZ MONICA YEDID</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">PAREDES LANDA MARCO ANTONIO</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">CASTILLO GALICIA MARICELA</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">AVILA BARRIOS ANGELICA MARIA</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">MALDONADO GALICIA FELIPE IVAN</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">GORDILLO BAUTISTA DAVID ERNESTO</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">ARIAS LOPEZ ISAIAS</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">MALDONADO VAZQUEZ ULISES</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">PEREZ CAMPOS CARLOS ALDAIR</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">ORTIZ CASTAÑEDA SAMUEL</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">GALICIA VICTORIA EFREN ALBERTO</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">HERNANDEZ GONZALEZ LAURA COLUMBA</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">FLORES SEGURA MARCO ANTONIO</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">ANTUNEZ AMBROS DANIELA</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">HERNANDEZ MENDOZA EPIFANIA</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+        <tr style="opacity:0.6;">
+          <td style="color:var(--text-muted);font-size:11px;">—</td>
+          <td style="font-weight:400;">MACEDA BENAVIDES ARMANDO</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+          <td style="text-align:right;color:var(--text-muted);">—</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    <!-- Costo de ventas por línea -->
-    <div class="card fade-in delay-2" style="overflow-x:auto;">
-      <div class="card-title">Costo de Ventas por Línea de Producto — 2024</div>
-      <table style="min-width:380px;">
-        <thead>
-          <tr>
-            <th>Línea</th>
-            <th style="text-align:right;">Ventas MXN</th>
-            <th style="text-align:right;">Costo MXN</th>
-            <th style="text-align:right;">Margen Bruto</th>
-            <th style="text-align:right;">% Margen</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style="font-weight:600;">Motor</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$63.9M</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$41.5M</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);">$22.4M</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--green-400);">35.0%</td>
-          </tr>
-          <tr>
-            <td style="font-weight:600;">Frenos</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$40.8M</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$28.4M</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);">$12.4M</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--green-400);">30.5%</td>
-          </tr>
-          <tr>
-            <td style="font-weight:600;">Suspensión</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$32.8M</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$22.1M</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);">$10.7M</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--green-400);">32.6%</td>
-          </tr>
-          <tr>
-            <td style="font-weight:600;">Eléctrico</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$25.5M</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$17.6M</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);">$7.9M</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--green-400);">31.0%</td>
-          </tr>
-          <tr class="total">
-            <td style="font-weight:700;">Otros</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$18.5M</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$12.8M</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$5.7M</td>
-            <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;">30.6%</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+  <!-- Costo de ventas por línea -->
+  <div class="card fade-in delay-2" style="overflow-x:auto; max-width:640px;">
+    <div class="card-title">Costo de Ventas por Línea de Producto — 2024</div>
+    <table style="min-width:380px;">
+      <thead>
+        <tr>
+          <th>Línea</th>
+          <th style="text-align:right;">Ventas MXN</th>
+          <th style="text-align:right;">Costo MXN</th>
+          <th style="text-align:right;">Margen Bruto</th>
+          <th style="text-align:right;">% Margen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:600;">Motor</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$63.9M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$41.5M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);">$22.4M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--green-400);">35.0%</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600;">Frenos</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$40.8M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$28.4M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);">$12.4M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--green-400);">30.5%</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600;">Suspensión</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$32.8M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$22.1M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);">$10.7M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--green-400);">32.6%</td>
+        </tr>
+        <tr>
+          <td style="font-weight:600;">Eléctrico</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$25.5M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$17.6M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);">$7.9M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--green-400);">31.0%</td>
+        </tr>
+        <tr class="total">
+          <td style="font-weight:700;">Otros</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$18.5M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$12.8M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$5.7M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;">30.6%</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
 </div> <!-- /tab-ventas -->

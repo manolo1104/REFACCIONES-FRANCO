@@ -378,8 +378,23 @@ FECHA HOY: ${new Date().toLocaleDateString("es-MX", { weekday:"long", year:"nume
 • Venta diaria hoy: $842,600 | Transacciones: 52
 • Mezcla de pago hoy: Transferencia $495K, Efectivo $218K, Tarjeta $130K
 • Últimos 7 días: promedio ~$766K/día
-• Vendedores top: Carlos Ramírez (114% meta), Sofía Morales (106%), Javier Herrera (99%)
-• Vendedores bajo meta: María López (88%), Diego Vargas (82%)
+• Comisiones (1% sobre venta neta) — top vendedores por $ Total:
+  JOSE LUIS BADILLO $3,664,057 neto → comisión $36,641
+  CASILDO LOPEZ $2,978,841 neto → comisión $29,788
+  HUMBERTO SANTANA BARRERA $1,723,828 neto → comisión $17,238
+  MIGUEL MEDINA $1,808,336 neto → comisión $18,083
+  OLIMPO ORTIZ NAVARRO $1,662,359 neto → comisión $16,624
+  GERARDO SANTANA $1,653,624 neto → comisión $16,536
+  CESAR MARTINEZ $1,623,683 neto → comisión $16,237
+  MIGUEL ANGEL GONZALEZ $1,513,427 neto → comisión $15,134
+  JORGE RAMIREZ $1,385,606 neto → comisión $13,856
+  SAMUEL E. ORTIZ GONZALES $1,222,920 neto → comisión $12,229
+  GUILLERMO FRANCO $760,247 neto → comisión $7,602
+  ERICK ANGELES $750,298 neto → comisión $7,503
+  GUILLERMO RAMIREZ $30,175 neto → comisión $302
+  ANTONIO DOMINGUEZ $4,941 neto → comisión $49
+• Total: 11,522 ventas | $19,137,854 bruto | $18,158,512 neto | $181,585 comisiones
+• Sin movimientos en el período: AYALA AVILES, HERNANDEZ SOLIS, LOPEZ YAÑEZ, NAVARRETE RAMIREZ (x2), MARTINEZ VAZQUEZ, PAREDES LANDA, CASTILLO GALICIA, AVILA BARRIOS, MALDONADO GALICIA, GORDILLO BAUTISTA, ARIAS LOPEZ, MALDONADO VAZQUEZ, PEREZ CAMPOS, ORTIZ CASTAÑEDA, GALICIA VICTORIA, HERNANDEZ GONZALEZ, FLORES SEGURA, ANTUNEZ AMBROS, HERNANDEZ MENDOZA, MACEDA BENAVIDES
 
 📦 COMPRAS (YTD)
 • Órdenes abiertas: 3 pendientes (Bosch $211K, Denso $187K, Monroe $94K)
