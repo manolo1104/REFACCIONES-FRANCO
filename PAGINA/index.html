@@ -81,7 +81,7 @@ img { max-width:100%; }
 .topbar-trust span { display: flex; align-items: center; gap: 6px; }
 .topbar-promo {
   background: rgba(0,0,0,0.2); padding: 3px 12px; border-radius: 20px;
-  font-weight: 600; letter-spacing: 0.5px; white-space: nowrap;
+  font-weight: 600; letter-spacing: 0.5px;
 }
 
 /* ============================================================
@@ -154,7 +154,6 @@ img { max-width:100%; }
   border: none; background: transparent; cursor: pointer; color: var(--text-gray);
   font-family: var(--font-body); font-size: 11px; font-weight: 500;
   transition: color var(--transition), background var(--transition);
-  white-space: nowrap;
 }
 .hbtn:hover { color: var(--text-white); background: var(--bg-card); }
 .hbtn svg { width: 20px; height: 20px; }
@@ -195,9 +194,9 @@ img { max-width:100%; }
   display: flex; align-items: center; gap: 7px;
   padding: 13px 16px; font-size: 13px; font-weight: 500;
   color: var(--text-gray); border: none; background: transparent;
-  cursor: pointer; white-space: nowrap; position: relative;
+  cursor: pointer; position: relative;
   transition: color var(--transition); border-bottom: 2px solid transparent;
-  font-family: var(--font-body);
+  font-family: var(--font-body); white-space: nowrap;
 }
 .nav-tab:hover { color: var(--text-white); }
 .nav-tab.active { color: var(--text-white); border-bottom-color: var(--rf-red); }
@@ -1237,7 +1236,6 @@ img { max-width:100%; }
   .cat-grid { grid-template-columns: repeat(2, 1fr); }
   .offer-grid { padding: 0 16px 32px; }
   .section { padding: 32px 16px; }
-  .nav-inner { padding: 0 8px; }
   .header-inner { padding: 0 12px; gap: 10px; }
   .hbtn span { display: none; }
   .brands-header { padding: 0 16px 18px; }
@@ -1245,6 +1243,70 @@ img { max-width:100%; }
   .checkout-layout { padding: 20px 16px; }
   .cart-sidebar { width: 100%; }
   .trust-bar-inner { grid-template-columns: 1fr 1fr; }
+  .trust-text-sub, .test-role, .newsletter-benefit,
+  .form-label, .product-brand, .product-compat { font-size: 12px; }
+}
+
+/* ============================================================
+   HAMBURGER MENU — Mobile nav
+   ============================================================ */
+.nav-mobile-toggle {
+  display: none; align-items: center; justify-content: space-between;
+  padding: 0 16px; height: 46px;
+}
+.nav-mobile-label { font-size: 14px; font-weight: 600; color: var(--text-white); }
+.nav-hamburger {
+  background: none; border: none; cursor: pointer; padding: 6px;
+  color: var(--text-white); display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-sm); min-width: 44px; min-height: 44px;
+}
+.nav-hamburger:hover { background: var(--bg-hover); }
+.nav-hamburger svg { width: 22px; height: 22px; }
+
+@media (max-width: 768px) {
+  /* Show hamburger bar */
+  .nav-mobile-toggle { display: flex; }
+
+  /* Collapse nav tabs into dropdown */
+  .nav-bar { position: relative; }
+  .nav-inner {
+    display: none; flex-direction: column; overflow: visible;
+    padding: 0; position: absolute; top: 100%; left: 0; right: 0;
+    background: var(--bg-panel); z-index: 150;
+    border-top: 1px solid var(--border);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  }
+  .nav-inner.open { display: flex; }
+  .nav-tab {
+    width: 100%; justify-content: flex-start;
+    padding: 14px 20px; border-bottom: 1px solid var(--border);
+    border-bottom-width: 1px !important; white-space: normal;
+    min-height: 48px; font-size: 14px;
+  }
+  .nav-separator { display: none; }
+
+  /* Touch targets ≥ 48px */
+  .btn-primary, .btn-secondary { min-height: 48px; }
+  .btn-pay, .filter-apply, .btn-wa-go { min-height: 48px; }
+  .hbtn { min-height: 44px; min-width: 44px; }
+  .vf-select, .form-input { min-height: 48px; }
+
+  /* word-break on text containers */
+  p, h1, h2, h3,
+  .hero-subtitle, .footer-brand-desc, .test-text, .blog-excerpt,
+  .service-desc, .offer-desc, .vf-desc, .location-address,
+  .blog-title, .service-name, .b2b-label, .trust-text-sub,
+  .newsletter-sub, .wa-popup-sub { word-break: break-word; }
+
+  /* Bump sub-14px fonts to readable sizes */
+  .topbar { font-size: 13px; }
+  .trust-text-title { font-size: 14px; }
+  .cat-name { font-size: 13px; }
+  .product-name { font-size: 15px; }
+  .footer-link { font-size: 14px; }
+
+  /* WA popup: max 85vw on mobile */
+  .wa-popup { max-width: 85vw; }
 }
 
 </style>
@@ -1302,7 +1364,13 @@ img { max-width:100%; }
 
 <!-- NAVEGACIÓN PESTAÑAS -->
 <nav class="nav-bar">
-  <div class="nav-inner">
+  <div class="nav-mobile-toggle">
+    <span class="nav-mobile-label">Menú</span>
+    <button class="nav-hamburger" id="nav-hamburger" onclick="toggleNav()" aria-label="Abrir menú" aria-expanded="false">
+      <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/></svg>
+    </button>
+  </div>
+  <div class="nav-inner" id="nav-tabs-wrap">
     <button class="nav-tab active" onclick="showPage('home')" data-page="home"><i data-lucide="home" class="icon-sm"></i> Inicio</button>
     <button class="nav-tab" onclick="showPage('catalogo')" data-page="catalogo">
       <i data-lucide="package" class="icon-sm"></i> Catálogo
@@ -1402,20 +1470,20 @@ img { max-width:100%; }
         <div class="brand-item"><img src="IMAGENES/LOGOS/87.png" alt="Lusac"></div>
         <div class="brand-item"><img src="IMAGENES/LOGOS/96.png" alt="Tomco"></div>
         <!-- duplicado para loop infinito -->
-        <div class="brand-item"><img src="IMAGENES/LOGOS/Monroe_logo.png" alt="Monroe"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/moresa-logo.png" alt="Moresa"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/MOTORAD_large.png" alt="MotoRad"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/png_federal-mogul.png" alt="Federal Mogul"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/573613f697b75_262x147.png" alt="Permatex"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/268.png" alt="Econoflow"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/343.png" alt="Melling"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/FRA.png" alt="Fraco"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/images.jpg" alt="Metalbond"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/images.png" alt="KEM"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/knadian-logo-png_seeklogo-270084.png" alt="Knadian"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/uniflow.png" alt="Uniflow"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/87.png" alt="Lusac"></div>
-        <div class="brand-item"><img src="IMAGENES/LOGOS/96.png" alt="Tomco"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/Monroe_logo.png" alt="Monroe" loading="lazy"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/moresa-logo.png" alt="Moresa" loading="lazy"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/MOTORAD_large.png" alt="MotoRad" loading="lazy"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/png_federal-mogul.png" alt="Federal Mogul" loading="lazy"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/573613f697b75_262x147.png" alt="Permatex" loading="lazy"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/268.png" alt="Econoflow" loading="lazy"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/343.png" alt="Melling" loading="lazy"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/FRA.png" alt="Fraco" loading="lazy"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/images.jpg" alt="Metalbond" loading="lazy"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/images.png" alt="KEM" loading="lazy"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/knadian-logo-png_seeklogo-270084.png" alt="Knadian" loading="lazy"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/uniflow.png" alt="Uniflow" loading="lazy"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/87.png" alt="Lusac" loading="lazy"></div>
+        <div class="brand-item"><img src="IMAGENES/LOGOS/96.png" alt="Tomco" loading="lazy"></div>
       </div>
     </div>
   </div>
@@ -1814,43 +1882,45 @@ img { max-width:100%; }
     <div class="b2b-form">
       <div class="b2b-form-title">Registra tu negocio</div>
       <div class="b2b-form-sub">Recibe una llamada en menos de 2 horas</div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Nombre</label><input class="form-input" placeholder="Tu nombre"></div>
-        <div class="form-group"><label class="form-label">Empresa</label><input class="form-input" placeholder="Nombre del negocio"></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label class="form-label">Teléfono</label><input class="form-input" placeholder="+52 55 0000 0000"></div>
-        <div class="form-group"><label class="form-label">RFC</label><input class="form-input" placeholder="RFC para facturación"></div>
-      </div>
-      <div class="form-group">
-        <label class="form-label">Tipo de negocio</label>
-        <select class="form-input">
-          <option value="">Selecciona...</option>
-          <option>Taller mecánico</option>
-          <option>Refaccionaria</option>
-          <option>Distribuidor regional</option>
-          <option>Agencia automotriz</option>
-          <option>Flotilla de vehículos</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label class="form-label">¿Qué compras principalmente?</label>
-        <input class="form-input" placeholder="Ej: frenos, motor, suspensión...">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Compra mensual estimada (MXN)</label>
-        <select class="form-input">
-          <option>Menos de $10,000</option>
-          <option>$10,000 – $30,000</option>
-          <option>$30,000 – $80,000</option>
-          <option>$80,000 – $200,000</option>
-          <option>Más de $200,000</option>
-        </select>
-      </div>
-      <button class="btn-primary" style="width:100%;justify-content:center;padding:15px;">
-        🚀 Solicitar cuenta mayoreo
-      </button>
-      <p style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:10px;">Te contactamos en máximo 2 horas en horario hábil</p>
+      <form onsubmit="event.preventDefault(); this.querySelector('.btn-primary').textContent='✅ Solicitud enviada'; this.querySelector('.btn-primary').disabled=true;">
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Nombre *</label><input class="form-input" placeholder="Tu nombre" required></div>
+          <div class="form-group"><label class="form-label">Empresa</label><input class="form-input" placeholder="Nombre del negocio"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Teléfono *</label><input class="form-input" type="tel" placeholder="+52 55 0000 0000" required></div>
+          <div class="form-group"><label class="form-label">RFC</label><input class="form-input" placeholder="RFC para facturación"></div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tipo de negocio *</label>
+          <select class="form-input" required>
+            <option value="">Selecciona...</option>
+            <option>Taller mecánico</option>
+            <option>Refaccionaria</option>
+            <option>Distribuidor regional</option>
+            <option>Agencia automotriz</option>
+            <option>Flotilla de vehículos</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">¿Qué compras principalmente?</label>
+          <input class="form-input" placeholder="Ej: frenos, motor, suspensión...">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Compra mensual estimada (MXN)</label>
+          <select class="form-input">
+            <option>Menos de $10,000</option>
+            <option>$10,000 – $30,000</option>
+            <option>$30,000 – $80,000</option>
+            <option>$80,000 – $200,000</option>
+            <option>Más de $200,000</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-primary" style="width:100%;justify-content:center;padding:15px;">
+          🚀 Solicitar cuenta mayoreo
+        </button>
+        <p style="font-size:11px;color:var(--text-muted);text-align:center;margin-top:10px;">Te contactamos en máximo 2 horas en horario hábil</p>
+      </form>
     </div>
   </div>
 </div>
@@ -1868,7 +1938,7 @@ img { max-width:100%; }
   <div class="blog-grid">
     <div class="blog-featured">
       <div class="blog-img blog-img-featured" style="height:auto;min-height:260px;">
-        <img src="IMAGENES/COMPONENTES/HERO%20PARA%20ARTICULOS/C%C3%B3mo%20leer%20los%20c%C3%B3digos%20OBD2%20y%20qu%C3%A9%20refacciones%20necesitas%20seg%C3%BAn%20cada%20falla.jpg" alt="Cómo leer los códigos OBD2" style="width:100%;height:100%;object-fit:cover;min-height:260px;">
+        <img src="IMAGENES/COMPONENTES/HERO%20PARA%20ARTICULOS/C%C3%B3mo%20leer%20los%20c%C3%B3digos%20OBD2%20y%20qu%C3%A9%20refacciones%20necesitas%20seg%C3%BAn%20cada%20falla.jpg" alt="Cómo leer los códigos OBD2" style="width:100%;height:100%;object-fit:cover;min-height:260px;" loading="lazy">
       </div>
       <div class="blog-body" style="padding:28px 0;">
         <div class="blog-cat"><i data-lucide="zap" class="icon-xs"></i> Diagnóstico</div>
@@ -1883,7 +1953,7 @@ img { max-width:100%; }
       </div>
     </div>
     <div class="blog-card">
-      <div class="blog-img"><img src="IMAGENES/COMPONENTES/HERO%20PARA%20ARTICULOS/Cu%C3%A1ndo%20cambiar%20balatas%20y%20discos%20se%C3%B1ales%20que%20no%20debes%20ignorar.jpg" alt="Cuándo cambiar balatas y discos" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="blog-img"><img src="IMAGENES/COMPONENTES/HERO%20PARA%20ARTICULOS/Cu%C3%A1ndo%20cambiar%20balatas%20y%20discos%20se%C3%B1ales%20que%20no%20debes%20ignorar.jpg" alt="Cuándo cambiar balatas y discos" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
       <div class="blog-body">
         <div class="blog-cat"><i data-lucide="disc-3" class="icon-xs"></i> Frenos</div>
         <h3 class="blog-title">Cuándo cambiar balatas y discos: señales que no debes ignorar</h3>
@@ -1892,7 +1962,7 @@ img { max-width:100%; }
       </div>
     </div>
     <div class="blog-card">
-      <div class="blog-img"><img src="IMAGENES/COMPONENTES/HERO%20PARA%20ARTICULOS/Por%20qu%C3%A9%20tu%20A%3AC%20ya%20no%20enfr%C3%ADa%20y%20c%C3%B3mo%20diagnosticarlo%20t%C3%BA%20mismo.jpg" alt="Por qué tu A/C ya no enfría" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="blog-img"><img src="IMAGENES/COMPONENTES/HERO%20PARA%20ARTICULOS/Por%20qu%C3%A9%20tu%20A%3AC%20ya%20no%20enfr%C3%ADa%20y%20c%C3%B3mo%20diagnosticarlo%20t%C3%BA%20mismo.jpg" alt="Por qué tu A/C ya no enfría" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
       <div class="blog-body">
         <div class="blog-cat"><i data-lucide="wind" class="icon-xs"></i> A/C y Clima</div>
         <h3 class="blog-title">Por qué tu A/C ya no enfría y cómo diagnosticarlo tú mismo</h3>
@@ -1901,7 +1971,7 @@ img { max-width:100%; }
       </div>
     </div>
     <div class="blog-card">
-      <div class="blog-img"><img src="IMAGENES/COMPONENTES/HERO%20PARA%20ARTICULOS/Gu%C3%ADa%20completa%20mantenimiento%20preventivo%20cada%2010000%20km.jpg" alt="Guía completa mantenimiento preventivo" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="blog-img"><img src="IMAGENES/COMPONENTES/HERO%20PARA%20ARTICULOS/Gu%C3%ADa%20completa%20mantenimiento%20preventivo%20cada%2010000%20km.jpg" alt="Guía completa mantenimiento preventivo" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
       <div class="blog-body">
         <div class="blog-cat"><i data-lucide="cog" class="icon-xs"></i> Motor</div>
         <h3 class="blog-title">Guía completa: mantenimiento preventivo cada 10,000 km</h3>
@@ -1910,7 +1980,7 @@ img { max-width:100%; }
       </div>
     </div>
     <div class="blog-card">
-      <div class="blog-img"><img src="IMAGENES/COMPONENTES/HERO%20PARA%20ARTICULOS/Bater%C3%ADa%2C%20alternador%20o%20motor%20de%20arranque%C2%BFcu%C3%A1l%20es%20el%20problema%3F.jpg" alt="Batería, alternador o motor de arranque" style="width:100%;height:100%;object-fit:cover;"></div>
+      <div class="blog-img"><img src="IMAGENES/COMPONENTES/HERO%20PARA%20ARTICULOS/Bater%C3%ADa%2C%20alternador%20o%20motor%20de%20arranque%C2%BFcu%C3%A1l%20es%20el%20problema%3F.jpg" alt="Batería, alternador o motor de arranque" style="width:100%;height:100%;object-fit:cover;" loading="lazy"></div>
       <div class="blog-body">
         <div class="blog-cat"><i data-lucide="zap" class="icon-xs"></i> Eléctrico</div>
         <h3 class="blog-title">Batería, alternador o motor de arranque: ¿cuál es el problema?</h3>
@@ -1945,8 +2015,8 @@ img { max-width:100%; }
         </div>
         <div class="location-hours">🟢 Lunes–Sábado 8am–7pm · Dom 9am–3pm</div>
         <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--text-muted);">
-          <div><i data-lucide="phone" class="icon-xs"></i> 55-5519-6040 &nbsp;|&nbsp; 55-5519-6060</div>
-          <div><i data-lucide="phone" class="icon-xs"></i> 55-5519-5303 &nbsp;|&nbsp; 55-5519-4046</div>
+          <div><i data-lucide="phone" class="icon-xs"></i> <a href="tel:5555196040" style="color:inherit;">55-5519-6040</a> &nbsp;|&nbsp; <a href="tel:5555196060" style="color:inherit;">55-5519-6060</a></div>
+          <div><i data-lucide="phone" class="icon-xs"></i> <a href="tel:5555195303" style="color:inherit;">55-5519-5303</a> &nbsp;|&nbsp; <a href="tel:5555194046" style="color:inherit;">55-5519-4046</a></div>
           <div><i data-lucide="mail" class="icon-xs"></i> ventas331vertiz@refaccionesfranco.mx</div>
         </div>
         <button class="btn-secondary" style="margin-top:12px;width:100%;justify-content:center;font-size:12px;padding:10px;"
@@ -1965,7 +2035,7 @@ img { max-width:100%; }
         </div>
         <div class="location-hours">🟢 Lunes–Sábado 8am–7pm</div>
         <div style="margin-top:12px;display:flex;flex-direction:column;gap:5px;font-size:12px;color:var(--text-muted);">
-          <div><i data-lucide="phone" class="icon-xs"></i> 55-5440-8063 &nbsp;|&nbsp; 55-5440-6948</div>
+          <div><i data-lucide="phone" class="icon-xs"></i> <a href="tel:5554408063" style="color:inherit;">55-5440-8063</a> &nbsp;|&nbsp; <a href="tel:5554406948" style="color:inherit;">55-5440-6948</a></div>
           <div><i data-lucide="mail" class="icon-xs"></i> ventas343vertiz@refaccionesfranco.mx</div>
         </div>
         <button class="btn-secondary" style="margin-top:12px;width:100%;justify-content:center;font-size:12px;padding:10px;"
@@ -2214,11 +2284,11 @@ img { max-width:100%; }
       <div>
         <div class="footer-col-title">Contacto</div>
         <div class="footer-link" style="font-weight:600;font-size:11px;color:var(--text-white);margin-bottom:4px;">Vértiz 331 (Principal)</div>
-        <div class="footer-link"><i data-lucide="phone" class="icon-xs"></i> 55-5519-6040 · 55-5519-6060</div>
-        <div class="footer-link"><i data-lucide="phone" class="icon-xs"></i> 55-5519-5303 · 55-5519-4046</div>
+        <div class="footer-link"><i data-lucide="phone" class="icon-xs"></i> <a href="tel:5555196040" style="color:inherit;">55-5519-6040</a> · <a href="tel:5555196060" style="color:inherit;">55-5519-6060</a></div>
+        <div class="footer-link"><i data-lucide="phone" class="icon-xs"></i> <a href="tel:5555195303" style="color:inherit;">55-5519-5303</a> · <a href="tel:5555194046" style="color:inherit;">55-5519-4046</a></div>
         <div class="footer-link"><i data-lucide="mail" class="icon-xs"></i> ventas331vertiz@refaccionesfranco.mx</div>
         <div class="footer-link" style="font-weight:600;font-size:11px;color:var(--text-white);margin-top:10px;margin-bottom:4px;">Vértiz 343 (Frenos)</div>
-        <div class="footer-link"><i data-lucide="phone" class="icon-xs"></i> 55-5440-8063 · 55-5440-6948</div>
+        <div class="footer-link"><i data-lucide="phone" class="icon-xs"></i> <a href="tel:5554408063" style="color:inherit;">55-5440-8063</a> · <a href="tel:5554406948" style="color:inherit;">55-5440-6948</a></div>
         <div class="footer-link"><i data-lucide="mail" class="icon-xs"></i> ventas343vertiz@refaccionesfranco.mx</div>
         <div class="footer-link" style="margin-top:10px;"><i data-lucide="clock" class="icon-xs"></i> Lun–Sáb 8am–7pm · Dom 9am–3pm</div>
       </div>
@@ -2625,23 +2695,16 @@ function closeWaPopup() {
   waPopupDismissed = true;
 }
 
-/* Mostrar popup automáticamente a los 30s si no fue ya mostrado */
-setTimeout(() => {
-  if (!waPopupShown && !waPopupDismissed) {
-    document.getElementById('wa-popup').classList.add('show');
-    waPopupShown = true;
-  }
-}, 30000);
-
-/* También al hacer scroll del 60% */
-window.addEventListener('scroll', function onScroll() {
-  const pct = window.scrollY / (document.body.scrollHeight - window.innerHeight);
-  if (pct > 0.6 && !waPopupShown && !waPopupDismissed) {
-    document.getElementById('wa-popup').classList.add('show');
-    waPopupShown = true;
-    window.removeEventListener('scroll', onScroll);
-  }
-}, { passive: true });
+/* Mostrar popup automáticamente a los 8s — una sola vez por sesión */
+if (!sessionStorage.getItem('wa-popup-shown')) {
+  setTimeout(() => {
+    if (!waPopupShown && !waPopupDismissed) {
+      document.getElementById('wa-popup').classList.add('show');
+      waPopupShown = true;
+      sessionStorage.setItem('wa-popup-shown', '1');
+    }
+  }, 8000);
+}
 
 /* ════════════════════════════════════════════════════════════
    BOTÓN BUSCADOR ANIMADO
@@ -2673,6 +2736,25 @@ window.addEventListener('scroll', function onScroll() {
 const styleEl = document.createElement('style');
 styleEl.textContent = '@keyframes spin{to{transform:rotate(360deg)}}';
 document.head.appendChild(styleEl);
+
+/* ════════════════════════════════════════════════════════════
+   HAMBURGER NAV
+   ════════════════════════════════════════════════════════════ */
+function toggleNav() {
+  const wrap = document.getElementById('nav-tabs-wrap');
+  const btn  = document.getElementById('nav-hamburger');
+  const open = wrap.classList.toggle('open');
+  btn.setAttribute('aria-expanded', open);
+}
+document.querySelectorAll('.nav-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    if (window.innerWidth <= 768) {
+      const wrap = document.getElementById('nav-tabs-wrap');
+      wrap.classList.remove('open');
+      document.getElementById('nav-hamburger').setAttribute('aria-expanded', 'false');
+    }
+  });
+});
 </script>
 </body>
 </html>
