@@ -1193,10 +1193,56 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
       </button>
     </div>
     <div id="ai-actions-content" class="ai-actions-content">
-      <div class="ai-actions-placeholder">
-        <i data-lucide="sparkles" style="width:28px;height:28px;color:var(--blue-300);"></i>
-        <p>Haz clic en <strong>"Obtener Recomendaciones con IA"</strong> para generar un análisis priorizado de las acciones más urgentes e importantes basado en los datos de hoy.</p>
+      <!-- Recomendaciones estáticas basadas en los datos del dashboard -->
+      <div class="ai-action-item">
+        <div class="ai-action-badge urgente">1</div>
+        <div class="ai-action-text">
+          <strong>🔴 Reabastecer SKUs en quiebre crítico <span style="font-size:10px;background:var(--red-dim);padding:2px 7px;border-radius:10px;color:var(--red-400);font-weight:600;margin-left:4px;">URGENTE</span></strong>
+          <p>142 SKUs en quiebre (2.9% del catálogo), con 28 nuevos respecto al mes anterior. SKU-4821 Balata Bosch con stock 12 vs mínimo 50; SKU-2047 Filtro ACDelco con stock 8 vs mínimo 100.</p>
+          <div class="ai-action-how">▶ Levantar OC hoy para top 5 SKUs críticos (Bosch, ACDelco, Denso). Priorizar Gate Industrial (en alerta +9.3%). Solicitar entrega urgente nacional antes del viernes.</div>
+        </div>
       </div>
+      <div class="ai-action-item">
+        <div class="ai-action-badge urgente">2</div>
+        <div class="ai-action-text">
+          <strong>🔴 Resolver 2 órdenes de compra con retraso <span style="font-size:10px;background:var(--red-dim);padding:2px 7px;border-radius:10px;color:var(--red-400);font-weight:600;margin-left:4px;">URGENTE</span></strong>
+          <p>OC-2025-1849 (Bosch, $198K) y OC-2025-1851 (Gates Industrial, $537K) con retraso. Gates acumula alerta de precio +9.3% — riesgo de cancelación o renegociación forzada.</p>
+          <div class="ai-action-how">▶ Llamar hoy a Bosch México y Gates Industrial. Para Gates: evaluar proveedor alternativo. Escalar si no hay ETA confirmado en 24 h.</div>
+        </div>
+      </div>
+      <div class="ai-action-item">
+        <div class="ai-action-badge alto">3</div>
+        <div class="ai-action-text">
+          <strong>🟠 Cobrar a Servi-Car Puebla (68 días vencido) <span style="font-size:10px;background:var(--amber-dim);padding:2px 7px;border-radius:10px;color:var(--amber-400);font-weight:600;margin-left:4px;">ALTO</span></strong>
+          <p>Saldo $38,400 MXN con 68 días vencido — supera el límite de política (30 días). Cartera vencida total en 4.1% vs política de 5% máximo; este cliente presiona ese límite.</p>
+          <div class="ai-action-how">▶ Contacto directo hoy (llamada + WhatsApp). Ofrecer plan de pago en 2 parcialidades. Si no hay respuesta en 48 h, suspender crédito y escalar a cobranza.</div>
+        </div>
+      </div>
+      <div class="ai-action-item">
+        <div class="ai-action-badge alto">4</div>
+        <div class="ai-action-text">
+          <strong>🟠 Fill Rate en 94.8% — 0.9pp bajo meta <span style="font-size:10px;background:var(--amber-dim);padding:2px 7px;border-radius:10px;color:var(--amber-400);font-weight:600;margin-left:4px;">ALTO</span></strong>
+          <p>Meta es 95.7%. La brecha de 0.9pp equivale a ~26 pedidos no surtidos al 100% este mes. Directamente relacionado con los quiebres de stock actuales.</p>
+          <div class="ai-action-how">▶ Cruzar los SKUs en quiebre contra los pedidos pendientes del día. Ofrecer sustitutos certificados a clientes afectados. Resolverá con el reabastecimiento del punto 1.</div>
+        </div>
+      </div>
+      <div class="ai-action-item">
+        <div class="ai-action-badge alto">5</div>
+        <div class="ai-action-text">
+          <strong>🟠 Gates Industrial en alerta de precio (+9.3%) <span style="font-size:10px;background:var(--amber-dim);padding:2px 7px;border-radius:10px;color:var(--amber-400);font-weight:600;margin-left:4px;">ALTO</span></strong>
+          <p>Mayor incremento de precio entre todos los proveedores. Hyundai Mobis también con presión (+7.4%). Con inflación INPC en 4.53%, el diferencial de costos se está ampliando.</p>
+          <div class="ai-action-how">▶ Agendar negociación de contrato anual con Gates. Evaluar consolidar volumen a cambio de precio fijo. Revisar márgenes de las líneas afectadas y ajustar precios si aplica.</div>
+        </div>
+      </div>
+      <div class="ai-action-item">
+        <div class="ai-action-badge medio">6</div>
+        <div class="ai-action-text">
+          <strong>🔵 Rotación de inventario en 6.8x vs meta 7.0x <span style="font-size:10px;background:var(--blue-dim);padding:2px 7px;border-radius:10px;color:var(--blue-400);font-weight:600;margin-left:4px;">MEDIO</span></strong>
+          <p>Faltan 0.2x para alcanzar la meta anual. DIO en 53.7 días (dentro del rango 45–60 d), pero con tendencia descendente positiva: 62→59→56→54 días.</p>
+          <div class="ai-action-how">▶ Identificar SKUs de baja rotación en las categorías Motor y Otros. Considerar promoción o liquidación de piezas con más de 90 días sin movimiento.</div>
+        </div>
+      </div>
+      <div id="ai-extra-content"></div>
     </div>
   </div>
 
@@ -1215,7 +1261,7 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
     <!-- Inflación INPC -->
     <div class="inf-card fade-in delay-2">
       <div class="inf-label">Inflación INPC General</div>
-      <div class="inf-value">3.93%</div>
+      <div class="inf-value">4.53%</div>
       <div class="inf-sub">Abril 2026 · INEGI</div>
     </div>
 
@@ -3806,24 +3852,22 @@ async function enviarInlineChat() {
    ═══════════════════════════════════════════════ */
 async function obtenerRecomendacionesIA() {
   const btn = document.getElementById('btn-obtener-ia');
-  const content = document.getElementById('ai-actions-content');
+  const extraDiv = document.getElementById('ai-extra-content');
+  if (!extraDiv) return;
+
   btn.disabled = true;
-  btn.innerHTML = '<span class="ai-loading-dots"><span></span><span></span><span></span></span> Analizando…';
+  btn.innerHTML = '<span style="display:inline-flex;gap:3px;"><span style="animation:aiDot 1.2s ease-in-out infinite;display:inline-block;width:6px;height:6px;border-radius:50%;background:#fff;"></span><span style="animation:aiDot 1.2s ease-in-out 0.2s infinite;display:inline-block;width:6px;height:6px;border-radius:50%;background:#fff;"></span><span style="animation:aiDot 1.2s ease-in-out 0.4s infinite;display:inline-block;width:6px;height:6px;border-radius:50%;background:#fff;"></span></span> Analizando con IA…';
 
-  content.innerHTML = '<div class="ai-loading"><div class="ai-loading-dots"><span></span><span></span><span></span></div> Analizando todos los datos del dashboard para generar recomendaciones…</div>';
+  extraDiv.innerHTML = '<div class="ai-loading"><div class="ai-loading-dots"><span></span><span></span><span></span></div> Profundizando con IA en los datos actuales…</div>';
 
-  const prompt = `Analiza los datos actuales del dashboard de Refacciones Franco y genera una lista priorizada de ACCIONES INMEDIATAS ordenadas por urgencia e importancia.
+  const prompt = `Con base en los datos del dashboard de Refacciones Franco, genera 3 recomendaciones ADICIONALES que complementen las ya mostradas (quiebres de stock, órdenes retrasadas, cartera vencida, Fill Rate, Gates Industrial, rotación).
 
-Para cada acción incluye:
-1. Título corto de la acción (máx 8 palabras)
-2. Por qué es urgente/importante (1-2 líneas con datos concretos del dashboard)
-3. Cómo resolverlo: pasos concretos y accionables (2-3 pasos)
-4. Nivel: URGENTE / ALTO / MEDIO
+Enfócate en: oportunidades de venta cruzada, clientes con potencial sin explotar, optimización de márgenes, tendencias preocupantes de mediano plazo.
 
-Formato de respuesta: usa exactamente este formato para cada acción:
-##ACCION|NIVEL|Título de la acción|Por qué es urgente con datos concretos|Cómo resolverlo paso a paso
+Usa exactamente este formato para cada acción:
+##ACCION|NIVEL|Título corto|Por qué es relevante con datos concretos|Cómo atacarlo en pasos concretos
 
-Genera entre 5 y 7 acciones. Prioriza: quiebres de stock críticos, órdenes retrasadas, cartera vencida, vendedores bajo meta, proveedores en alerta.`;
+NIVEL debe ser: URGENTE, ALTO o MEDIO.`;
 
   try {
     const res = await fetch('/api/chat', {
@@ -3835,37 +3879,38 @@ Genera entre 5 y 7 acciones. Prioriza: quiebres de stock críticos, órdenes ret
     const reply = data.reply || '';
 
     const lines = reply.split('\n').filter(l => l.startsWith('##ACCION|'));
+    const colores = { 'URGENTE': 'urgente', 'ALTO': 'alto', 'MEDIO': 'medio' };
+    const emojis  = { 'URGENTE': '🔴', 'ALTO': '🟠', 'MEDIO': '🔵' };
+
     if (lines.length === 0) {
-      content.innerHTML = `<div style="padding:14px;font-size:13px;color:var(--text-secondary);line-height:1.7;">${reply.replace(/\n/g,'<br>')}</div>`;
+      extraDiv.innerHTML = `<div style="padding:14px 0;font-size:13px;color:var(--text-secondary);line-height:1.7;border-top:1px solid var(--border-subtle);margin-top:4px;">${reply.replace(/\n/g,'<br>')}</div>`;
     } else {
-      const colores = { 'URGENTE': 'urgente', 'ALTO': 'alto', 'MEDIO': 'medio' };
-      const numeros = { 'URGENTE': '🔴', 'ALTO': '🟠', 'MEDIO': '🔵' };
-      content.innerHTML = lines.map((line, i) => {
-        const parts = line.replace('##ACCION|','').split('|');
-        const nivel = (parts[0] || 'MEDIO').trim().toUpperCase();
-        const titulo = parts[1] || '';
-        const porQue = parts[2] || '';
-        const como = parts[3] || '';
-        const cls = colores[nivel] || 'medio';
-        return `<div class="ai-action-item">
-          <div class="ai-action-badge ${cls}">${i+1}</div>
-          <div class="ai-action-text">
-            <strong>${numeros[nivel] || '🔵'} ${titulo} <span style="font-size:10px;background:var(--bg-overlay);padding:2px 7px;border-radius:10px;color:var(--text-muted);font-weight:600;margin-left:4px;">${nivel}</span></strong>
-            <p>${porQue}</p>
-            <div class="ai-action-how">▶ Cómo resolverlo: ${como}</div>
-          </div>
-        </div>`;
-      }).join('');
+      extraDiv.innerHTML = `<div style="border-top:2px solid var(--border-default);margin-top:8px;padding-top:10px;margin-bottom:4px;font-size:11px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--blue-400);">✨ Análisis adicional con IA</div>` +
+        lines.map((line, i) => {
+          const parts = line.replace('##ACCION|','').split('|');
+          const nivel = (parts[0] || 'MEDIO').trim().toUpperCase();
+          const titulo = parts[1] || '';
+          const porQue = parts[2] || '';
+          const como   = parts[3] || '';
+          const cls    = colores[nivel] || 'medio';
+          return `<div class="ai-action-item">
+            <div class="ai-action-badge ${cls}">${7 + i}</div>
+            <div class="ai-action-text">
+              <strong>${emojis[nivel] || '🔵'} ${titulo} <span style="font-size:10px;background:var(--bg-overlay);padding:2px 7px;border-radius:10px;color:var(--text-muted);font-weight:600;margin-left:4px;">${nivel}</span></strong>
+              <p>${porQue}</p>
+              <div class="ai-action-how">▶ Cómo resolverlo: ${como}</div>
+            </div>
+          </div>`;
+        }).join('');
     }
 
     btn.disabled = false;
-    btn.innerHTML = '<i data-lucide="sparkles"></i> Actualizar Recomendaciones';
-    lucide.createIcons();
+    btn.innerHTML = '✨ Actualizar análisis IA';
+    if (window.lucide) lucide.createIcons();
   } catch (err) {
-    content.innerHTML = '<div style="color:var(--red-400);padding:14px;font-size:13px;">Error al generar recomendaciones. Verifica la conexión.</div>';
+    extraDiv.innerHTML = '<div style="color:var(--red-400);padding:12px 0;font-size:13px;">Error al conectar con IA. Verifica la conexión.</div>';
     btn.disabled = false;
-    btn.innerHTML = '<i data-lucide="sparkles"></i> Reintentar';
-    lucide.createIcons();
+    btn.innerHTML = '✨ Reintentar';
   }
 }
 
@@ -4084,23 +4129,110 @@ document.getElementById('email-modal-overlay')?.addEventListener('click', functi
 function buildEmailDatos(tabId) {
   const mesEl = document.getElementById('mes-select-' + tabId);
   const mesNombre = mesEl ? mesEl.options[mesEl.selectedIndex].text : '';
-
-  const kpis = [];
   const panel = document.getElementById('tab-' + tabId);
+
+  /* KPIs principales */
+  const kpis = [];
   if (panel) {
     panel.querySelectorAll('.kpi-value').forEach((el, i) => {
-      const label = el.closest('.card')?.querySelector('.kpi-label')?.textContent?.trim() || ('KPI ' + (i+1));
-      kpis.push(`<tr><td style="padding:8px 12px;border-bottom:1px solid #F3F4F6;color:#4B5563;font-size:13px;">${label}</td><td style="padding:8px 12px;border-bottom:1px solid #F3F4F6;font-weight:700;font-size:13px;text-align:right;">${el.textContent.trim()}</td></tr>`);
+      const card = el.closest('.card');
+      const label = card?.querySelector('.kpi-label')?.textContent?.trim() || ('KPI ' + (i+1));
+      const sub   = card?.querySelector('.kpi-sub')?.textContent?.trim() || '';
+      const delta = card?.querySelector('.kpi-delta')?.textContent?.trim() || '';
+      kpis.push(`<tr>
+        <td style="padding:8px 12px;border-bottom:1px solid #F3F4F6;color:#4B5563;font-size:13px;">
+          ${label}${sub ? `<br><span style="font-size:11px;color:#9CA3AF;">${sub}</span>` : ''}
+        </td>
+        <td style="padding:8px 12px;border-bottom:1px solid #F3F4F6;font-weight:700;font-size:13px;text-align:right;color:#111827;">
+          ${el.textContent.trim()}
+          ${delta ? `<br><span style="font-size:11px;color:${delta.includes('▲')?'#15803d':'#b91c1c'};font-weight:500;">${delta}</span>` : ''}
+        </td>
+      </tr>`);
     });
   }
+
+  /* Sección extra: Alertas de stock */
+  const alertasStock = `
+    <h3 style="font-size:13px;font-weight:700;color:#111827;margin:20px 0 10px;padding-top:16px;border-top:2px solid #F3F4F6;">⚠️ Alertas de Inventario — SKUs Críticos</h3>
+    <table style="width:100%;border-collapse:collapse;font-size:12px;">
+      <thead><tr style="background:#FEF2F2;">
+        <th style="padding:7px 10px;text-align:left;color:#b91c1c;font-size:11px;">SKU</th>
+        <th style="padding:7px 10px;text-align:left;color:#b91c1c;font-size:11px;">Descripción</th>
+        <th style="padding:7px 10px;text-align:right;color:#b91c1c;font-size:11px;">Stock actual</th>
+        <th style="padding:7px 10px;text-align:right;color:#b91c1c;font-size:11px;">Mínimo</th>
+        <th style="padding:7px 10px;text-align:right;color:#b91c1c;font-size:11px;">Qty sugerida</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;color:#374151;">SKU-4821</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;">Balata Delantera Bosch Cerámico</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;color:#b91c1c;font-weight:700;">12</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;">50</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;font-weight:700;">120</td></tr>
+        <tr><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;color:#374151;">SKU-2047</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;">Filtro de Aceite ACDelco PF47E</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;color:#b91c1c;font-weight:700;">8</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;">100</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;font-weight:700;">300</td></tr>
+        <tr><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;color:#374151;">SKU-3312</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;">Amortiguador Delantero Gabriel G57</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;color:#b91c1c;font-weight:700;">3</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;">20</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;font-weight:700;">60</td></tr>
+        <tr><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;color:#374151;">SKU-0874</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;">Alternador Denso 210-4165</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;color:#b91c1c;font-weight:700;">2</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;">10</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;font-weight:700;">24</td></tr>
+      </tbody>
+    </table>`;
+
+  /* Sección extra: Órdenes de compra pendientes/retrasadas */
+  const ordenesAlerta = `
+    <h3 style="font-size:13px;font-weight:700;color:#111827;margin:20px 0 10px;padding-top:16px;border-top:2px solid #F3F4F6;">📦 Órdenes de Compra — Pendientes y Retrasadas</h3>
+    <table style="width:100%;border-collapse:collapse;font-size:12px;">
+      <thead><tr style="background:#FFFBEB;">
+        <th style="padding:7px 10px;text-align:left;color:#b45309;font-size:11px;"># Orden</th>
+        <th style="padding:7px 10px;text-align:left;color:#b45309;font-size:11px;">Proveedor</th>
+        <th style="padding:7px 10px;text-align:right;color:#b45309;font-size:11px;">Monto MXN</th>
+        <th style="padding:7px 10px;text-align:right;color:#b45309;font-size:11px;">Entrega Est.</th>
+        <th style="padding:7px 10px;text-align:right;color:#b45309;font-size:11px;">Estatus</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;">OC-2025-1849</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;">Bosch México</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;">$198,000</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;">25/04/2026</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;color:#b91c1c;font-weight:700;">Con Retraso</td></tr>
+        <tr><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;">OC-2025-1851</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;">Gates Industrial</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;">$537,800</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;">28/04/2026</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;color:#b91c1c;font-weight:700;">Con Retraso</td></tr>
+        <tr><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;">OC-2025-1848</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;">Denso Intl.</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;">$612,000</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;">13/05/2026</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;color:#b45309;font-weight:700;">Pendiente</td></tr>
+        <tr><td style="padding:7px 10px;">OC-2025-1852</td><td style="padding:7px 10px;">Hyundai Mobis</td><td style="padding:7px 10px;text-align:right;">$892,000</td><td style="padding:7px 10px;text-align:right;">13/05/2026</td><td style="padding:7px 10px;text-align:right;color:#b45309;font-weight:700;">En Tránsito</td></tr>
+      </tbody>
+    </table>`;
+
+  /* Sección extra: Clientes con saldo pendiente */
+  const clientesCartera = `
+    <h3 style="font-size:13px;font-weight:700;color:#111827;margin:20px 0 10px;padding-top:16px;border-top:2px solid #F3F4F6;">💰 Clientes con Saldo Pendiente — Atención Prioritaria</h3>
+    <table style="width:100%;border-collapse:collapse;font-size:12px;">
+      <thead><tr style="background:#F0FDF4;">
+        <th style="padding:7px 10px;text-align:left;color:#15803d;font-size:11px;">Cliente</th>
+        <th style="padding:7px 10px;text-align:right;color:#15803d;font-size:11px;">Saldo MXN</th>
+        <th style="padding:7px 10px;text-align:right;color:#15803d;font-size:11px;">Días vencido</th>
+        <th style="padding:7px 10px;text-align:right;color:#15803d;font-size:11px;">Estatus</th>
+      </tr></thead>
+      <tbody>
+        <tr><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;font-weight:600;">Servi-Car Puebla</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;">$38,400</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;color:#b91c1c;font-weight:700;">68 días</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;color:#b91c1c;">Vencido</td></tr>
+        <tr><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;font-weight:600;">Refacciones El Águila</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;">$62,100</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;color:#b45309;font-weight:700;">35 días</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;color:#b45309;">En seguimiento</td></tr>
+        <tr><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;font-weight:600;">Taller Los Pinos</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;">$48,900</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;color:#b45309;">22 días</td><td style="padding:7px 10px;border-bottom:1px solid #F3F4F6;text-align:right;color:#15803d;">Al corriente</td></tr>
+        <tr><td style="padding:7px 10px;font-weight:600;">Auto Express del Norte</td><td style="padding:7px 10px;text-align:right;">$89,200</td><td style="padding:7px 10px;text-align:right;">—</td><td style="padding:7px 10px;text-align:right;color:#15803d;">Al corriente</td></tr>
+      </tbody>
+    </table>
+    <p style="margin:6px 0 0;font-size:11px;color:#9CA3AF;">Cartera vencida total: 4.1% · DSO: 18 días · CxC total: $379,338 MXN</p>`;
+
+  /* Acciones inmediatas */
+  const acciones = `
+    <h3 style="font-size:13px;font-weight:700;color:#111827;margin:20px 0 10px;padding-top:16px;border-top:2px solid #F3F4F6;">🎯 Top 3 Acciones Inmediatas</h3>
+    <ol style="margin:0;padding-left:18px;font-size:13px;color:#374151;line-height:1.8;">
+      <li><strong>Levantar OC urgente</strong> para SKU-4821, SKU-2047 y SKU-3312 (stock crítico).</li>
+      <li><strong>Llamar a Gates Industrial y Bosch</strong> por órdenes OC-1851 y OC-1849 con retraso.</li>
+      <li><strong>Contactar a Servi-Car Puebla</strong> (68 días vencido, $38,400) — ofrecer plan de pago.</li>
+    </ol>`;
 
   return `
     <h2 style="font-size:15px;font-weight:700;color:#111827;margin:0 0 16px;">${TAB_NOMBRES[tabId] || tabId}${mesNombre ? ' · ' + mesNombre : ''}</h2>
     <table style="width:100%;border-collapse:collapse;background:#F9FAFB;border-radius:8px;overflow:hidden;">
-      <thead><tr><th style="padding:10px 12px;background:#F3F4F6;text-align:left;font-size:11px;color:#6B7280;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Indicador</th><th style="padding:10px 12px;background:#F3F4F6;text-align:right;font-size:11px;color:#6B7280;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Valor</th></tr></thead>
+      <thead><tr>
+        <th style="padding:10px 12px;background:#F3F4F6;text-align:left;font-size:11px;color:#6B7280;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Indicador</th>
+        <th style="padding:10px 12px;background:#F3F4F6;text-align:right;font-size:11px;color:#6B7280;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Valor</th>
+      </tr></thead>
       <tbody>${kpis.join('')}</tbody>
     </table>
-    <p style="margin:16px 0 0;font-size:12px;color:#9CA3AF;">Para ver el reporte completo con gráficas y tablas detalladas, accede al Dashboard Ejecutivo.</p>
+    ${alertasStock}
+    ${ordenesAlerta}
+    ${clientesCartera}
+    ${acciones}
+    <p style="margin:20px 0 0;font-size:12px;color:#9CA3AF;border-top:1px solid #F3F4F6;padding-top:14px;">
+      Para ver el reporte completo con gráficas y tablas detalladas, accede al Dashboard Ejecutivo.
+    </p>
   `;
 }
 
@@ -4156,7 +4288,7 @@ async function enviarEmail() {
 }
 
 /* ── Inicializar iconos Lucide ── */
-lucide.createIcons();
+if (window.lucide) lucide.createIcons();
 
 </script>
 

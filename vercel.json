@@ -10,6 +10,14 @@
       "use": "@vercel/static"
     },
     {
+      "src": "DASHBOARD/lucide.min.js",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "DASHBOARD/tomas.png",
+      "use": "@vercel/static"
+    },
+    {
       "src": "DASHBOARD/server.js",
       "use": "@vercel/node"
     }
@@ -22,6 +30,14 @@
     {
       "src": "^/dashboard$",
       "dest": "DASHBOARD/server.js"
+    },
+    {
+      "src": "^/lucide\\.min\\.js$",
+      "dest": "DASHBOARD/lucide.min.js"
+    },
+    {
+      "src": "^/tomas\\.png$",
+      "dest": "DASHBOARD/tomas.png"
     },
     {
       "src": "^/$",
