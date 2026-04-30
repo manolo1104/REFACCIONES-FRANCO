@@ -1033,6 +1033,148 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
   font-size: 10px; font-weight: 700;
   display: flex; align-items: center; justify-content: center;
 }
+
+/* ============================================================
+   MORNING BRIEFING — HOY
+   ============================================================ */
+.morning-greeting {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 60%, #3b82f6 100%);
+  border-radius: var(--radius-xl); padding: 28px 32px;
+  margin-bottom: 18px; position: relative; overflow: hidden;
+}
+.morning-greeting::before {
+  content: ''; position: absolute; right: -60px; top: -60px;
+  width: 220px; height: 220px; border-radius: 50%;
+  background: rgba(255,255,255,0.06); pointer-events: none;
+}
+.morning-buenos-dias {
+  font-family: var(--font-display, 'Sora'), sans-serif;
+  font-size: 32px; font-weight: 700; color: #fff;
+  letter-spacing: -0.5px; line-height: 1;
+}
+.morning-fecha { font-size: 13px; color: rgba(255,255,255,0.75); margin-top: 6px; }
+.morning-sub { font-size: 12px; color: rgba(255,255,255,0.60); margin-top: 4px; }
+.morning-weather-badge {
+  display: flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.15); padding: 6px 14px; border-radius: 20px;
+  font-size: 12px; color: #fff; border: 1px solid rgba(255,255,255,0.2);
+}
+.morning-weather-badge i { width: 14px; height: 14px; }
+
+.morning-kpi-row {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-bottom: 2px;
+}
+@media (max-width:900px) { .morning-kpi-row { grid-template-columns: repeat(2,1fr); } }
+
+.morning-kpi-card {
+  background: var(--glass-bg); border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg); padding: 18px 20px;
+  display: flex; align-items: flex-start; gap: 14px;
+  box-shadow: var(--glass-shadow);
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+.morning-kpi-card:hover { transform: translateY(-2px); box-shadow: var(--glass-shadow-hover); }
+.morning-kpi-icon {
+  width: 40px; height: 40px; border-radius: var(--radius-md); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.morning-kpi-icon i { width: 20px; height: 20px; }
+.morning-kpi-ventas .morning-kpi-icon  { background: var(--blue-dim);   } .morning-kpi-ventas  .morning-kpi-icon i { color: var(--blue-500); }
+.morning-kpi-cobros .morning-kpi-icon  { background: var(--green-dim);  } .morning-kpi-cobros  .morning-kpi-icon i { color: var(--green-400); }
+.morning-kpi-meta .morning-kpi-icon    { background: var(--purple-dim); } .morning-kpi-meta    .morning-kpi-icon i { color: var(--purple-500); }
+.morning-kpi-pendiente .morning-kpi-icon { background: var(--amber-dim);} .morning-kpi-pendiente .morning-kpi-icon i { color: var(--amber-500); }
+.morning-kpi-label { font-size: 11px; font-weight: 500; color: var(--text-secondary); margin-bottom: 4px; }
+.morning-kpi-value { font-size: 24px; font-weight: 700; color: var(--text-primary); font-family: 'IBM Plex Mono', monospace; letter-spacing: -1px; line-height: 1; }
+.morning-kpi-sub   { font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+.morning-progress-bar { height: 4px; background: var(--bg-overlay); border-radius: 4px; margin-top: 8px; overflow: hidden; }
+.morning-progress-fill { height: 100%; background: var(--purple-500); border-radius: 4px; transition: width 0.6s ease; }
+
+.morning-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+@media (max-width:900px) { .morning-grid-3 { grid-template-columns: 1fr; } }
+
+.morning-alert-list { display: flex; flex-direction: column; gap: 10px; }
+.morning-alert {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 10px 12px; border-radius: var(--radius-md); font-size: 12px;
+}
+.morning-alert i { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
+.morning-alert strong { display: block; font-size: 12px; font-weight: 600; }
+.morning-alert-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+.morning-alert-red  { background: var(--red-dim);   border-left: 3px solid var(--red-400);   } .morning-alert-red  i { color: var(--red-400);   }
+.morning-alert-amber{ background: var(--amber-dim); border-left: 3px solid var(--amber-400); } .morning-alert-amber i { color: var(--amber-400); }
+.morning-alert-blue { background: var(--blue-dim);  border-left: 3px solid var(--blue-400);  } .morning-alert-blue  i { color: var(--blue-400);  }
+
+.morning-vendedor-row {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 0; border-bottom: 1px solid var(--border-subtle);
+  font-size: 12px;
+}
+.morning-vendedor-row:last-child { border-bottom: none; }
+.morning-rank { width: 20px; height: 20px; border-radius: 50%; background: var(--bg-overlay); display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+.morning-rank-1 { background: #fbbf24; color: #78350f; }
+.morning-rank-2 { background: #d1d5db; color: #374151; }
+.morning-rank-3 { background: #d97706; color: #fff; }
+.morning-vendedor-info { flex: 1; min-width: 0; }
+.morning-vendedor-info strong { font-size: 12px; font-weight: 600; color: var(--text-primary); display: block; }
+.morning-vendedor-sub { font-size: 10px; color: var(--text-muted); }
+.morning-vendedor-bar-wrap { width: 60px; height: 4px; background: var(--bg-overlay); border-radius: 4px; overflow: hidden; flex-shrink: 0; }
+.morning-vendedor-bar { height: 100%; border-radius: 4px; }
+.morning-vendedor-val { font-family: 'IBM Plex Mono', monospace; font-size: 11px; font-weight: 600; flex-shrink: 0; width: 52px; text-align: right; }
+
+/* ── Botón crear OC / documentos ── */
+.btn-crear-oc {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 18px; border-radius: var(--radius-md);
+  background: var(--blue-500); color: #fff;
+  border: 1px solid var(--blue-400); cursor: pointer;
+  font-size: 13px; font-weight: 600; font-family: 'Sora', sans-serif;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn-crear-oc:hover { background: var(--blue-400); transform: translateY(-1px); }
+.btn-crear-oc i[data-lucide] { width: 15px; height: 15px; }
+
+/* ── Modal base (compartido OC, Cotización, Factura) ── */
+.oc-modal {
+  background: #fff; border-radius: 16px; width: 100%; max-width: 800px;
+  max-height: 92vh; overflow-y: auto; margin: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.20);
+}
+.oc-modal-header {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  padding: 22px 28px 16px; border-bottom: 1px solid var(--border-subtle);
+  position: sticky; top: 0; background: #fff; z-index: 2;
+}
+.oc-modal-title { font-size: 17px; font-weight: 700; color: var(--text-primary); }
+.oc-modal-sub   { font-size: 12px; color: var(--text-muted); margin-top: 3px; font-family: 'IBM Plex Mono', monospace; }
+.oc-modal-body  { padding: 20px 28px; }
+.oc-modal-footer { padding: 16px 28px; border-top: 1px solid var(--border-subtle); display: flex; justify-content: flex-end; gap: 10px; position: sticky; bottom: 0; background: #fff; z-index: 2; }
+.oc-form-row { display: flex; gap: 14px; margin-bottom: 14px; flex-wrap: wrap; }
+.oc-form-group { display: flex; flex-direction: column; flex: 1; min-width: 160px; }
+.oc-label { font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.3px; }
+.oc-input {
+  padding: 9px 12px; border: 1px solid var(--border-default); border-radius: var(--radius-sm);
+  font-size: 13px; font-family: 'Sora', sans-serif; background: #F9FAFB; color: var(--text-primary);
+  outline: none; transition: border-color 0.2s;
+}
+.oc-input:focus { border-color: var(--blue-400); background: #fff; }
+textarea.oc-input { resize: vertical; }
+.oc-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.oc-table th { padding: 7px 8px; background: #F3F4F6; font-size: 10px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text-muted); text-align: left; }
+.oc-table td { padding: 6px 4px; border-bottom: 1px solid var(--border-subtle); }
+.oc-input-inline {
+  width: 100%; padding: 6px 8px; border: 1px solid transparent; border-radius: 5px;
+  font-size: 12px; font-family: 'Sora', sans-serif; background: transparent;
+  outline: none; transition: border-color 0.2s, background 0.2s;
+}
+.oc-input-inline:focus { border-color: var(--blue-400); background: #EFF6FF; }
+.oc-btn-add-row { font-size: 11px; font-weight: 600; color: var(--blue-500); background: var(--blue-dim); border: 1px solid var(--blue-glow); border-radius: var(--radius-sm); padding: 4px 10px; cursor: pointer; }
+.oc-totales { background: var(--bg-base); border-radius: var(--radius-md); padding: 14px 16px; min-width: 240px; }
+.oc-total-row { display: flex; justify-content: space-between; font-size: 13px; padding: 4px 0; color: var(--text-secondary); }
+.oc-total-final { border-top: 1px solid var(--border-default); margin-top: 6px; padding-top: 8px; font-size: 15px; font-weight: 700; color: var(--text-primary); }
+.oc-btn-primary { padding: 9px 20px; background: var(--blue-500); color: #fff; border: none; border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Sora', sans-serif; }
+.oc-btn-primary:hover { background: var(--blue-400); }
+.oc-btn-secondary { padding: 9px 16px; background: var(--bg-overlay); color: var(--text-secondary); border: 1px solid var(--border-default); border-radius: var(--radius-sm); font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Sora', sans-serif; }
 </style>
 </head>
 <body>
@@ -1123,6 +1265,9 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
      NAVEGACIÓN DE TABS
      ============================================================ -->
 <nav class="tab-nav">
+  <button class="tab-btn" data-tab="hoy">
+    <i data-lucide="sunrise"></i> Buenos Días
+  </button>
   <button class="tab-btn active" data-tab="insights">
     <i data-lucide="zap"></i> Insights
   </button>
@@ -1150,6 +1295,213 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
 </nav>
 
 <main class="main">
+
+<!-- ══════════════════════════════════════════════════════════
+     TAB: BUENOS DÍAS — MORNING BRIEFING
+     ══════════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-hoy">
+
+  <!-- Greeting -->
+  <div class="morning-greeting">
+    <div class="morning-greeting-left">
+      <div class="morning-buenos-dias">¡Buenos días!</div>
+      <div class="morning-fecha" id="morning-fecha">Cargando...</div>
+      <div class="morning-sub">Aquí está todo lo que necesitas saber para empezar el día.</div>
+    </div>
+    <div class="morning-greeting-right">
+      <div class="morning-weather-badge">
+        <i data-lucide="sun"></i>
+        <span>CDMX · Hoy</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs del día — fila principal -->
+  <div class="morning-kpi-row">
+    <div class="morning-kpi-card morning-kpi-ventas">
+      <div class="morning-kpi-icon"><i data-lucide="trending-up"></i></div>
+      <div class="morning-kpi-body">
+        <div class="morning-kpi-label">Ventas del Día</div>
+        <div class="morning-kpi-value" id="m-ventas-hoy">—</div>
+        <div class="morning-kpi-sub">vs meta diaria $1.04M</div>
+      </div>
+    </div>
+    <div class="morning-kpi-card morning-kpi-cobros">
+      <div class="morning-kpi-icon"><i data-lucide="banknote"></i></div>
+      <div class="morning-kpi-body">
+        <div class="morning-kpi-label">Cobros del Día</div>
+        <div class="morning-kpi-value" id="m-cobros-hoy">—</div>
+        <div class="morning-kpi-sub" id="m-cobros-sub">Transferencia + Efectivo + Tarjeta</div>
+      </div>
+    </div>
+    <div class="morning-kpi-card morning-kpi-meta">
+      <div class="morning-kpi-icon"><i data-lucide="target"></i></div>
+      <div class="morning-kpi-body">
+        <div class="morning-kpi-label">Avance del Mes</div>
+        <div class="morning-kpi-value" id="m-avance-mes">73%</div>
+        <div class="morning-kpi-sub">$18.2M de $25.0M meta</div>
+        <div class="morning-progress-bar"><div class="morning-progress-fill" id="m-progress-fill" style="width:73%"></div></div>
+      </div>
+    </div>
+    <div class="morning-kpi-card morning-kpi-pendiente">
+      <div class="morning-kpi-icon"><i data-lucide="alert-circle"></i></div>
+      <div class="morning-kpi-body">
+        <div class="morning-kpi-label">CxC Vencida</div>
+        <div class="morning-kpi-value" id="m-cxc-vencida">$38,400</div>
+        <div class="morning-kpi-sub">Servi-Car Puebla · 68 días</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Segunda fila — Alertas + Proveedores + Top vendedor -->
+  <div class="morning-grid-3" style="margin-top:14px;">
+
+    <!-- Alertas críticas -->
+    <div class="card morning-alerts-card">
+      <div class="card-title" style="display:flex;align-items:center;gap:6px;">
+        <i data-lucide="zap" style="width:14px;height:14px;color:var(--red-400);"></i>
+        Alertas del Día
+      </div>
+      <div class="morning-alert-list">
+        <div class="morning-alert morning-alert-red">
+          <i data-lucide="package-x"></i>
+          <div>
+            <strong>142 SKUs en quiebre</strong>
+            <div class="morning-alert-sub">+28 vs mes anterior · SKU-2047 stock crítico 8 uds</div>
+          </div>
+        </div>
+        <div class="morning-alert morning-alert-red">
+          <i data-lucide="clock"></i>
+          <div>
+            <strong>2 órdenes con retraso</strong>
+            <div class="morning-alert-sub">OC-1849 Bosch $198K · OC-1851 Gates $537K</div>
+          </div>
+        </div>
+        <div class="morning-alert morning-alert-amber">
+          <i data-lucide="user-x"></i>
+          <div>
+            <strong>Servi-Car Puebla 68d vencido</strong>
+            <div class="morning-alert-sub">$38,400 pendiente · Llamar hoy</div>
+          </div>
+        </div>
+        <div class="morning-alert morning-alert-amber">
+          <i data-lucide="alert-triangle"></i>
+          <div>
+            <strong>Gates Industrial en alerta</strong>
+            <div class="morning-alert-sub">+9.3% precio · Negociar contrato</div>
+          </div>
+        </div>
+        <div class="morning-alert morning-alert-blue">
+          <i data-lucide="bar-chart-2"></i>
+          <div>
+            <strong>Fill Rate 94.8% · −0.9pp meta</strong>
+            <div class="morning-alert-sub">26 pedidos no surtidos al 100%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Top 5 vendedores del mes -->
+    <div class="card">
+      <div class="card-title" style="display:flex;align-items:center;gap:6px;">
+        <i data-lucide="users" style="width:14px;height:14px;color:var(--blue-400);"></i>
+        Top Vendedores del Mes
+      </div>
+      <div id="morning-vendedores-list">
+        <div class="morning-vendedor-row">
+          <span class="morning-rank morning-rank-1">1</span>
+          <div class="morning-vendedor-info"><strong>José Luis Badillo</strong><div class="morning-vendedor-sub">$3.66M neto</div></div>
+          <div class="morning-vendedor-bar-wrap"><div class="morning-vendedor-bar" style="width:100%;background:var(--blue-500);"></div></div>
+          <span class="morning-vendedor-val" style="color:var(--blue-500);">$36,641</span>
+        </div>
+        <div class="morning-vendedor-row">
+          <span class="morning-rank morning-rank-2">2</span>
+          <div class="morning-vendedor-info"><strong>Casildo López</strong><div class="morning-vendedor-sub">$2.98M neto</div></div>
+          <div class="morning-vendedor-bar-wrap"><div class="morning-vendedor-bar" style="width:81%;background:var(--blue-400);"></div></div>
+          <span class="morning-vendedor-val" style="color:var(--blue-400);">$29,788</span>
+        </div>
+        <div class="morning-vendedor-row">
+          <span class="morning-rank morning-rank-3">3</span>
+          <div class="morning-vendedor-info"><strong>Miguel Medina</strong><div class="morning-vendedor-sub">$1.81M neto</div></div>
+          <div class="morning-vendedor-bar-wrap"><div class="morning-vendedor-bar" style="width:49%;background:var(--green-400);"></div></div>
+          <span class="morning-vendedor-val" style="color:var(--green-400);">$18,083</span>
+        </div>
+        <div class="morning-vendedor-row">
+          <span class="morning-rank">4</span>
+          <div class="morning-vendedor-info"><strong>Humberto Santana</strong><div class="morning-vendedor-sub">$1.72M neto</div></div>
+          <div class="morning-vendedor-bar-wrap"><div class="morning-vendedor-bar" style="width:47%;background:var(--amber-400);"></div></div>
+          <span class="morning-vendedor-val" style="color:var(--amber-400);">$17,238</span>
+        </div>
+        <div class="morning-vendedor-row">
+          <span class="morning-rank">5</span>
+          <div class="morning-vendedor-info"><strong>Olimpo Ortiz</strong><div class="morning-vendedor-sub">$1.66M neto</div></div>
+          <div class="morning-vendedor-bar-wrap"><div class="morning-vendedor-bar" style="width:45%;background:var(--amber-300);"></div></div>
+          <span class="morning-vendedor-val" style="color:var(--amber-400);">$16,624</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Corte de caja + acciones del día -->
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div class="card">
+        <div class="card-title" style="display:flex;align-items:center;gap:6px;">
+          <i data-lucide="wallet" style="width:14px;height:14px;color:var(--green-400);"></i>
+          Corte de Caja — Hoy
+        </div>
+        <div class="mini-stat"><span class="mini-label">Efectivo</span><span class="mini-val" id="m-efectivo" style="color:var(--green-400);">—</span></div>
+        <div class="mini-stat"><span class="mini-label">Transferencia</span><span class="mini-val" id="m-transferencia" style="color:var(--blue-400);">—</span></div>
+        <div class="mini-stat"><span class="mini-label">Tarjeta</span><span class="mini-val" id="m-tarjeta" style="color:var(--amber-400);">—</span></div>
+        <div class="mini-stat" style="border-top:1px solid var(--border-subtle);margin-top:8px;padding-top:8px;">
+          <span class="mini-label" style="font-weight:700;">Total Cobrado</span>
+          <span class="mini-val" id="m-total-cobros" style="font-weight:700;">—</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title" style="display:flex;align-items:center;gap:6px;">
+          <i data-lucide="check-circle-2" style="width:14px;height:14px;color:var(--blue-400);"></i>
+          3 Acciones del Día
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;">
+            <span style="background:var(--red-dim);color:var(--red-400);font-weight:700;font-size:10px;padding:2px 6px;border-radius:10px;flex-shrink:0;margin-top:1px;">🔴 HOY</span>
+            <span>Levantar OC para SKU-2047 (Filtro ACDelco, stock 8/100 min)</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;">
+            <span style="background:var(--amber-dim);color:var(--amber-400);font-weight:700;font-size:10px;padding:2px 6px;border-radius:10px;flex-shrink:0;margin-top:1px;">🟠 HOY</span>
+            <span>Llamar a Servi-Car Puebla — $38,400 / 68 días vencido</span>
+          </div>
+          <div style="display:flex;gap:8px;align-items:flex-start;font-size:12px;">
+            <span style="background:var(--amber-dim);color:var(--amber-400);font-weight:700;font-size:10px;padding:2px 6px;border-radius:10px;flex-shrink:0;margin-top:1px;">🟠 HOY</span>
+            <span>Escalar OC-1851 Gates Industrial ($537K en retraso)</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Tabla últimos 7 días -->
+  <div class="section-label" style="margin-top:24px;">Tendencia — Últimos 7 Días</div>
+  <div class="card" style="overflow-x:auto;">
+    <table style="min-width:500px;">
+      <thead>
+        <tr>
+          <th>Fecha</th>
+          <th style="text-align:right;">Ventas MXN</th>
+          <th style="text-align:right;">Efectivo</th>
+          <th style="text-align:right;">Transferencia</th>
+          <th style="text-align:right;">Tarjeta</th>
+          <th style="text-align:right;">Tx</th>
+        </tr>
+      </thead>
+      <tbody id="morning-corte-tbody">
+        <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:12px;">Cargando...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div> <!-- /tab-hoy -->
 
 <!-- ══════════════════════════════════════════════════════════
      TAB: INSIGHTS
@@ -1970,6 +2322,13 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
   </div>
 
   <!-- ══ B. COMPRAS ══ -->
+  <!-- ── BOTÓN CREAR OC ── -->
+  <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+    <button class="btn-crear-oc" onclick="abrirModalOC()">
+      <i data-lucide="plus-circle"></i> Nueva Orden de Compra
+    </button>
+  </div>
+
   <div class="section-label">Compras — Órdenes Activas</div>
   <div class="grid-4">
     <div class="card accent-blue fade-in delay-1">
@@ -2543,6 +2902,16 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
   </div>
 
   <!-- ── SECCIÓN: SEGMENTACIÓN ── -->
+  <!-- ── BOTONES DOCUMENTOS ── -->
+  <div style="display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;">
+    <button class="btn-crear-oc" onclick="abrirModalCotizacion()">
+      <i data-lucide="file-text"></i> Nueva Cotización
+    </button>
+    <button class="btn-crear-oc" style="background:var(--green-400);border-color:var(--green-400);" onclick="abrirModalFactura()">
+      <i data-lucide="receipt"></i> Generar Factura
+    </button>
+  </div>
+
   <div class="section-label">Segmentación de Clientes</div>
 
   <!-- KPI resumen por nivel -->
@@ -2778,7 +3147,342 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
 
   </div>
 
+  <!-- ── SECCIÓN: RANKING RENTABILIDAD ── -->
+  <div class="section-label">Ranking de Clientes por Rentabilidad</div>
+  <div class="card" style="overflow-x:auto;">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;">
+      <div class="card-title" style="margin-bottom:0;">Top 10 Clientes — Valor &amp; Rentabilidad Estimada</div>
+      <div style="font-size:11px;color:var(--text-muted);">Rentabilidad = Ventas × Margen estimado por segmento · A=32%, B=29%, C=25%</div>
+    </div>
+    <table style="min-width:700px;">
+      <thead>
+        <tr>
+          <th style="width:30px;">Pos</th>
+          <th>Cliente</th>
+          <th style="text-align:center;">Seg.</th>
+          <th style="text-align:right;">Ventas Anuales</th>
+          <th style="text-align:right;">Margen Est.</th>
+          <th style="text-align:right;">Utilidad Est.</th>
+          <th style="text-align:right;">Frecuencia</th>
+          <th style="text-align:right;">Score</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:700;color:var(--amber-400);">🥇</td>
+          <td style="font-weight:600;">Distribuidora Hernández</td>
+          <td style="text-align:center;"><span class="nivel-badge nivel-a">A</span></td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$3.8M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);">32%</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--green-400);">$1.22M</td>
+          <td style="text-align:right;font-size:11px;">Alta · 4/sem</td>
+          <td style="text-align:right;"><span class="badge badge-ok"><span class="badge-dot"></span>98</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:var(--text-muted);">🥈</td>
+          <td style="font-weight:600;">Auto Express del Norte</td>
+          <td style="text-align:center;"><span class="nivel-badge nivel-a">A</span></td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$2.9M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);">32%</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--green-400);">$928K</td>
+          <td style="text-align:right;font-size:11px;">Alta · 3/sem</td>
+          <td style="text-align:right;"><span class="badge badge-ok"><span class="badge-dot"></span>94</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:700;color:var(--amber-500);">🥉</td>
+          <td style="font-weight:600;">Grupo Automotriz Benito</td>
+          <td style="text-align:center;"><span class="nivel-badge nivel-a">A</span></td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$2.1M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);">32%</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--green-400);">$672K</td>
+          <td style="text-align:right;font-size:11px;">Media · 2/sem</td>
+          <td style="text-align:right;"><span class="badge badge-ok"><span class="badge-dot"></span>88</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:12px;">4</td>
+          <td style="font-weight:600;">Distribuidora Montes</td>
+          <td style="text-align:center;"><span class="nivel-badge nivel-a">A</span></td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1.8M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);">32%</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--green-400);">$576K</td>
+          <td style="text-align:right;font-size:11px;">Media · 2/sem</td>
+          <td style="text-align:right;"><span class="badge badge-ok"><span class="badge-dot"></span>82</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:12px;">5</td>
+          <td style="font-weight:600;">Refacciones El Águila</td>
+          <td style="text-align:center;"><span class="nivel-badge nivel-a">A</span></td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1.4M</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);">32%</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--green-400);">$448K</td>
+          <td style="text-align:right;font-size:11px;">Regular · 1/sem</td>
+          <td style="text-align:right;"><span class="badge badge-warn"><span class="badge-dot"></span>71</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:12px;">6</td>
+          <td style="font-weight:600;">Taller Los Pinos</td>
+          <td style="text-align:center;"><span class="nivel-badge nivel-b">B</span></td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$890K</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);">29%</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--green-400);">$258K</td>
+          <td style="text-align:right;font-size:11px;">Alta · 3/sem</td>
+          <td style="text-align:right;"><span class="badge badge-ok"><span class="badge-dot"></span>76</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:12px;">7</td>
+          <td style="font-weight:600;">Talleres Unión</td>
+          <td style="text-align:center;"><span class="nivel-badge nivel-b">B</span></td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$720K</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);">29%</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--green-400);">$209K</td>
+          <td style="text-align:right;font-size:11px;">Media · 2/sem</td>
+          <td style="text-align:right;"><span class="badge badge-ok"><span class="badge-dot"></span>68</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:12px;">8</td>
+          <td style="font-weight:600;">Auto Centro Sur</td>
+          <td style="text-align:center;"><span class="nivel-badge nivel-b">B</span></td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$580K</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);">29%</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--green-400);">$168K</td>
+          <td style="text-align:right;font-size:11px;">Media · 1/sem</td>
+          <td style="text-align:right;"><span class="badge badge-warn"><span class="badge-dot"></span>59</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:12px;">9</td>
+          <td style="font-weight:600;">Servi-Car Puebla</td>
+          <td style="text-align:center;"><span class="nivel-badge nivel-b">B</span></td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$460K</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--amber-400);">29%</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--amber-400);">$133K</td>
+          <td style="text-align:right;font-size:11px;">Irregular</td>
+          <td style="text-align:right;"><span class="badge badge-err"><span class="badge-dot"></span>31</span></td>
+        </tr>
+        <tr>
+          <td style="color:var(--text-muted);font-size:12px;">10</td>
+          <td style="font-weight:600;">Taller Mecánico Reyes</td>
+          <td style="text-align:center;"><span class="nivel-badge nivel-c">C</span></td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$180K</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--green-400);">25%</td>
+          <td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--green-400);">$45K</td>
+          <td style="text-align:right;font-size:11px;">Baja · mensual</td>
+          <td style="text-align:right;"><span class="badge badge-warn"><span class="badge-dot"></span>42</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
 </div> <!-- /tab-crm -->
+
+<!-- ============================================================
+     MODAL: CREAR ORDEN DE COMPRA
+     ============================================================ -->
+<div id="oc-modal-overlay" style="display:none;position:fixed;inset:0;z-index:99990;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;">
+  <div class="oc-modal">
+    <div class="oc-modal-header">
+      <div>
+        <div class="oc-modal-title"><i data-lucide="shopping-cart" style="width:18px;height:18px;display:inline-block;vertical-align:-3px;margin-right:8px;"></i>Nueva Orden de Compra</div>
+        <div class="oc-modal-sub" id="oc-num-display">OC-2025-1855 · Generando...</div>
+      </div>
+      <button onclick="cerrarModalOC()" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:20px;line-height:1;">×</button>
+    </div>
+
+    <div class="oc-modal-body">
+      <!-- Proveedor y tipo -->
+      <div class="oc-form-row">
+        <div class="oc-form-group">
+          <label class="oc-label">Proveedor *</label>
+          <select class="oc-input" id="oc-proveedor">
+            <option value="">Seleccionar proveedor...</option>
+            <option value="ACDelco / GM">ACDelco / GM — Nacional</option>
+            <option value="Bosch México">Bosch México — Nacional</option>
+            <option value="Denso Intl.">Denso Intl. — Importación (JPN)</option>
+            <option value="Gates Industrial">Gates Industrial — Importación (USA)</option>
+            <option value="SKF México">SKF México — Nacional</option>
+            <option value="Hyundai Mobis">Hyundai Mobis — Importación (KOR)</option>
+          </select>
+        </div>
+        <div class="oc-form-group">
+          <label class="oc-label">Tipo</label>
+          <select class="oc-input" id="oc-tipo">
+            <option value="Nacional">Nacional</option>
+            <option value="Importación">Importación</option>
+          </select>
+        </div>
+        <div class="oc-form-group">
+          <label class="oc-label">Fecha de entrega estimada *</label>
+          <input class="oc-input" id="oc-fecha" type="date">
+        </div>
+      </div>
+
+      <!-- Tabla de productos -->
+      <div style="margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <label class="oc-label" style="margin-bottom:0;">Productos / SKUs</label>
+          <button class="oc-btn-add-row" onclick="agregarFilaOC()"><i data-lucide="plus" style="width:12px;height:12px;display:inline-block;vertical-align:-1px;"></i> Agregar línea</button>
+        </div>
+        <table class="oc-table" id="oc-productos-table">
+          <thead>
+            <tr>
+              <th>SKU / Descripción</th>
+              <th style="width:80px;text-align:right;">Cant.</th>
+              <th style="width:110px;text-align:right;">Precio unit. MXN</th>
+              <th style="width:110px;text-align:right;">Total</th>
+              <th style="width:30px;"></th>
+            </tr>
+          </thead>
+          <tbody id="oc-productos-tbody">
+            <tr class="oc-row">
+              <td><input class="oc-input-inline" type="text" placeholder="SKU-0000 · Descripción del producto"></td>
+              <td><input class="oc-input-inline oc-qty" type="number" min="1" value="1" style="text-align:right;" oninput="recalcularOC()"></td>
+              <td><input class="oc-input-inline oc-price" type="number" min="0" step="0.01" placeholder="0.00" style="text-align:right;" oninput="recalcularOC()"></td>
+              <td class="oc-total-cell" style="text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12px;">$0.00</td>
+              <td><button onclick="eliminarFilaOC(this)" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:16px;line-height:1;">×</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Notas y totales -->
+      <div class="oc-form-row">
+        <div class="oc-form-group" style="flex:2;">
+          <label class="oc-label">Notas / Instrucciones</label>
+          <textarea class="oc-input" id="oc-notas" rows="3" placeholder="Indicaciones especiales de entrega, empaque, etc."></textarea>
+        </div>
+        <div class="oc-totales">
+          <div class="oc-total-row"><span>Subtotal</span><span id="oc-subtotal" style="font-family:'IBM Plex Mono',monospace;">$0.00</span></div>
+          <div class="oc-total-row"><span>IVA 16%</span><span id="oc-iva" style="font-family:'IBM Plex Mono',monospace;">$0.00</span></div>
+          <div class="oc-total-row oc-total-final"><span>Total MXN</span><span id="oc-total" style="font-family:'IBM Plex Mono',monospace;font-weight:700;">$0.00</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="oc-modal-footer">
+      <button class="oc-btn-secondary" onclick="cerrarModalOC()">Cancelar</button>
+      <button class="oc-btn-secondary" onclick="imprimirOC()"><i data-lucide="printer" style="width:13px;height:13px;display:inline-block;vertical-align:-2px;margin-right:4px;"></i>Imprimir</button>
+      <button class="oc-btn-primary" onclick="guardarOC()"><i data-lucide="save" style="width:13px;height:13px;display:inline-block;vertical-align:-2px;margin-right:4px;"></i>Guardar OC</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL: COTIZACIÓN
+     ============================================================ -->
+<div id="cotizacion-modal-overlay" style="display:none;position:fixed;inset:0;z-index:99990;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;overflow-y:auto;">
+  <div class="oc-modal" style="max-width:680px;">
+    <div class="oc-modal-header">
+      <div>
+        <div class="oc-modal-title"><i data-lucide="file-text" style="width:18px;height:18px;display:inline-block;vertical-align:-3px;margin-right:8px;"></i>Nueva Cotización</div>
+        <div class="oc-modal-sub" id="cotiz-num">COT-2026-001 · <span id="cotiz-fecha-display"></span></div>
+      </div>
+      <button onclick="cerrarModalCotizacion()" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:20px;">×</button>
+    </div>
+    <div class="oc-modal-body">
+      <div class="oc-form-row">
+        <div class="oc-form-group" style="flex:2;">
+          <label class="oc-label">Cliente *</label>
+          <input class="oc-input" id="cotiz-cliente" type="text" placeholder="Nombre del cliente o empresa">
+        </div>
+        <div class="oc-form-group">
+          <label class="oc-label">Válida hasta</label>
+          <input class="oc-input" id="cotiz-validez" type="date">
+        </div>
+      </div>
+      <div class="oc-form-row">
+        <div class="oc-form-group">
+          <label class="oc-label">RFC</label>
+          <input class="oc-input" id="cotiz-rfc" type="text" placeholder="RFC del cliente">
+        </div>
+        <div class="oc-form-group" style="flex:2;">
+          <label class="oc-label">Condiciones de pago</label>
+          <select class="oc-input" id="cotiz-condiciones">
+            <option>Contado</option>
+            <option>Crédito 30 días</option>
+            <option>Crédito 60 días</option>
+            <option>50% anticipo, 50% entrega</option>
+          </select>
+        </div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <label class="oc-label" style="margin-bottom:0;">Productos</label>
+          <button class="oc-btn-add-row" onclick="agregarFilaCotiz()"><i data-lucide="plus" style="width:12px;height:12px;display:inline-block;vertical-align:-1px;"></i> Agregar línea</button>
+        </div>
+        <table class="oc-table">
+          <thead><tr><th>Descripción</th><th style="width:70px;text-align:right;">Cant.</th><th style="width:100px;text-align:right;">P. Unit.</th><th style="width:100px;text-align:right;">Total</th><th style="width:30px;"></th></tr></thead>
+          <tbody id="cotiz-tbody">
+            <tr class="oc-row"><td><input class="oc-input-inline" type="text" placeholder="Descripción del producto"></td><td><input class="oc-input-inline oc-qty" type="number" min="1" value="1" style="text-align:right;" oninput="recalcularCotiz()"></td><td><input class="oc-input-inline oc-price" type="number" min="0" step="0.01" placeholder="0.00" style="text-align:right;" oninput="recalcularCotiz()"></td><td class="oc-total-cell" style="text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12px;">$0.00</td><td><button onclick="eliminarFilaOC(this)" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:16px;">×</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="oc-form-row">
+        <div class="oc-form-group" style="flex:2;">
+          <label class="oc-label">Notas / Condiciones especiales</label>
+          <textarea class="oc-input" id="cotiz-notas" rows="2" placeholder="Condiciones de entrega, garantía, etc."></textarea>
+        </div>
+        <div class="oc-totales">
+          <div class="oc-total-row"><span>Subtotal</span><span id="cotiz-subtotal" style="font-family:'IBM Plex Mono',monospace;">$0.00</span></div>
+          <div class="oc-total-row"><span>IVA 16%</span><span id="cotiz-iva" style="font-family:'IBM Plex Mono',monospace;">$0.00</span></div>
+          <div class="oc-total-row oc-total-final"><span>Total MXN</span><span id="cotiz-total" style="font-family:'IBM Plex Mono',monospace;font-weight:700;">$0.00</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="oc-modal-footer">
+      <button class="oc-btn-secondary" onclick="cerrarModalCotizacion()">Cancelar</button>
+      <button class="oc-btn-primary" onclick="imprimirCotizacion()"><i data-lucide="printer" style="width:13px;height:13px;display:inline-block;vertical-align:-2px;margin-right:4px;"></i>Imprimir / PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL: FACTURA
+     ============================================================ -->
+<div id="factura-modal-overlay" style="display:none;position:fixed;inset:0;z-index:99990;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;overflow-y:auto;">
+  <div class="oc-modal" style="max-width:680px;">
+    <div class="oc-modal-header">
+      <div>
+        <div class="oc-modal-title"><i data-lucide="receipt" style="width:18px;height:18px;display:inline-block;vertical-align:-3px;margin-right:8px;color:var(--green-400);"></i>Generar Factura (CFDI 4.0)</div>
+        <div class="oc-modal-sub" id="fact-num">FAC-2026-001 · <span id="fact-fecha-display"></span></div>
+      </div>
+      <button onclick="cerrarModalFactura()" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:20px;">×</button>
+    </div>
+    <div class="oc-modal-body">
+      <div style="background:var(--amber-dim);border:1px solid var(--amber-border);border-radius:var(--radius-md);padding:10px 14px;font-size:12px;color:var(--amber-400);margin-bottom:14px;">
+        <strong>⚠️ Nota:</strong> Esta herramienta genera el borrador de factura para revisión. Para timbrado CFDI 4.0 oficial, usa tu sistema SAT certificado.
+      </div>
+      <div class="oc-form-row">
+        <div class="oc-form-group" style="flex:2;"><label class="oc-label">Razón Social del Cliente *</label><input class="oc-input" id="fact-razon" type="text" placeholder="Nombre o razón social"></div>
+        <div class="oc-form-group"><label class="oc-label">RFC *</label><input class="oc-input" id="fact-rfc" type="text" placeholder="XXXX000000XX0" style="text-transform:uppercase;"></div>
+      </div>
+      <div class="oc-form-row">
+        <div class="oc-form-group"><label class="oc-label">Uso CFDI</label><select class="oc-input" id="fact-uso"><option value="G01">G01 · Adquisición de mercancias</option><option value="G03">G03 · Gastos en general</option><option value="I04">I04 · Equipo de transporte</option><option value="P01">P01 · Por definir</option></select></div>
+        <div class="oc-form-group"><label class="oc-label">Forma de Pago</label><select class="oc-input" id="fact-pago"><option value="01">01 · Efectivo</option><option value="03">03 · Transferencia</option><option value="04">04 · Tarjeta de crédito</option><option value="28">28 · Tarjeta de débito</option><option value="99">99 · Por definir</option></select></div>
+        <div class="oc-form-group"><label class="oc-label">Método de Pago</label><select class="oc-input" id="fact-metodo"><option value="PUE">PUE · Pago en una sola exhibición</option><option value="PPD">PPD · Pago en parcialidades</option></select></div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+          <label class="oc-label" style="margin-bottom:0;">Conceptos</label>
+          <button class="oc-btn-add-row" onclick="agregarFilaFactura()"><i data-lucide="plus" style="width:12px;height:12px;display:inline-block;vertical-align:-1px;"></i> Agregar concepto</button>
+        </div>
+        <table class="oc-table">
+          <thead><tr><th>Descripción / ClaveProdServ</th><th style="width:60px;text-align:right;">Cant.</th><th style="width:100px;text-align:right;">V. Unit.</th><th style="width:90px;text-align:right;">Importe</th><th style="width:30px;"></th></tr></thead>
+          <tbody id="fact-tbody">
+            <tr class="oc-row"><td><input class="oc-input-inline" type="text" placeholder="Refacción automotriz · 25174600"></td><td><input class="oc-input-inline oc-qty" type="number" min="1" value="1" style="text-align:right;" oninput="recalcularFactura()"></td><td><input class="oc-input-inline oc-price" type="number" min="0" step="0.01" placeholder="0.00" style="text-align:right;" oninput="recalcularFactura()"></td><td class="oc-total-cell" style="text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12px;">$0.00</td><td><button onclick="eliminarFilaOC(this)" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:16px;">×</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="oc-totales" style="margin-left:auto;max-width:280px;">
+        <div class="oc-total-row"><span>Subtotal</span><span id="fact-subtotal" style="font-family:'IBM Plex Mono',monospace;">$0.00</span></div>
+        <div class="oc-total-row"><span>IVA 16%</span><span id="fact-iva" style="font-family:'IBM Plex Mono',monospace;">$0.00</span></div>
+        <div class="oc-total-row oc-total-final"><span>Total MXN</span><span id="fact-total" style="font-family:'IBM Plex Mono',monospace;font-weight:700;">$0.00</span></div>
+      </div>
+    </div>
+    <div class="oc-modal-footer">
+      <button class="oc-btn-secondary" onclick="cerrarModalFactura()">Cancelar</button>
+      <button class="oc-btn-primary" onclick="imprimirFactura()"><i data-lucide="printer" style="width:13px;height:13px;display:inline-block;vertical-align:-2px;margin-right:4px;"></i>Generar Borrador PDF</button>
+    </div>
+  </div>
+</div>
 
 </main>
 
@@ -3925,6 +4629,210 @@ NIVEL debe ser: URGENTE, ALTO o MEDIO.`;
     btn.disabled = false;
     btn.innerHTML = '✨ Reintentar';
   }
+}
+
+/* ── Morning Briefing — cargar datos del corte diario ── */
+async function cargarMorningBriefing() {
+  try {
+    const res = await fetch('/api/crm');
+    const d = await res.json();
+    const cd = d.corteDiario;
+    const fmt = v => v >= 1000000 ? '$' + (v/1000000).toFixed(2)+'M' : v >= 1000 ? '$'+(v/1000).toFixed(0)+'K' : '$'+v.toLocaleString('es-MX');
+
+    document.getElementById('m-ventas-hoy') && (document.getElementById('m-ventas-hoy').textContent = fmt(cd.ventasHoy));
+    const totalCobros = cd.efectivo + cd.transferencia + cd.tarjeta;
+    document.getElementById('m-cobros-hoy') && (document.getElementById('m-cobros-hoy').textContent = fmt(totalCobros));
+    document.getElementById('m-cobros-sub') && (document.getElementById('m-cobros-sub').textContent = fmt(cd.transferencia)+' transf. · '+fmt(cd.efectivo)+' efect.');
+    document.getElementById('m-efectivo') && (document.getElementById('m-efectivo').textContent = fmt(cd.efectivo));
+    document.getElementById('m-transferencia') && (document.getElementById('m-transferencia').textContent = fmt(cd.transferencia));
+    document.getElementById('m-tarjeta') && (document.getElementById('m-tarjeta').textContent = fmt(cd.tarjeta));
+    document.getElementById('m-total-cobros') && (document.getElementById('m-total-cobros').textContent = fmt(totalCobros));
+
+    const morningBody = document.getElementById('morning-corte-tbody');
+    if (morningBody) {
+      morningBody.innerHTML = cd.ultimos7dias.map((r, idx) => {
+        const isHoy = idx === cd.ultimos7dias.length - 1;
+        return `<tr style="${isHoy?'font-weight:700;':''}">`+
+          `<td>${r.fecha}${isHoy?' <span style="font-size:10px;color:var(--blue-400);font-weight:600;">HOY</span>':''}</td>`+
+          `<td style="text-align:right;font-family:'IBM Plex Mono',monospace;">${fmt(r.ventas)}</td>`+
+          `<td style="text-align:right;font-family:'IBM Plex Mono',monospace;">${fmt(r.efectivo)}</td>`+
+          `<td style="text-align:right;font-family:'IBM Plex Mono',monospace;">${fmt(r.transferencia)}</td>`+
+          `<td style="text-align:right;font-family:'IBM Plex Mono',monospace;">${fmt(r.tarjeta)}</td>`+
+          `<td style="text-align:right;font-family:'IBM Plex Mono',monospace;">${r.tx}</td>`+
+          `</tr>`;
+      }).join('');
+    }
+
+    const fechaEl = document.getElementById('morning-fecha');
+    if (fechaEl) fechaEl.textContent = new Date().toLocaleDateString('es-MX', {weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  } catch(e) { console.warn('Morning briefing:', e.message); }
+}
+cargarMorningBriefing();
+
+/* ═══════════════════════════════════════════════
+   HELPERS MODALES DOCUMENTOS
+   ═══════════════════════════════════════════════ */
+function fmtMXNDoc(n) {
+  return '$' + (n || 0).toLocaleString('es-MX', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function recalcularTabla(tbodyId, subtotalId, ivaId, totalId) {
+  let sub = 0;
+  document.querySelectorAll('#' + tbodyId + ' .oc-row').forEach(row => {
+    const qty   = parseFloat(row.querySelector('.oc-qty')?.value) || 0;
+    const price = parseFloat(row.querySelector('.oc-price')?.value) || 0;
+    const total = qty * price;
+    const cell  = row.querySelector('.oc-total-cell');
+    if (cell) cell.textContent = fmtMXNDoc(total);
+    sub += total;
+  });
+  const iva = sub * 0.16;
+  if (document.getElementById(subtotalId)) document.getElementById(subtotalId).textContent = fmtMXNDoc(sub);
+  if (document.getElementById(ivaId))      document.getElementById(ivaId).textContent      = fmtMXNDoc(iva);
+  if (document.getElementById(totalId))    document.getElementById(totalId).textContent    = fmtMXNDoc(sub + iva);
+}
+
+function recalcularOC()     { recalcularTabla('oc-productos-tbody', 'oc-subtotal',    'oc-iva',    'oc-total'); }
+function recalcularCotiz()  { recalcularTabla('cotiz-tbody',        'cotiz-subtotal', 'cotiz-iva', 'cotiz-total'); }
+function recalcularFactura(){ recalcularTabla('fact-tbody',         'fact-subtotal',  'fact-iva',  'fact-total'); }
+
+function agregarFila(tbodyId, recalcFn) {
+  const tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
+  const tr = document.createElement('tr');
+  tr.className = 'oc-row';
+  tr.innerHTML = `<td><input class="oc-input-inline" type="text" placeholder="SKU / Descripción"></td>
+    <td><input class="oc-input-inline oc-qty" type="number" min="1" value="1" style="text-align:right;" oninput="${recalcFn}()"></td>
+    <td><input class="oc-input-inline oc-price" type="number" min="0" step="0.01" placeholder="0.00" style="text-align:right;" oninput="${recalcFn}()"></td>
+    <td class="oc-total-cell" style="text-align:right;font-family:'IBM Plex Mono',monospace;font-size:12px;">$0.00</td>
+    <td><button onclick="eliminarFilaOC(this)" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:16px;">×</button></td>`;
+  tbody.appendChild(tr);
+}
+function agregarFilaOC()      { agregarFila('oc-productos-tbody', 'recalcularOC'); }
+function agregarFilaCotiz()   { agregarFila('cotiz-tbody',        'recalcularCotiz'); }
+function agregarFilaFactura() { agregarFila('fact-tbody',         'recalcularFactura'); }
+
+function eliminarFilaOC(btn) {
+  const row = btn.closest('tr');
+  const tbody = row.parentElement;
+  if (tbody.querySelectorAll('tr').length > 1) {
+    row.remove();
+    /* recalcular el que corresponda */
+    const id = tbody.id;
+    if (id === 'oc-productos-tbody') recalcularOC();
+    else if (id === 'cotiz-tbody')   recalcularCotiz();
+    else if (id === 'fact-tbody')    recalcularFactura();
+  }
+}
+
+/* ── OC ── */
+function abrirModalOC() {
+  const overlay = document.getElementById('oc-modal-overlay');
+  if (overlay) { overlay.style.display = 'flex'; }
+  const today = new Date(); today.setDate(today.getDate() + 7);
+  const fechaEl = document.getElementById('oc-fecha');
+  if (fechaEl) fechaEl.value = today.toISOString().split('T')[0];
+  const num = document.getElementById('oc-num-display');
+  if (num) num.textContent = 'OC-2026-' + (1855 + Math.floor(Math.random()*10)) + ' · ' + new Date().toLocaleDateString('es-MX');
+  if (window.lucide) lucide.createIcons();
+}
+function cerrarModalOC() {
+  const overlay = document.getElementById('oc-modal-overlay');
+  if (overlay) overlay.style.display = 'none';
+}
+function guardarOC() {
+  const prov = document.getElementById('oc-proveedor')?.value;
+  if (!prov) { alert('Selecciona un proveedor.'); return; }
+  alert('✓ Orden de Compra guardada (simulación). En producción, se enviaría a Google Sheets vía API.');
+  cerrarModalOC();
+}
+function imprimirOC() { window.print(); }
+
+/* ── Cotización ── */
+function abrirModalCotizacion() {
+  const overlay = document.getElementById('cotizacion-modal-overlay');
+  if (overlay) overlay.style.display = 'flex';
+  const today = new Date(); today.setDate(today.getDate() + 15);
+  const v = document.getElementById('cotiz-validez');
+  if (v) v.value = today.toISOString().split('T')[0];
+  const d = document.getElementById('cotiz-fecha-display');
+  if (d) d.textContent = new Date().toLocaleDateString('es-MX');
+  if (window.lucide) lucide.createIcons();
+}
+function cerrarModalCotizacion() {
+  const overlay = document.getElementById('cotizacion-modal-overlay');
+  if (overlay) overlay.style.display = 'none';
+}
+function imprimirCotizacion() {
+  const cliente   = document.getElementById('cotiz-cliente')?.value || 'Cliente';
+  const total     = document.getElementById('cotiz-total')?.textContent || '$0.00';
+  const validez   = document.getElementById('cotiz-validez')?.value || '';
+  const cond      = document.getElementById('cotiz-condiciones')?.value || 'Contado';
+  const filas     = [...document.querySelectorAll('#cotiz-tbody .oc-row')].map(r => {
+    const desc = r.querySelector('input[type=text]')?.value || '—';
+    const qty  = r.querySelector('.oc-qty')?.value || 0;
+    const pu   = r.querySelector('.oc-price')?.value || 0;
+    const tot  = r.querySelector('.oc-total-cell')?.textContent || '$0.00';
+    return `<tr><td style="padding:8px;border-bottom:1px solid #eee;">${desc}</td><td style="padding:8px;border-bottom:1px solid #eee;text-align:right;">${qty}</td><td style="padding:8px;border-bottom:1px solid #eee;text-align:right;">$${parseFloat(pu).toLocaleString('es-MX',{minimumFractionDigits:2})}</td><td style="padding:8px;border-bottom:1px solid #eee;text-align:right;font-weight:700;">${tot}</td></tr>`;
+  }).join('');
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>Cotización</title><style>body{font-family:Arial,sans-serif;margin:40px;color:#111;}h1{color:#1d4ed8;}table{width:100%;border-collapse:collapse;}th{background:#F3F4F6;padding:8px;text-align:left;font-size:12px;}</style></head><body>
+    <h1>Auto Refacciones Franco</h1>
+    <p style="font-size:12px;color:#666;">RFC: ARF600101XXX · Vértiz 331, Col. Doctores, CDMX</p>
+    <hr><h2>COTIZACIÓN</h2>
+    <p><strong>Cliente:</strong> ${cliente} &nbsp;&nbsp; <strong>Válida hasta:</strong> ${validez} &nbsp;&nbsp; <strong>Condiciones:</strong> ${cond}</p>
+    <table><thead><tr><th>Descripción</th><th style="text-align:right;">Cant.</th><th style="text-align:right;">P. Unit.</th><th style="text-align:right;">Total</th></tr></thead><tbody>${filas}</tbody></table>
+    <div style="text-align:right;margin-top:16px;font-size:16px;"><strong>Total: ${total}</strong></div>
+    <hr><p style="font-size:11px;color:#999;">Esta cotización es informativa. Los precios pueden variar sin previo aviso.</p>
+  </body></html>`);
+  win.document.close();
+  win.print();
+}
+
+/* ── Factura ── */
+function abrirModalFactura() {
+  const overlay = document.getElementById('factura-modal-overlay');
+  if (overlay) overlay.style.display = 'flex';
+  const d = document.getElementById('fact-fecha-display');
+  if (d) d.textContent = new Date().toLocaleDateString('es-MX');
+  if (window.lucide) lucide.createIcons();
+}
+function cerrarModalFactura() {
+  const overlay = document.getElementById('factura-modal-overlay');
+  if (overlay) overlay.style.display = 'none';
+}
+function imprimirFactura() {
+  const razon  = document.getElementById('fact-razon')?.value || 'Receptor';
+  const rfc    = document.getElementById('fact-rfc')?.value || 'XAXX010101000';
+  const uso    = document.getElementById('fact-uso')?.value || 'G01';
+  const pago   = document.getElementById('fact-pago')?.value || '01';
+  const metodo = document.getElementById('fact-metodo')?.value || 'PUE';
+  const sub    = document.getElementById('fact-subtotal')?.textContent || '$0.00';
+  const iva    = document.getElementById('fact-iva')?.textContent || '$0.00';
+  const total  = document.getElementById('fact-total')?.textContent || '$0.00';
+  const filas  = [...document.querySelectorAll('#fact-tbody .oc-row')].map(r => {
+    const desc = r.querySelector('input[type=text]')?.value || '—';
+    const qty  = r.querySelector('.oc-qty')?.value || 0;
+    const pu   = r.querySelector('.oc-price')?.value || 0;
+    const tot  = r.querySelector('.oc-total-cell')?.textContent || '$0.00';
+    return `<tr><td style="padding:8px;border-bottom:1px solid #eee;">${desc}</td><td style="padding:8px;border-bottom:1px solid #eee;text-align:right;">${qty}</td><td style="padding:8px;border-bottom:1px solid #eee;text-align:right;">$${parseFloat(pu).toLocaleString('es-MX',{minimumFractionDigits:2})}</td><td style="padding:8px;border-bottom:1px solid #eee;text-align:right;font-weight:700;">${tot}</td></tr>`;
+  }).join('');
+  const win = window.open('', '_blank');
+  win.document.write(`<!DOCTYPE html><html><head><title>Factura</title><style>body{font-family:Arial,sans-serif;margin:40px;color:#111;}h1{color:#15803d;}table{width:100%;border-collapse:collapse;}th{background:#F3F4F6;padding:8px;text-align:left;font-size:12px;}.sello{background:#F0FDF4;border:1px dashed #86efac;padding:10px;font-size:11px;color:#166534;margin-top:20px;}</style></head><body>
+    <h1>Auto Refacciones Franco</h1>
+    <p style="font-size:12px;color:#666;">RFC Emisor: ARF600101XXX · Régimen Fiscal: 601 · Vértiz 331, Col. Doctores, CDMX</p>
+    <hr><h2>FACTURA ELECTRÓNICA — BORRADOR</h2>
+    <p><strong>Receptor:</strong> ${razon} &nbsp;|&nbsp; <strong>RFC:</strong> ${rfc} &nbsp;|&nbsp; <strong>Uso CFDI:</strong> ${uso}</p>
+    <p><strong>Forma de pago:</strong> ${pago} &nbsp;|&nbsp; <strong>Método de pago:</strong> ${metodo} &nbsp;|&nbsp; <strong>Moneda:</strong> MXN</p>
+    <table><thead><tr><th>Descripción</th><th style="text-align:right;">Cant.</th><th style="text-align:right;">V. Unit.</th><th style="text-align:right;">Importe</th></tr></thead><tbody>${filas}</tbody></table>
+    <div style="text-align:right;margin-top:12px;">
+      <div>Subtotal: ${sub}</div><div>IVA 16%: ${iva}</div>
+      <div style="font-size:18px;font-weight:700;margin-top:8px;">Total: ${total}</div>
+    </div>
+    <div class="sello">⚠️ BORRADOR — Este documento no es un CFDI timbrado. Para emisión oficial use su sistema PAC autorizado por el SAT.</div>
+  </body></html>`);
+  win.document.close();
+  win.print();
 }
 
 /* ── GSAP ANIMACIONES DE ENTRADA ── */
