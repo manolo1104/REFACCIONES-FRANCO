@@ -882,9 +882,140 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
 .email-modal-status { font-size: 12px; margin-top: 10px; min-height: 18px; text-align: center; }
 
 @media print {
-  .tab-nav, .header, .export-bar, .mes-selector-bar, #chat-fab, #chat-panel, #login-overlay { display: none !important; }
+  .tab-nav, .header, .export-bar, .mes-selector-bar, #chat-fab, #chat-panel, #login-overlay,
+  .inline-chat-bar, .ai-actions-card { display: none !important; }
   .tab-panel { display: block !important; }
   .card { break-inside: avoid; }
+}
+
+/* ── Chat Inline ── */
+.inline-chat-bar {
+  background: #fff;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  margin-bottom: 20px;
+  display: flex; align-items: flex-start; gap: 12px;
+  flex-wrap: wrap;
+  box-shadow: var(--glass-shadow);
+}
+.inline-chat-avatar {
+  width: 40px; height: 40px; border-radius: 50%;
+  overflow: hidden; flex-shrink: 0; margin-top: 2px;
+  border: 2px solid var(--blue-dim);
+}
+.inline-chat-avatar img { width:100%; height:100%; object-fit:cover; }
+.inline-chat-input-wrap {
+  flex: 1; display: flex; align-items: center; gap: 8px;
+  min-width: 260px;
+}
+.inline-chat-input {
+  flex: 1; padding: 10px 14px;
+  border: 1px solid var(--border-default);
+  border-radius: 50px; font-size: 13px;
+  font-family: 'Sora', sans-serif;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+}
+.inline-chat-input:focus {
+  border-color: var(--blue-400);
+  box-shadow: 0 0 0 3px var(--blue-dim);
+  background: #fff;
+}
+.inline-chat-send {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--blue-500); border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s, transform 0.1s;
+  flex-shrink: 0;
+}
+.inline-chat-send:hover { background: var(--blue-400); transform: scale(1.06); }
+.inline-chat-send i[data-lucide] { width:16px; height:16px; color:#fff; }
+.inline-chat-response {
+  width: 100%; margin-top: 10px;
+  padding: 12px 14px;
+  background: var(--bg-base);
+  border-radius: var(--radius-md);
+  font-size: 13px; color: var(--text-primary);
+  line-height: 1.7;
+  border-left: 3px solid var(--blue-400);
+}
+
+/* ── Sección Recomendaciones IA ── */
+.ai-actions-card {
+  background: #fff;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  box-shadow: var(--glass-shadow);
+  margin-bottom: 20px;
+}
+.ai-actions-header {
+  display: flex; align-items: center; gap: 14px;
+  flex-wrap: wrap; margin-bottom: 18px;
+}
+.ai-actions-avatar {
+  width: 46px; height: 46px; border-radius: 50%;
+  overflow: hidden; flex-shrink: 0;
+  border: 2px solid var(--blue-dim);
+}
+.ai-actions-avatar img { width:100%; height:100%; object-fit:cover; }
+.ai-actions-title {
+  font-size: 14px; font-weight: 700; color: var(--text-primary);
+}
+.ai-actions-sub {
+  font-size: 11px; color: var(--text-muted); margin-top: 2px;
+}
+.btn-obtener-ia {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 18px; border-radius: 50px;
+  background: linear-gradient(135deg, var(--blue-500) 0%, var(--purple-500) 100%);
+  color: #fff; border: none; cursor: pointer;
+  font-size: 13px; font-weight: 600; font-family: 'Sora', sans-serif;
+  box-shadow: 0 4px 14px rgba(37,99,235,0.30);
+  transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+.btn-obtener-ia:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,99,235,0.40); }
+.btn-obtener-ia:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+.btn-obtener-ia i[data-lucide] { width:15px; height:15px; }
+.ai-actions-content { min-height: 60px; }
+.ai-actions-placeholder {
+  display: flex; align-items: center; gap: 14px;
+  padding: 16px; color: var(--text-muted); font-size: 13px;
+  background: var(--bg-base); border-radius: var(--radius-md);
+}
+.ai-action-item {
+  display: flex; gap: 14px; align-items: flex-start;
+  padding: 14px 0; border-bottom: 1px solid var(--border-subtle);
+}
+.ai-action-item:last-child { border-bottom: none; }
+.ai-action-badge {
+  flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: #fff;
+}
+.ai-action-badge.urgente  { background: var(--red-400); }
+.ai-action-badge.alto     { background: var(--amber-400); }
+.ai-action-badge.medio    { background: var(--blue-400); }
+.ai-action-text strong { font-size: 13px; font-weight: 700; color: var(--text-primary); display: block; margin-bottom: 3px; }
+.ai-action-text p { font-size: 12px; color: var(--text-secondary); line-height: 1.6; margin: 0; }
+.ai-action-how { font-size: 11px; color: var(--blue-500); margin-top: 5px; font-weight: 500; }
+.ai-loading {
+  display: flex; align-items: center; gap: 10px;
+  padding: 18px; color: var(--text-muted); font-size: 13px;
+}
+.ai-loading-dots span {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--blue-400); margin: 0 2px;
+  animation: aiDot 1.2s ease-in-out infinite;
+}
+.ai-loading-dots span:nth-child(2) { animation-delay: 0.2s; }
+.ai-loading-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes aiDot {
+  0%, 80%, 100% { transform: scale(0.7); opacity: 0.5; }
+  40%           { transform: scale(1); opacity: 1; }
 }
 
 /* Badge de usuario en header */
@@ -1030,6 +1161,45 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
     </button>
   </div>
 
+  <!-- ── CHAT INLINE ── -->
+  <div class="inline-chat-bar" id="inline-chat-bar">
+    <div class="inline-chat-avatar">
+      <img src="/tomas.png" alt="Don Tomás">
+    </div>
+    <div class="inline-chat-input-wrap">
+      <input type="text" id="inline-chat-input" class="inline-chat-input"
+        placeholder="Pregúntale a Don Tomás sobre los datos del dashboard…"
+        onkeydown="if(event.key==='Enter')enviarInlineChat()">
+      <button class="inline-chat-send" onclick="enviarInlineChat()">
+        <i data-lucide="send"></i>
+      </button>
+    </div>
+    <div id="inline-chat-response" class="inline-chat-response" style="display:none;"></div>
+  </div>
+
+  <!-- ── SECCIÓN: ACCIONES INMEDIATAS IA ── -->
+  <div class="section-label">Acciones Inmediatas Recomendadas</div>
+  <div class="ai-actions-card" id="ai-actions-card">
+    <div class="ai-actions-header">
+      <div class="ai-actions-avatar">
+        <img src="/tomas.png" alt="Don Tomás">
+      </div>
+      <div>
+        <div class="ai-actions-title">Recomendaciones por Urgencia e Importancia</div>
+        <div class="ai-actions-sub">Generadas por IA con base en los datos actuales del dashboard</div>
+      </div>
+      <button class="btn-obtener-ia" id="btn-obtener-ia" onclick="obtenerRecomendacionesIA()">
+        <i data-lucide="sparkles"></i> Obtener Recomendaciones con IA
+      </button>
+    </div>
+    <div id="ai-actions-content" class="ai-actions-content">
+      <div class="ai-actions-placeholder">
+        <i data-lucide="sparkles" style="width:28px;height:28px;color:var(--blue-300);"></i>
+        <p>Haz clic en <strong>"Obtener Recomendaciones con IA"</strong> para generar un análisis priorizado de las acciones más urgentes e importantes basado en los datos de hoy.</p>
+      </div>
+    </div>
+  </div>
+
   <!-- ── SECCIÓN: INDICADORES DE MERCADO ── -->
   <div class="section-label">Indicadores de Mercado</div>
   <div class="grid-4">
@@ -1045,8 +1215,8 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
     <!-- Inflación INPC -->
     <div class="inf-card fade-in delay-2">
       <div class="inf-label">Inflación INPC General</div>
-      <div class="inf-value">3.80%</div>
-      <div class="inf-sub">Marzo 2025 · INEGI</div>
+      <div class="inf-value">3.93%</div>
+      <div class="inf-sub">Abril 2026 · INEGI</div>
     </div>
 
     <!-- Inflación Refacciones -->
@@ -3600,6 +3770,105 @@ document.getElementById('login-user')?.addEventListener('keydown', e => {
   if (e.key === 'Enter') document.getElementById('login-pass').focus();
 });
 
+/* ═══════════════════════════════════════════════
+   CHAT INLINE (TAB INSIGHTS)
+   ═══════════════════════════════════════════════ */
+async function enviarInlineChat() {
+  const input = document.getElementById('inline-chat-input');
+  const respDiv = document.getElementById('inline-chat-response');
+  const texto = input.value.trim();
+  if (!texto) return;
+
+  input.disabled = true;
+  respDiv.style.display = 'block';
+  respDiv.innerHTML = '<div class="ai-loading"><div class="ai-loading-dots"><span></span><span></span><span></span></div> Analizando datos…</div>';
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: texto }] })
+    });
+    const data = await res.json();
+    const reply = data.reply || 'Sin respuesta';
+    respDiv.innerHTML = reply.replace(/\n/g, '<br>');
+    input.value = '';
+  } catch (err) {
+    respDiv.innerHTML = '<span style="color:var(--red-400)">Error al conectar con el asesor.</span>';
+  } finally {
+    input.disabled = false;
+    input.focus();
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   RECOMENDACIONES IA
+   ═══════════════════════════════════════════════ */
+async function obtenerRecomendacionesIA() {
+  const btn = document.getElementById('btn-obtener-ia');
+  const content = document.getElementById('ai-actions-content');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="ai-loading-dots"><span></span><span></span><span></span></span> Analizando…';
+
+  content.innerHTML = '<div class="ai-loading"><div class="ai-loading-dots"><span></span><span></span><span></span></div> Analizando todos los datos del dashboard para generar recomendaciones…</div>';
+
+  const prompt = `Analiza los datos actuales del dashboard de Refacciones Franco y genera una lista priorizada de ACCIONES INMEDIATAS ordenadas por urgencia e importancia.
+
+Para cada acción incluye:
+1. Título corto de la acción (máx 8 palabras)
+2. Por qué es urgente/importante (1-2 líneas con datos concretos del dashboard)
+3. Cómo resolverlo: pasos concretos y accionables (2-3 pasos)
+4. Nivel: URGENTE / ALTO / MEDIO
+
+Formato de respuesta: usa exactamente este formato para cada acción:
+##ACCION|NIVEL|Título de la acción|Por qué es urgente con datos concretos|Cómo resolverlo paso a paso
+
+Genera entre 5 y 7 acciones. Prioriza: quiebres de stock críticos, órdenes retrasadas, cartera vencida, vendedores bajo meta, proveedores en alerta.`;
+
+  try {
+    const res = await fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: prompt }] })
+    });
+    const data = await res.json();
+    const reply = data.reply || '';
+
+    const lines = reply.split('\n').filter(l => l.startsWith('##ACCION|'));
+    if (lines.length === 0) {
+      content.innerHTML = `<div style="padding:14px;font-size:13px;color:var(--text-secondary);line-height:1.7;">${reply.replace(/\n/g,'<br>')}</div>`;
+    } else {
+      const colores = { 'URGENTE': 'urgente', 'ALTO': 'alto', 'MEDIO': 'medio' };
+      const numeros = { 'URGENTE': '🔴', 'ALTO': '🟠', 'MEDIO': '🔵' };
+      content.innerHTML = lines.map((line, i) => {
+        const parts = line.replace('##ACCION|','').split('|');
+        const nivel = (parts[0] || 'MEDIO').trim().toUpperCase();
+        const titulo = parts[1] || '';
+        const porQue = parts[2] || '';
+        const como = parts[3] || '';
+        const cls = colores[nivel] || 'medio';
+        return `<div class="ai-action-item">
+          <div class="ai-action-badge ${cls}">${i+1}</div>
+          <div class="ai-action-text">
+            <strong>${numeros[nivel] || '🔵'} ${titulo} <span style="font-size:10px;background:var(--bg-overlay);padding:2px 7px;border-radius:10px;color:var(--text-muted);font-weight:600;margin-left:4px;">${nivel}</span></strong>
+            <p>${porQue}</p>
+            <div class="ai-action-how">▶ Cómo resolverlo: ${como}</div>
+          </div>
+        </div>`;
+      }).join('');
+    }
+
+    btn.disabled = false;
+    btn.innerHTML = '<i data-lucide="sparkles"></i> Actualizar Recomendaciones';
+    lucide.createIcons();
+  } catch (err) {
+    content.innerHTML = '<div style="color:var(--red-400);padding:14px;font-size:13px;">Error al generar recomendaciones. Verifica la conexión.</div>';
+    btn.disabled = false;
+    btn.innerHTML = '<i data-lucide="sparkles"></i> Reintentar';
+    lucide.createIcons();
+  }
+}
+
 /* ── GSAP ANIMACIONES DE ENTRADA ── */
 gsap.registerPlugin(ScrollTrigger);
 
@@ -3731,7 +4000,31 @@ async function exportarPDF(tabId) {
     </div>
   `;
   const clone = panel.cloneNode(true);
-  clone.querySelectorAll('.export-bar, .mes-selector-bar').forEach(el => el.style.display = 'none');
+  clone.querySelectorAll('.export-bar, .mes-selector-bar, .inline-chat-bar, .ai-actions-card').forEach(el => el.style.display = 'none');
+
+  /* ── Contraste PDF: forzar texto negro sobre fondo blanco ── */
+  clone.querySelectorAll('.card, .kpi-value, .kpi-label, .kpi-sub, .kpi-delta, td, th, .card-title, .mini-label, .mini-val, .section-label, .fin-table td, .fin-table th').forEach(el => {
+    el.style.color = '#111827';
+  });
+  /* Mantener colores semánticos solo en badges y deltas de color */
+  clone.querySelectorAll('.pos').forEach(el => el.style.color = '#15803d');
+  clone.querySelectorAll('.neg').forEach(el => el.style.color = '#b91c1c');
+  clone.querySelectorAll('.neu').forEach(el => el.style.color = '#b45309');
+  clone.querySelectorAll('.badge-ok').forEach(el => { el.style.color = '#15803d'; el.style.background = '#dcfce7'; });
+  clone.querySelectorAll('.badge-warn').forEach(el => { el.style.color = '#b45309'; el.style.background = '#fef9c3'; });
+  clone.querySelectorAll('.badge-err').forEach(el => { el.style.color = '#b91c1c'; el.style.background = '#fee2e2'; el.style.animation = 'none'; });
+  clone.querySelectorAll('.kpi-value').forEach(el => { el.style.color = '#111827'; el.style.fontWeight = '700'; });
+  /* Cards con fondo de color → blanco con borde */
+  clone.querySelectorAll('.fx-card, .inf-card').forEach(el => {
+    el.style.background = '#fff'; el.style.border = '1px solid #e5e7eb';
+  });
+  clone.querySelectorAll('.fx-value, .fx-label, .fx-delta, .fx-source').forEach(el => el.style.color = '#111827');
+  clone.querySelectorAll('.inf-value, .inf-label, .inf-sub').forEach(el => el.style.color = '#111827');
+  /* Tabla header */
+  clone.querySelectorAll('th').forEach(el => { el.style.color = '#374151'; el.style.background = '#f9fafb'; });
+  /* Section labels */
+  clone.querySelectorAll('.section-label').forEach(el => { el.style.color = '#374151'; el.style.fontWeight = '700'; });
+
   wrapper.appendChild(clone);
 
   document.body.appendChild(wrapper);
@@ -3739,12 +4032,12 @@ async function exportarPDF(tabId) {
   const opt = {
     margin: [8, 8, 8, 8],
     filename: `RF_${tabId}_${mesNombre.replace(' ','_') || fecha}.pdf`,
-    image: { type: 'jpeg', quality: 0.92 },
+    image: { type: 'jpeg', quality: 0.95 },
     html2canvas: {
-      scale: 1.8,
+      scale: 2,
       useCORS: true,
       logging: false,
-      backgroundColor: '#F4F6F8'
+      backgroundColor: '#ffffff'
     },
     jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
     pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
@@ -4151,19 +4444,19 @@ lucide.createIcons();
 </style>
 
 <!-- Botón flotante -->
-<button id="chat-fab" onclick="toggleChat()" title="Asesor IA">
-  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+<button id="chat-fab" onclick="toggleChat()" title="Asesor IA — Don Tomás" style="padding:0;overflow:hidden;">
+  <img src="/tomas.png" alt="Don Tomás" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
   <span id="chat-fab-dot"></span>
 </button>
 
 <!-- Panel de chat -->
 <div id="chat-panel">
   <div class="chat-header">
-    <div class="chat-header-icon">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+    <div class="chat-header-icon" style="background:transparent;padding:0;overflow:hidden;border-radius:50%;width:42px;height:42px;flex-shrink:0;">
+      <img src="/tomas.png" alt="Don Tomás" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
     </div>
     <div class="chat-header-info">
-      <p class="chat-header-title">Asesor del Dashboard</p>
+      <p class="chat-header-title">Don Tomás — Asesor del Dashboard</p>
       <span class="chat-header-sub"><span class="chat-online-dot"></span>Con acceso a todos tus datos</span>
     </div>
     <button class="chat-clear-btn" onclick="clearChat()" title="Nueva conversación">Limpiar</button>
