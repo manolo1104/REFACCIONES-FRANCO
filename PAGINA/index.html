@@ -71,17 +71,20 @@ img { max-width:100%; }
   font-weight: 500;
   letter-spacing: 0.3px;
   overflow: hidden;
+  color: #ffffff;
 }
 .topbar-inner {
   max-width: 1400px; margin: 0 auto; padding: 0 24px;
   display: flex; justify-content: space-between; align-items: center;
   gap: 12px;
+  color: #ffffff;
 }
-.topbar-trust { display: flex; gap: 24px; }
-.topbar-trust span { display: flex; align-items: center; gap: 6px; }
+.topbar-trust { display: flex; gap: 24px; color: #ffffff; }
+.topbar-trust span { display: flex; align-items: center; gap: 6px; color: #ffffff; }
+.topbar-trust span i { color: #ffffff; }
 .topbar-promo {
   background: rgba(0,0,0,0.2); padding: 3px 12px; border-radius: 20px;
-  font-weight: 600; letter-spacing: 0.5px;
+  font-weight: 600; letter-spacing: 0.5px; color: #ffffff;
 }
 
 /* ============================================================
@@ -1646,9 +1649,9 @@ img { max-width:100%; }
         <p class="owner-desc">Cada mañana, antes de que abran las puertas, el mismo grito llena el almacén: <strong>"¡Buenos días!"</strong> — y sus colaboradores, con alegría genuina, responden al unísono. Esa tradición lo dice todo.</p>
         <p class="owner-desc" style="margin-top:12px;">Francisco Franco fundó esta empresa con un principio simple: <em>vender con honestidad, asesorar con conocimiento y tratar a cada cliente como si fuera de la familia.</em> Hoy, tres generaciones después, ese principio sigue intacto.</p>
         <div class="owner-values">
-          <div class="owner-value"><span class="owner-value-icon">🏆</span><div><strong>60+ años de experiencia</strong><div class="owner-value-sub">Tres generaciones de conocimiento automotriz</div></div></div>
-          <div class="owner-value"><span class="owner-value-icon">🤝</span><div><strong>Garantía personal</strong><div class="owner-value-sub">El dueño conoce a sus clientes por nombre</div></div></div>
-          <div class="owner-value"><span class="owner-value-icon">⭐</span><div><strong>Calidad sin compromiso</strong><div class="owner-value-sub">Solo piezas que nosotros mismos pondríamos en nuestros autos</div></div></div>
+          <div class="owner-value"><span class="owner-value-icon"><i data-lucide="award" style="width:22px;height:22px;color:var(--rf-red);stroke-width:1.8;"></i></span><div><strong>60+ años de experiencia</strong><div class="owner-value-sub">Tres generaciones de conocimiento automotriz</div></div></div>
+          <div class="owner-value"><span class="owner-value-icon"><i data-lucide="handshake" style="width:22px;height:22px;color:var(--rf-red);stroke-width:1.8;"></i></span><div><strong>Garantía personal</strong><div class="owner-value-sub">El dueño conoce a sus clientes por nombre</div></div></div>
+          <div class="owner-value"><span class="owner-value-icon"><i data-lucide="shield-check" style="width:22px;height:22px;color:var(--rf-red);stroke-width:1.8;"></i></span><div><strong>Calidad sin compromiso</strong><div class="owner-value-sub">Solo piezas que nosotros mismos pondríamos en nuestros autos</div></div></div>
         </div>
         <div class="owner-signature">
           <div class="owner-sig-line">— Francisco Franco, fundador</div>
@@ -1907,21 +1910,21 @@ img { max-width:100%; }
       <!-- Garantía visible -->
       <div class="warranty-banner">
         <div class="warranty-item">
-          <div class="warranty-icon">🛡️</div>
+          <div class="warranty-icon"><i data-lucide="shield-check" style="width:28px;height:28px;stroke-width:1.6;"></i></div>
           <div>
             <div class="warranty-title">12 meses de garantía</div>
             <div class="warranty-desc">Todas las piezas originales y alternativas incluyen garantía contra defectos de fabricación.</div>
           </div>
         </div>
         <div class="warranty-item">
-          <div class="warranty-icon">🔄</div>
+          <div class="warranty-icon"><i data-lucide="refresh-cw" style="width:28px;height:28px;stroke-width:1.6;"></i></div>
           <div>
             <div class="warranty-title">¿Cómo hacer válida?</div>
             <div class="warranty-desc">Presenta tu ticket de compra en sucursal o llámanos. Cambio o devolución en máx. 48 h.</div>
           </div>
         </div>
         <div class="warranty-item">
-          <div class="warranty-icon">⚙️</div>
+          <div class="warranty-icon"><i data-lucide="settings" style="width:28px;height:28px;stroke-width:1.6;"></i></div>
           <div>
             <div class="warranty-title">¿Qué cubre?</div>
             <div class="warranty-desc">Defectos de fabricación, material o funcionamiento. No cubre mal uso o instalación incorrecta.</div>
@@ -1985,8 +1988,8 @@ img { max-width:100%; }
     <div class="service-card"><span class="service-icon"><i data-lucide="scan-search" style="width:40px;height:40px;stroke-width:1.4;"></i></span><div class="service-name">Diagnóstico Gratuito</div><div class="service-desc">Escáner OBD2 sin costo. Identificamos el problema exacto de tu auto antes de que compres cualquier pieza. Sin compromisos.</div><span class="service-tag">GRATIS</span></div>
     <div class="service-card"><span class="service-icon"><i data-lucide="truck" style="width:40px;height:40px;stroke-width:1.4;"></i></span><div class="service-name">Entrega Express</div><div class="service-desc">Envío el mismo día en CDMX para pedidos antes de las 2pm. Seguimiento en tiempo real de tu paquete.</div><span class="service-tag">CDMX</span></div>
     <div class="service-card"><span class="service-icon"><i data-lucide="wrench" style="width:40px;height:40px;stroke-width:1.4;"></i></span><div class="service-name">Asesoría Técnica</div><div class="service-desc">Nuestros expertos resuelven tus dudas técnicas sin costo. Llamada, WhatsApp o en sucursal. Más de 60 años de experiencia.</div><span class="service-tag">GRATIS</span></div>
-    <div class="service-card"><span class="service-icon">🔄</span><div class="service-name">Devoluciones Fáciles</div><div class="service-desc">30 días para devolver sin preguntas. Si la refacción no es la correcta, te la cambiamos de inmediato.</div><span class="service-tag">30 DÍAS</span></div>
-    <div class="service-card"><span class="service-icon">💳</span><div class="service-name">Crédito para Talleres</div><div class="service-desc">Línea de crédito a 30 y 60 días para talleres y distribuidores registrados. Trámite en 48 horas.</div><span class="service-tag">B2B</span></div>
+    <div class="service-card"><span class="service-icon"><i data-lucide="rotate-ccw" style="width:40px;height:40px;stroke-width:1.4;"></i></span><div class="service-name">Devoluciones Fáciles</div><div class="service-desc">30 días para devolver sin preguntas. Si la refacción no es la correcta, te la cambiamos de inmediato.</div><span class="service-tag">30 DÍAS</span></div>
+    <div class="service-card"><span class="service-icon"><i data-lucide="credit-card" style="width:40px;height:40px;stroke-width:1.4;"></i></span><div class="service-name">Crédito para Talleres</div><div class="service-desc">Línea de crédito a 30 y 60 días para talleres y distribuidores registrados. Trámite en 48 horas.</div><span class="service-tag">B2B</span></div>
     <div class="service-card"><span class="service-icon"><i data-lucide="package-search" style="width:40px;height:40px;stroke-width:1.4;"></i></span><div class="service-name">Pedido Especial</div><div class="service-desc">Si no tenemos tu pieza en stock, la conseguimos. Importación directa de USA, Japón y Corea en 5–10 días hábiles.</div><span class="service-tag">IMPORTACIÓN</span></div>
   </div>
 </div>
@@ -2013,20 +2016,20 @@ img { max-width:100%; }
       <h3 style="font-family:var(--font-display);font-size:36px;margin-bottom:16px;">¿Por qué elegir <span style="color:var(--rf-red);">Franco Mayoreo?</span></h3>
       <div style="display:flex;flex-direction:column;gap:16px;">
         <div style="display:flex;gap:14px;align-items:flex-start;">
-          <div style="width:36px;height:36px;background:var(--rf-red-dim);border:1px solid rgba(27,53,128,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">💰</div>
-          <div><div style="font-weight:700;margin-bottom:3px;">Precios de distribuidor</div><div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Hasta 30% por debajo del precio de mostrador. Entre más compras, mayor tu descuento.</div></div>
+          <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="tag" style="width:18px;height:18px;color:#fff;stroke-width:1.8;"></i></div>
+          <div><div style="font-weight:700;margin-bottom:3px;color:#fff;">Precios de distribuidor</div><div style="font-size:13px;color:rgba(255,255,255,0.75);line-height:1.5;">Hasta 30% por debajo del precio de mostrador. Entre más compras, mayor tu descuento.</div></div>
         </div>
         <div style="display:flex;gap:14px;align-items:flex-start;">
-          <div style="width:36px;height:36px;background:var(--rf-red-dim);border:1px solid rgba(27,53,128,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📞</div>
-          <div><div style="font-weight:700;margin-bottom:3px;">Ejecutivo de cuenta dedicado</div><div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Una persona que conoce tu negocio y resuelve tus pedidos de inmediato. WhatsApp directo, 6am-8pm.</div></div>
+          <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="user-check" style="width:18px;height:18px;color:#fff;stroke-width:1.8;"></i></div>
+          <div><div style="font-weight:700;margin-bottom:3px;color:#fff;">Ejecutivo de cuenta dedicado</div><div style="font-size:13px;color:rgba(255,255,255,0.75);line-height:1.5;">Una persona que conoce tu negocio y resuelve tus pedidos de inmediato. WhatsApp directo, 6am-8pm.</div></div>
         </div>
         <div style="display:flex;gap:14px;align-items:flex-start;">
-          <div style="width:36px;height:36px;background:var(--rf-red-dim);border:1px solid rgba(27,53,128,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🚚</div>
-          <div><div style="font-weight:700;margin-bottom:3px;">Entrega diaria en tu negocio</div><div style="font-size:13px;color:var(--text-muted);line-height:1.5;">Ruta de reparto propio en CDMX y área metro. Sin costo mínimo de entrega para clientes registrados.</div></div>
+          <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="truck" style="width:18px;height:18px;color:#fff;stroke-width:1.8;"></i></div>
+          <div><div style="font-weight:700;margin-bottom:3px;color:#fff;">Entrega diaria en tu negocio</div><div style="font-size:13px;color:rgba(255,255,255,0.75);line-height:1.5;">Ruta de reparto propio en CDMX y área metro. Sin costo mínimo de entrega para clientes registrados.</div></div>
         </div>
         <div style="display:flex;gap:14px;align-items:flex-start;">
-          <div style="width:36px;height:36px;background:var(--rf-red-dim);border:1px solid rgba(27,53,128,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📄</div>
-          <div><div style="font-weight:700;margin-bottom:3px;">Facturación automática</div><div style="font-size:13px;color:var(--text-muted);line-height:1.5;">CFDI 4.0 inmediato, estado de cuenta en línea y reportes mensuales de compras.</div></div>
+          <div style="width:36px;height:36px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;"><i data-lucide="file-text" style="width:18px;height:18px;color:#fff;stroke-width:1.8;"></i></div>
+          <div><div style="font-weight:700;margin-bottom:3px;color:#fff;">Facturación automática</div><div style="font-size:13px;color:rgba(255,255,255,0.75);line-height:1.5;">CFDI 4.0 inmediato, estado de cuenta en línea y reportes mensuales de compras.</div></div>
         </div>
       </div>
     </div>
@@ -2148,7 +2151,7 @@ img { max-width:100%; }
 <div class="page" id="page-sucursales">
   <div class="page-header-band">
     <div class="page-header-inner">
-      <h2>📍 Nuestras Sucursales</h2>
+      <h2><i data-lucide="map-pin" style="width:28px;height:28px;display:inline-block;vertical-align:-5px;margin-right:8px;"></i>Nuestras Sucursales</h2>
       <p>2 sucursales en Col. Doctores, Del. Cuauhtémoc, CDMX — más de 60 años sirviendo a la ciudad</p>
     </div>
   </div>
@@ -2157,7 +2160,7 @@ img { max-width:100%; }
 
       <!-- SUCURSAL PRINCIPAL — VERTIZ 331 -->
       <div class="location-card active" data-map="https://maps.google.com/maps?q=Vertiz+331+Colonia+Doctores+Del+Cuauhtemoc+Ciudad+de+Mexico&output=embed&z=16&hl=es">
-        <div class="location-name">🏪 Sucursal Principal — Vértiz 331</div>
+        <div class="location-name"><i data-lucide="store" class="icon-sm" style="display:inline-block;vertical-align:-3px;margin-right:6px;"></i>Sucursal Principal — Vértiz 331</div>
         <div class="location-address">Vértiz 331, Col. Doctores, Del. Cuauhtémoc, México D.F.</div>
         <div class="location-tags">
           <span class="location-tag">Matriz</span>
@@ -2172,13 +2175,13 @@ img { max-width:100%; }
         </div>
         <button class="btn-secondary" style="margin-top:12px;width:100%;justify-content:center;font-size:12px;padding:10px;"
           onclick="window.open('https://maps.google.com/?q=Vertiz+331+Colonia+Doctores+Del+Cuauhtemoc+Ciudad+de+Mexico','_blank')">
-          📍 Cómo llegar →
+          <i data-lucide="navigation" class="icon-xs"></i> Cómo llegar →
         </button>
       </div>
 
       <!-- SUCURSAL SECUNDARIA — VERTIZ 343 (FRENOS) -->
       <div class="location-card" data-map="https://maps.google.com/maps?q=Vertiz+343+Colonia+Doctores+Del+Cuauhtemoc+Ciudad+de+Mexico&output=embed&z=16&hl=es">
-        <div class="location-name">🛞 Sucursal Frenos — Vértiz 343</div>
+        <div class="location-name"><i data-lucide="disc-3" class="icon-sm" style="display:inline-block;vertical-align:-3px;margin-right:6px;"></i>Sucursal Frenos — Vértiz 343</div>
         <div class="location-address">Vértiz 343, Col. Doctores, Del. Cuauhtémoc, México D.F.</div>
         <div class="location-tags">
           <span class="location-tag">Especialistas en frenos</span>
@@ -2191,7 +2194,7 @@ img { max-width:100%; }
         </div>
         <button class="btn-secondary" style="margin-top:12px;width:100%;justify-content:center;font-size:12px;padding:10px;"
           onclick="window.open('https://maps.google.com/?q=Vertiz+343+Colonia+Doctores+Del+Cuauhtemoc+Ciudad+de+Mexico','_blank')">
-          📍 Cómo llegar →
+          <i data-lucide="navigation" class="icon-xs"></i> Cómo llegar →
         </button>
       </div>
 

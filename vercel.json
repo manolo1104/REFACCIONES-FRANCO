@@ -18,6 +18,14 @@
       "use": "@vercel/static"
     },
     {
+      "src": "DASHBOARD/manolo.png",
+      "use": "@vercel/static"
+    },
+    {
+      "src": "DASHBOARD/logo.png",
+      "use": "@vercel/static"
+    },
+    {
       "src": "DASHBOARD/server.js",
       "use": "@vercel/node"
     }
@@ -38,6 +46,14 @@
     {
       "src": "^/tomas\\.png$",
       "dest": "DASHBOARD/tomas.png"
+    },
+    {
+      "src": "^/manolo\\.png$",
+      "dest": "DASHBOARD/manolo.png"
+    },
+    {
+      "src": "^/logo\\.png$",
+      "dest": "DASHBOARD/logo.png"
     },
     {
       "src": "^/$",

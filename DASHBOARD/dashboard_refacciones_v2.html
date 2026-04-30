@@ -1042,7 +1042,9 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
      ============================================================ -->
 <div id="login-overlay">
   <div class="login-box">
-    <div class="login-logo">RF</div>
+    <div class="login-logo" style="background:none;box-shadow:none;padding:0;overflow:hidden;">
+      <img src="/logo.png" alt="Refacciones Franco" style="width:48px;height:48px;object-fit:contain;">
+    </div>
     <div class="login-title">Refacciones Franco</div>
     <div class="login-sub">Dashboard Ejecutivo — Inicia sesión para continuar</div>
     <label class="login-label" for="login-user">Usuario</label>
@@ -1085,7 +1087,9 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
      ============================================================ -->
 <header class="header">
   <div class="header-left">
-    <div class="logo-mark">RX</div>
+    <div class="logo-mark" style="background:none;box-shadow:none;padding:0;overflow:hidden;">
+      <img src="/logo.png" alt="RF" style="width:34px;height:34px;object-fit:contain;border-radius:9px;">
+    </div>
     <div>
       <div class="header-title">Dashboard Ejecutivo — Refacciones</div>
       <div class="header-sub" id="db-date">Cargando...</div>
@@ -3763,12 +3767,21 @@ function applyUserPermissions(username) {
     if (firstAllowed) firstAllowed.click();
   }
 
-  /* Mostrar badge de usuario */
+  /* Mostrar badge de usuario con foto */
   const badge = document.getElementById('user-badge');
   const avatar = document.getElementById('user-avatar');
   const nameDisplay = document.getElementById('user-name-display');
+  const USER_PHOTOS = { 'TOMAS': '/tomas.png', 'MANOLO': '/manolo.png' };
   if (badge) badge.classList.remove('hidden');
-  if (avatar) avatar.textContent = username[0].toUpperCase();
+  if (avatar) {
+    const photo = USER_PHOTOS[username.toUpperCase()];
+    if (photo) {
+      avatar.innerHTML = `<img src="${photo}" style="width:100%;height:100%;object-fit:cover;border-radius:50%;" alt="${username}">`;
+      avatar.style.background = 'transparent';
+    } else {
+      avatar.textContent = username[0].toUpperCase();
+    }
+  }
   if (nameDisplay) nameDisplay.textContent = username;
 }
 
@@ -4047,28 +4060,50 @@ async function exportarPDF(tabId) {
   const clone = panel.cloneNode(true);
   clone.querySelectorAll('.export-bar, .mes-selector-bar, .inline-chat-bar, .ai-actions-card').forEach(el => el.style.display = 'none');
 
-  /* ── Contraste PDF: forzar texto negro sobre fondo blanco ── */
-  clone.querySelectorAll('.card, .kpi-value, .kpi-label, .kpi-sub, .kpi-delta, td, th, .card-title, .mini-label, .mini-val, .section-label, .fin-table td, .fin-table th').forEach(el => {
-    el.style.color = '#111827';
+  /* ── Contraste PDF: paso 1 — fondo blanco en todo el wrapper ── */
+  clone.style.cssText = 'background:#fff !important;color:#111827 !important;';
+
+  /* paso 2 — forzar negro en TODOS los elementos de texto */
+  clone.querySelectorAll('*').forEach(el => {
+    const cs = window.getComputedStyle(el);
+    /* Solo sobrescribir si el color calculado es muy claro (blanco/casi blanco) o transparente */
+    const col = cs.color;
+    if (col) {
+      const m = col.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+      if (m) {
+        const r = +m[1], g = +m[2], b = +m[3];
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        if (brightness > 200) el.style.color = '#111827'; /* muy claro → negro */
+      }
+    }
+    /* Fondos de cards y tablas → blanco */
+    if (el.classList.contains('card') || el.classList.contains('fx-card') || el.classList.contains('inf-card')) {
+      el.style.background = '#ffffff';
+      el.style.boxShadow  = '0 1px 4px rgba(0,0,0,0.08)';
+      el.style.border     = '1px solid #e5e7eb';
+    }
   });
-  /* Mantener colores semánticos solo en badges y deltas de color */
+
+  /* paso 3 — garantizar colores semánticos visibles */
+  clone.querySelectorAll('.kpi-value').forEach(el => { el.style.color = '#111827'; el.style.fontWeight = '700'; });
+  clone.querySelectorAll('.kpi-label, .kpi-sub, .card-title, .mini-label, .mini-val').forEach(el => el.style.color = '#374151');
   clone.querySelectorAll('.pos').forEach(el => el.style.color = '#15803d');
   clone.querySelectorAll('.neg').forEach(el => el.style.color = '#b91c1c');
   clone.querySelectorAll('.neu').forEach(el => el.style.color = '#b45309');
-  clone.querySelectorAll('.badge-ok').forEach(el => { el.style.color = '#15803d'; el.style.background = '#dcfce7'; });
-  clone.querySelectorAll('.badge-warn').forEach(el => { el.style.color = '#b45309'; el.style.background = '#fef9c3'; });
-  clone.querySelectorAll('.badge-err').forEach(el => { el.style.color = '#b91c1c'; el.style.background = '#fee2e2'; el.style.animation = 'none'; });
-  clone.querySelectorAll('.kpi-value').forEach(el => { el.style.color = '#111827'; el.style.fontWeight = '700'; });
-  /* Cards con fondo de color → blanco con borde */
-  clone.querySelectorAll('.fx-card, .inf-card').forEach(el => {
-    el.style.background = '#fff'; el.style.border = '1px solid #e5e7eb';
-  });
+  clone.querySelectorAll('.badge-ok').forEach(el  => { el.style.color = '#15803d'; el.style.background = '#dcfce7'; el.style.border = '1px solid #bbf7d0'; });
+  clone.querySelectorAll('.badge-warn').forEach(el => { el.style.color = '#b45309'; el.style.background = '#fef9c3'; el.style.border = '1px solid #fde68a'; });
+  clone.querySelectorAll('.badge-err').forEach(el  => { el.style.color = '#b91c1c'; el.style.background = '#fee2e2'; el.style.border = '1px solid #fca5a5'; el.style.animation = 'none'; });
+  clone.querySelectorAll('td, th').forEach(el => { el.style.color = '#111827'; });
+  clone.querySelectorAll('th').forEach(el => { el.style.background = '#f3f4f6'; el.style.fontWeight = '600'; });
+  clone.querySelectorAll('.section-label').forEach(el => { el.style.color = '#374151'; el.style.fontWeight = '700'; });
   clone.querySelectorAll('.fx-value, .fx-label, .fx-delta, .fx-source').forEach(el => el.style.color = '#111827');
   clone.querySelectorAll('.inf-value, .inf-label, .inf-sub').forEach(el => el.style.color = '#111827');
-  /* Tabla header */
-  clone.querySelectorAll('th').forEach(el => { el.style.color = '#374151'; el.style.background = '#f9fafb'; });
-  /* Section labels */
-  clone.querySelectorAll('.section-label').forEach(el => { el.style.color = '#374151'; el.style.fontWeight = '700'; });
+  clone.querySelectorAll('.text-muted, [style*="color:var(--text-muted)"]').forEach(el => el.style.color = '#6b7280');
+  clone.querySelectorAll('.price-pct').forEach(el => { /* preservar color relativo */ });
+  clone.querySelectorAll('[style*="color:#fff"], [style*="color: #fff"], [style*="color:white"]').forEach(el => {
+    const bg = window.getComputedStyle(el).backgroundColor;
+    if (!bg || bg === 'transparent' || bg === 'rgba(0, 0, 0, 0)') el.style.color = '#111827';
+  });
 
   wrapper.appendChild(clone);
 
