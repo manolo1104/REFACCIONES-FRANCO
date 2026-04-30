@@ -515,12 +515,83 @@ img { max-width:100%; }
 .test-text { font-size: 14px; color: var(--text-gray); line-height: 1.6; margin-bottom: 16px; font-style: italic; }
 .test-author { display: flex; align-items: center; gap: 10px; }
 .test-avatar {
-  width: 36px; height: 36px; border-radius: 50%;
+  width: 44px; height: 44px; border-radius: 50%;
   background: var(--rf-red); display: flex; align-items: center; justify-content: center;
   font-weight: 700; font-size: 14px; color: #fff; flex-shrink: 0;
+  overflow: hidden;
+}
+.test-avatar img {
+  width: 100%; height: 100%; object-fit: cover; border-radius: 50%;
 }
 .test-name { font-size: 13px; font-weight: 600; }
 .test-role { font-size: 11px; color: var(--text-muted); }
+
+/* ============================================================
+   SECCIÓN DUEÑO — CONFIANZA Y TRADICIÓN
+   ============================================================ */
+.owner-section {
+  background: linear-gradient(160deg, #fff 0%, #FEF2F2 100%);
+  border-top: 1px solid rgba(232,21,27,0.08);
+  border-bottom: 1px solid rgba(232,21,27,0.08);
+  padding: 72px 0;
+}
+.owner-inner {
+  max-width: 1200px; margin: 0 auto; padding: 0 24px;
+  display: grid; grid-template-columns: 420px 1fr; gap: 64px; align-items: center;
+}
+.owner-photo-wrap {
+  position: relative; display: flex; justify-content: center;
+}
+.owner-photo {
+  width: 100%; max-width: 400px;
+  border-radius: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.14), 0 4px 12px rgba(232,21,27,0.12);
+  object-fit: cover;
+  aspect-ratio: 4/5;
+}
+.owner-buenos-dias {
+  position: absolute; bottom: -18px; left: 50%; transform: translateX(-50%);
+  background: var(--rf-red); color: #fff;
+  border-radius: 50px; padding: 10px 28px;
+  box-shadow: 0 6px 24px rgba(232,21,27,0.40);
+  white-space: nowrap;
+}
+.owner-buenos-dias-text {
+  font-family: var(--font-display); font-size: 22px; font-weight: 700;
+  letter-spacing: 0.5px;
+}
+.owner-eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--rf-red); margin-bottom: 12px;
+}
+.owner-title {
+  font-family: var(--font-display); font-size: 44px; line-height: 1.05;
+  color: var(--text-dark); margin-bottom: 20px; letter-spacing: -0.5px;
+}
+.owner-desc {
+  font-size: 15px; color: var(--text-gray); line-height: 1.75;
+}
+.owner-values {
+  display: flex; flex-direction: column; gap: 14px;
+  margin: 28px 0;
+}
+.owner-value {
+  display: flex; align-items: flex-start; gap: 14px;
+}
+.owner-value-icon { font-size: 22px; flex-shrink: 0; margin-top: 2px; }
+.owner-value strong { font-size: 14px; font-weight: 700; color: var(--text-dark); display: block; }
+.owner-value-sub { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+.owner-signature {
+  border-top: 1px solid rgba(0,0,0,0.08); padding-top: 20px; margin-top: 8px;
+}
+.owner-sig-line { font-size: 13px; font-weight: 600; color: var(--text-dark); margin-bottom: 4px; }
+.owner-sig-quote { font-size: 13px; color: var(--text-muted); font-style: italic; }
+@media (max-width: 900px) {
+  .owner-inner { grid-template-columns: 1fr; gap: 40px; }
+  .owner-photo { max-width: 320px; }
+  .owner-photo-wrap { margin-bottom: 30px; }
+  .owner-title { font-size: 32px; }
+}
 
 /* ============================================================
    PÁGINA 2 — CATÁLOGO / ECOMMERCE
@@ -648,10 +719,18 @@ img { max-width:100%; }
    PÁGINA 4 — MAYOREO / B2B
    ============================================================ */
 .b2b-hero {
-  background: linear-gradient(135deg, #FEF2F2 0%, #FFF8F8 100%);
+  background:
+    linear-gradient(135deg, rgba(20,0,0,0.72) 0%, rgba(180,10,10,0.60) 100%),
+    url('IMAGENES/pht-lideres-en-refacciones-para-equipos-de-bombeo-y-flotacion.jpg') center center / cover no-repeat;
   border-bottom: 1px solid rgba(232,21,27,0.2);
   padding: 70px 0;
 }
+.b2b-hero h2 { color: #fff !important; }
+.b2b-hero p  { color: rgba(255,255,255,0.82) !important; }
+.b2b-hero .hero-eyebrow { background: rgba(255,255,255,0.12); color: #fff; border-color: rgba(255,255,255,0.2); }
+.b2b-hero .b2b-card { background: rgba(255,255,255,0.10); border-color: rgba(255,255,255,0.18); backdrop-filter: blur(8px); }
+.b2b-hero .b2b-num { color: #fff; }
+.b2b-hero .b2b-label { color: rgba(255,255,255,0.75); }
 .b2b-inner { max-width:1400px; margin:0 auto; padding:0 24px; }
 .b2b-grid { display:grid; grid-template-columns: repeat(4, 1fr); gap:12px; margin-top:32px; }
 .b2b-card {
@@ -1131,6 +1210,33 @@ img { max-width:100%; }
     </div>
   </div>
 
+  <!-- Sección dueño — confianza y tradición -->
+  <div class="owner-section">
+    <div class="owner-inner">
+      <div class="owner-photo-wrap">
+        <img src="IMAGENES/dueno.png" alt="Dueño de Refacciones Franco" class="owner-photo">
+        <div class="owner-buenos-dias">
+          <span class="owner-buenos-dias-text">¡Buenos días!</span>
+        </div>
+      </div>
+      <div class="owner-content">
+        <div class="owner-eyebrow">Desde 1964 · Más de 60 años sirviendo a México</div>
+        <h2 class="owner-title">Una refaccionaria<br>con alma familiar</h2>
+        <p class="owner-desc">Cada mañana, antes de que abran las puertas, el mismo grito llena el almacén: <strong>"¡Buenos días!"</strong> — y sus colaboradores, con alegría genuina, responden al unísono. Esa tradición lo dice todo.</p>
+        <p class="owner-desc" style="margin-top:12px;">Francisco Franco fundó esta empresa con un principio simple: <em>vender con honestidad, asesorar con conocimiento y tratar a cada cliente como si fuera de la familia.</em> Hoy, tres generaciones después, ese principio sigue intacto.</p>
+        <div class="owner-values">
+          <div class="owner-value"><span class="owner-value-icon">🏆</span><div><strong>60+ años de experiencia</strong><div class="owner-value-sub">Tres generaciones de conocimiento automotriz</div></div></div>
+          <div class="owner-value"><span class="owner-value-icon">🤝</span><div><strong>Garantía personal</strong><div class="owner-value-sub">El dueño conoce a sus clientes por nombre</div></div></div>
+          <div class="owner-value"><span class="owner-value-icon">⭐</span><div><strong>Calidad sin compromiso</strong><div class="owner-value-sub">Solo piezas que nosotros mismos pondríamos en nuestros autos</div></div></div>
+        </div>
+        <div class="owner-signature">
+          <div class="owner-sig-line">— Francisco Franco, fundador</div>
+          <div class="owner-sig-quote">"Si algo no te funciona, regrésalo. Aquí respondemos."</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Buscar por vehículo -->
   <div class="vehicle-finder">
     <div class="vf-inner">
@@ -1256,7 +1362,7 @@ img { max-width:100%; }
           <div class="test-stars">★★★★★</div>
           <p class="test-text">"Llevo 8 años comprando en Refacciones Franco. Los precios son muy competitivos y el personal siempre sabe exactamente qué necesito para mi taller."</p>
           <div class="test-author">
-            <div class="test-avatar">JM</div>
+            <div class="test-avatar"><img src="IMAGENES/f414x232-12469_26208_5050.jpg" alt="José Martínez"></div>
             <div><div class="test-name">José Martínez</div><div class="test-role">Taller mecánico · Iztapalapa</div></div>
           </div>
         </div>
@@ -1264,7 +1370,7 @@ img { max-width:100%; }
           <div class="test-stars">★★★★★</div>
           <p class="test-text">"La entrega el mismo día me salvó la vida. Tuve una emergencia con un cliente y en 3 horas ya tenía la refacción en mi local. Excelente servicio."</p>
           <div class="test-author">
-            <div class="test-avatar">AR</div>
+            <div class="test-avatar"><img src="IMAGENES/hltJ1bLq.jpg" alt="Ana Rodríguez"></div>
             <div><div class="test-name">Ana Rodríguez</div><div class="test-role">Distribuidora · Naucalpan</div></div>
           </div>
         </div>
@@ -1272,7 +1378,7 @@ img { max-width:100%; }
           <div class="test-stars">★★★★★</div>
           <p class="test-text">"Los precios de mayoreo son los mejores que encontré en CDMX. El crédito a 30 días me ayuda mucho con el flujo de mi negocio. 100% recomendados."</p>
           <div class="test-author">
-            <div class="test-avatar">LC</div>
+            <div class="test-avatar"><img src="IMAGENES/images-1.jpg" alt="Luis Castro"></div>
             <div><div class="test-name">Luis Castro</div><div class="test-role">Refaccionaria · Ecatepec</div></div>
           </div>
         </div>

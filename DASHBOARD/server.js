@@ -2,6 +2,7 @@
 require("dotenv").config({ path: require("path").join(__dirname, "../.env") });
 const express = require("express");
 const path = require("path");
+const https = require("https");
 const { google } = require("googleapis");
 const Anthropic = require("@anthropic-ai/sdk");
 
@@ -178,17 +179,49 @@ async function fetchRatios() {
   return data;
 }
 
-function getOperacionesData() {
+function getMonthMultiplier(mes) {
+  const m = parseInt(mes) || 4;
+  const factores = {
+    1: 0.72,  // enero — arranque lento
+    2: 0.78,  // febrero
+    3: 0.88,  // marzo
+    4: 1.00,  // abril — base
+    5: 1.05,  // mayo
+    6: 1.02,  // junio
+    7: 0.95,  // julio — vacaciones
+    8: 0.93,  // agosto
+    9: 1.08,  // septiembre — repunte
+    10: 1.12, // octubre — temporada alta
+    11: 1.10, // noviembre — buen mes
+    12: 0.85  // diciembre — fin año
+  };
+  return factores[m] || 1.0;
+}
+
+const MONTH_NAMES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+
+function getOperacionesData(mes) {
+  const f = getMonthMultiplier(mes);
+  const m = parseInt(mes) || 4;
+  const meses = MONTH_NAMES.slice(0, m);
+  // DIO base: reducción lineal desde 62, con factor de mes
+  const dioBase = [62, 59, 56, 54, 52, 51, 53, 55, 50, 48, 49, 58];
+  const dioPorMes = dioBase.slice(0, m);
   return {
     inventario: {
-      valor: 64200000, rotacion: 6.8, dio: 53.7, skuQuiebre: 142, totalSkus: 4820,
-      dioPorMes: [62, 59, 56, 54],
-      meses: ["Enero","Febrero","Marzo","Abril"],
+      valor: Math.round(64200000 * f), rotacion: parseFloat((6.8 * f).toFixed(1)),
+      dio: parseFloat((53.7 * (1 / f * 0.5 + 0.5)).toFixed(1)),
+      skuQuiebre: Math.round(142 * (1.1 - f * 0.1)), totalSkus: 4820,
+      dioPorMes,
+      meses,
       porCategoria: { Motor:34, Frenos:22, Suspension:18, Electrico:15, Otros:11 }
     },
     proveedores: {
-      nivelServicio: 91.4, ordenesEmitidas: 347, entregadasTiempo: 318,
-      proveedoresActivos: 62, exposicionUSD: 1240000, ahorroNegociacion: 2800000,
+      nivelServicio: parseFloat((91.4 * Math.min(1, f * 0.99 + 0.01)).toFixed(1)),
+      ordenesEmitidas: Math.round(347 * f),
+      entregadasTiempo: Math.round(318 * f),
+      proveedoresActivos: 62, exposicionUSD: Math.round(1240000 * f),
+      ahorroNegociacion: Math.round(2800000 * f),
       varPrecio: [4.1,8.2,5.6,6.8,5.9],
       inpc:       [3.4,7.8,4.7,4.2,3.8],
       anos: ["2021","2022","2023","2024","2025E"],
@@ -204,37 +237,60 @@ function getOperacionesData() {
   };
 }
 
-function getVentasData() {
+function getVentasData(mes) {
+  const f = getMonthMultiplier(mes);
+  const m = parseInt(mes) || 4;
+  const meses = MONTH_NAMES.slice(0, m);
+  // Datos base de ventas mensuales 2025 y 2024 (abril=base)
+  const base2025 = [44.2,46.8,45.1,46.3,48.6,47.2,43.9,43.0,49.8,51.7,50.7,39.2];
+  const base2024 = [39.8,41.2,40.3,41.5,43.7,42.4,39.5,38.7,44.8,46.5,45.6,35.3];
   return {
-    kpis: { pedidosMes:2841, ticketPromedio:16180, clientesActivos:1247, fillRate:94.8,
-            pedidosDelta:7.2, ticketDelta:3.4, clientesDelta:82, fillRateMeta:95.7 },
+    kpis: {
+      pedidosMes: Math.round(2841 * f),
+      ticketPromedio: Math.round(16180 * f),
+      clientesActivos: Math.round(1247 * (0.9 + f * 0.1)),
+      fillRate: parseFloat(Math.min(99, 94.8 * f).toFixed(1)),
+      pedidosDelta: 7.2, ticketDelta: 3.4, clientesDelta: 82, fillRateMeta: 95.7
+    },
     ventasMensuales: {
-      meses: ["Enero","Febrero","Marzo","Abril"],
-      "2025": [44.2,46.8,45.1,46.3],
-      "2024": [39.8,41.2,40.3,41.5]
+      meses,
+      "2025": base2025.slice(0, m),
+      "2024": base2024.slice(0, m)
     },
     ventasPorCanal: { labels:["Mayoristas","Talleres directos","E-commerce","Otros"], data:[48,31,13,8] }
   };
 }
 
-function getComprasData() {
+function getComprasData(mes) {
+  const f = getMonthMultiplier(mes);
+  const m = parseInt(mes) || 4;
+  const meses = MONTH_NAMES.slice(0, m);
+  // Generar fechas de órdenes apropiadas al mes
+  const mesStr = String(m).padStart(2,'0');
+  const nextMes = String(m < 12 ? m + 1 : 1).padStart(2,'0');
+  const baseNacional    = [6.2, 6.8, 6.1, 7.1, 7.4, 7.2, 6.7, 6.5, 7.7, 8.0, 7.8, 6.0];
+  const baseImportacion = [2.9, 3.2, 3.0, 3.4, 3.6, 3.5, 3.2, 3.1, 3.7, 3.8, 3.7, 2.9];
   return {
-    kpis: { ordenesAbiertas:47, valorOrdenesAbiertas:3200000, pctNacional:68,
-            pctImportacion:32, ordenesConRetraso:8 },
+    kpis: {
+      ordenesAbiertas: Math.round(47 * f),
+      valorOrdenesAbiertas: Math.round(3200000 * f),
+      pctNacional: 68, pctImportacion: 32,
+      ordenesConRetraso: Math.round(8 * (1.1 - f * 0.1))
+    },
     ordenesRecientes: [
-      { id:"OC-2025-1847", proveedor:"ACDelco / GM",    tipo:"Nacional",    fechaEmision:"18/04/2026", fechaEntrega:"30/04/2026", monto:284500,  estatus:"En Tránsito" },
-      { id:"OC-2025-1848", proveedor:"Denso Intl.",     tipo:"Importación", fechaEmision:"15/04/2026", fechaEntrega:"13/05/2026", monto:612000,  estatus:"Pendiente"   },
-      { id:"OC-2025-1849", proveedor:"Bosch México",    tipo:"Nacional",    fechaEmision:"20/04/2026", fechaEntrega:"25/04/2026", monto:198000,  estatus:"Con Retraso" },
-      { id:"OC-2025-1850", proveedor:"SKF México",      tipo:"Nacional",    fechaEmision:"21/04/2026", fechaEntrega:"25/04/2026", monto:143200,  estatus:"Recibida"    },
-      { id:"OC-2025-1851", proveedor:"Gates Industrial",tipo:"Importación", fechaEmision:"10/04/2026", fechaEntrega:"28/04/2026", monto:537800,  estatus:"Con Retraso" },
-      { id:"OC-2025-1852", proveedor:"Hyundai Mobis",   tipo:"Importación", fechaEmision:"08/04/2026", fechaEntrega:"13/05/2026", monto:892000,  estatus:"En Tránsito" },
-      { id:"OC-2025-1853", proveedor:"ACDelco / GM",    tipo:"Nacional",    fechaEmision:"22/04/2026", fechaEntrega:"04/05/2026", monto:321500,  estatus:"Pendiente"   },
-      { id:"OC-2025-1854", proveedor:"Bosch México",    tipo:"Nacional",    fechaEmision:"23/04/2026", fechaEntrega:"29/04/2026", monto:211000,  estatus:"Pendiente"   }
+      { id:"OC-2025-1847", proveedor:"ACDelco / GM",    tipo:"Nacional",    fechaEmision:`18/${mesStr}/2026`, fechaEntrega:`30/${mesStr}/2026`, monto:Math.round(284500*f),  estatus:"En Tránsito" },
+      { id:"OC-2025-1848", proveedor:"Denso Intl.",     tipo:"Importación", fechaEmision:`15/${mesStr}/2026`, fechaEntrega:`13/${nextMes}/2026`, monto:Math.round(612000*f),  estatus:"Pendiente"   },
+      { id:"OC-2025-1849", proveedor:"Bosch México",    tipo:"Nacional",    fechaEmision:`20/${mesStr}/2026`, fechaEntrega:`25/${mesStr}/2026`, monto:Math.round(198000*f),  estatus:"Con Retraso" },
+      { id:"OC-2025-1850", proveedor:"SKF México",      tipo:"Nacional",    fechaEmision:`21/${mesStr}/2026`, fechaEntrega:`25/${mesStr}/2026`, monto:Math.round(143200*f),  estatus:"Recibida"    },
+      { id:"OC-2025-1851", proveedor:"Gates Industrial",tipo:"Importación", fechaEmision:`10/${mesStr}/2026`, fechaEntrega:`28/${mesStr}/2026`, monto:Math.round(537800*f),  estatus:"Con Retraso" },
+      { id:"OC-2025-1852", proveedor:"Hyundai Mobis",   tipo:"Importación", fechaEmision:`08/${mesStr}/2026`, fechaEntrega:`13/${nextMes}/2026`, monto:Math.round(892000*f),  estatus:"En Tránsito" },
+      { id:"OC-2025-1853", proveedor:"ACDelco / GM",    tipo:"Nacional",    fechaEmision:`22/${mesStr}/2026`, fechaEntrega:`04/${nextMes}/2026`, monto:Math.round(321500*f),  estatus:"Pendiente"   },
+      { id:"OC-2025-1854", proveedor:"Bosch México",    tipo:"Nacional",    fechaEmision:`23/${mesStr}/2026`, fechaEntrega:`29/${mesStr}/2026`, monto:Math.round(211000*f),  estatus:"Pendiente"   }
     ],
     comprasMensuales: {
-      meses: ["Enero","Febrero","Marzo","Abril"],
-      nacional:    [6.2, 6.8, 6.1, 7.1],
-      importacion: [2.9, 3.2, 3.0, 3.4]
+      meses,
+      nacional:    baseNacional.slice(0, m).map(v => parseFloat((v * f).toFixed(1))),
+      importacion: baseImportacion.slice(0, m).map(v => parseFloat((v * f).toFixed(1)))
     },
     sugerenciasCompra: [
       { sku:"SKU-4821", descripcion:"Balata Delantera Bosch Cerámico",    categoria:"Frenos",     stockActual:12, stockMinimo:50,  ventasMes:78,  qtySugerida:120, proveedor:"Bosch México"    },
@@ -270,31 +326,62 @@ function getComprasData() {
   };
 }
 
-function getCrmData() {
+function getCrmData(mes) {
+  const f = getMonthMultiplier(mes);
+  const m = parseInt(mes) || 4;
+  const mesStr = String(m).padStart(2,'0');
+  // Generar fechas del mes seleccionado para interacciones
+  const d = (dia) => `${String(dia).padStart(2,'0')}/${mesStr}/2026`;
   return {
-    kpisCrm: { totalContactos:5413, interaccionesMes:847, cotizacionesAbiertas:163, sinActividad30d:412 },
-    cxc: { saldoTotal:379338, carteraVencidaPct:4.1, clientesCredito:127, dso:18 },
+    kpisCrm: {
+      totalContactos: 5413,
+      interaccionesMes: Math.round(847 * f),
+      cotizacionesAbiertas: Math.round(163 * f),
+      sinActividad30d: Math.round(412 * (1.1 - f * 0.1))
+    },
+    cxc: {
+      saldoTotal: Math.round(379338 * f),
+      carteraVencidaPct: parseFloat((4.1 * (1.05 - f * 0.05)).toFixed(1)),
+      clientesCredito: 127,
+      dso: Math.round(18 * (1.05 - f * 0.05))
+    },
     clientesPendientes: [
-      { cliente:"Auto Express del Norte", segmento:"A", limiteCredito:150000, saldoActual:89200,  diasVencido:0,  estatus:"Al corriente"  },
-      { cliente:"Distribuidora Montes",   segmento:"A", limiteCredito:130000, saldoActual:74500,  diasVencido:8,  estatus:"Al corriente"  },
-      { cliente:"Refacciones El Águila",  segmento:"A", limiteCredito:120000, saldoActual:62100,  diasVencido:35, estatus:"En seguimiento" },
-      { cliente:"Taller Los Pinos",       segmento:"B", limiteCredito:80000,  saldoActual:48900,  diasVencido:22, estatus:"Al corriente"  },
-      { cliente:"Servi-Car Puebla",       segmento:"B", limiteCredito:70000,  saldoActual:38400,  diasVencido:68, estatus:"Vencido"       },
-      { cliente:"Talleres Unión",         segmento:"B", limiteCredito:60000,  saldoActual:31200,  diasVencido:15, estatus:"Al corriente"  },
-      { cliente:"Auto Centro Sur",        segmento:"B", limiteCredito:55000,  saldoActual:24100,  diasVencido:12, estatus:"Al corriente"  },
-      { cliente:"Taller Mecánico Reyes",  segmento:"C", limiteCredito:30000,  saldoActual:10938,  diasVencido:5,  estatus:"Al corriente"  }
+      { cliente:"Auto Express del Norte", segmento:"A", limiteCredito:150000, saldoActual:Math.round(89200*f),  diasVencido:0,  estatus:"Al corriente"  },
+      { cliente:"Distribuidora Montes",   segmento:"A", limiteCredito:130000, saldoActual:Math.round(74500*f),  diasVencido:8,  estatus:"Al corriente"  },
+      { cliente:"Refacciones El Águila",  segmento:"A", limiteCredito:120000, saldoActual:Math.round(62100*f),  diasVencido:35, estatus:"En seguimiento" },
+      { cliente:"Taller Los Pinos",       segmento:"B", limiteCredito:80000,  saldoActual:Math.round(48900*f),  diasVencido:22, estatus:"Al corriente"  },
+      { cliente:"Servi-Car Puebla",       segmento:"B", limiteCredito:70000,  saldoActual:Math.round(38400*f),  diasVencido:68, estatus:"Vencido"       },
+      { cliente:"Talleres Unión",         segmento:"B", limiteCredito:60000,  saldoActual:Math.round(31200*f),  diasVencido:15, estatus:"Al corriente"  },
+      { cliente:"Auto Centro Sur",        segmento:"B", limiteCredito:55000,  saldoActual:Math.round(24100*f),  diasVencido:12, estatus:"Al corriente"  },
+      { cliente:"Taller Mecánico Reyes",  segmento:"C", limiteCredito:30000,  saldoActual:Math.round(10938*f),  diasVencido:5,  estatus:"Al corriente"  }
     ],
-    antigüedadSaldos: { "0-30d":280000, "31-60d":62000, "61-90d":24000, "+90d":13338 },
+    interacciones: [
+      { cliente:"Auto Express del Norte", segmento:"A", tipo:"Visita",     fecha:d(28), responsable:"Gerardo Santana",    estatus:"Cerrado"  },
+      { cliente:"Distribuidora Montes",   segmento:"A", tipo:"Llamada",    fecha:d(27), responsable:"Casildo Lopez",       estatus:"Cerrado"  },
+      { cliente:"Refacciones El Águila",  segmento:"A", tipo:"Cotización", fecha:d(26), responsable:"José L. Badillo",     estatus:"Pendiente"},
+      { cliente:"Taller Los Pinos",       segmento:"B", tipo:"WhatsApp",   fecha:d(27), responsable:"Miguel Medina",       estatus:"Cerrado"  },
+      { cliente:"Servi-Car Puebla",       segmento:"B", tipo:"Cobranza",   fecha:d(25), responsable:"Jorge Ramirez",       estatus:"Pendiente"},
+      { cliente:"Talleres Unión",         segmento:"B", tipo:"Visita",     fecha:d(24), responsable:"Olimpo Ortiz",        estatus:"Cerrado"  },
+      { cliente:"Auto Centro Sur",        segmento:"B", tipo:"Llamada",    fecha:d(26), responsable:"César Martínez",      estatus:"Pendiente"},
+      { cliente:"Taller Mecánico Reyes",  segmento:"C", tipo:"WhatsApp",   fecha:d(23), responsable:"Humberto Santana",    estatus:"Cerrado"  },
+      { cliente:"Refacciones Morelos",    segmento:"B", tipo:"Cotización", fecha:d(28), responsable:"Samuel Ortiz",        estatus:"Pendiente"},
+      { cliente:"Grupo Automotriz Benito",segmento:"A", tipo:"Visita",     fecha:d(27), responsable:"Casildo Lopez",       estatus:"Cerrado"  }
+    ],
+    antigüedadSaldos: {
+      "0-30d": Math.round(280000*f), "31-60d": Math.round(62000*f),
+      "61-90d": Math.round(24000*f), "+90d": Math.round(13338*f)
+    },
     corteDiario: {
-      ventasHoy:842600, efectivo:218000, transferencia:495000, tarjeta:129600, transacciones:52,
+      ventasHoy: Math.round(842600*f), efectivo: Math.round(218000*f),
+      transferencia: Math.round(495000*f), tarjeta: Math.round(129600*f), transacciones: Math.round(52*f),
       ultimos7dias: [
-        { fecha:"21/04", ventas:714200,  efectivo:182000, transferencia:412000, tarjeta:120200, tx:44 },
-        { fecha:"22/04", ventas:891400,  efectivo:245000, transferencia:521000, tarjeta:125400, tx:58 },
-        { fecha:"23/04", ventas:763800,  efectivo:198000, transferencia:441800, tarjeta:124000, tx:49 },
-        { fecha:"24/04", ventas:932100,  efectivo:261000, transferencia:548000, tarjeta:123100, tx:61 },
-        { fecha:"25/04", ventas:678400,  efectivo:172000, transferencia:388400, tarjeta:118000, tx:42 },
-        { fecha:"26/04", ventas:541200,  efectivo:141000, transferencia:310200, tarjeta:90000,  tx:35 },
-        { fecha:"27/04", ventas:842600,  efectivo:218000, transferencia:495000, tarjeta:129600, tx:52 }
+        { fecha:`${String(m-7<1?1:m-7).padStart(2,'0')}/${mesStr}`, ventas:Math.round(714200*f), efectivo:Math.round(182000*f), transferencia:Math.round(412000*f), tarjeta:Math.round(120200*f), tx:Math.round(44*f) },
+        { fecha:`${String(m-6<1?2:m-6).padStart(2,'0')}/${mesStr}`, ventas:Math.round(891400*f), efectivo:Math.round(245000*f), transferencia:Math.round(521000*f), tarjeta:Math.round(125400*f), tx:Math.round(58*f) },
+        { fecha:`${String(m-5<1?3:m-5).padStart(2,'0')}/${mesStr}`, ventas:Math.round(763800*f), efectivo:Math.round(198000*f), transferencia:Math.round(441800*f), tarjeta:Math.round(124000*f), tx:Math.round(49*f) },
+        { fecha:`${String(m-4<1?4:m-4).padStart(2,'0')}/${mesStr}`, ventas:Math.round(932100*f), efectivo:Math.round(261000*f), transferencia:Math.round(548000*f), tarjeta:Math.round(123100*f), tx:Math.round(61*f) },
+        { fecha:`${String(m-3<1?5:m-3).padStart(2,'0')}/${mesStr}`, ventas:Math.round(678400*f), efectivo:Math.round(172000*f), transferencia:Math.round(388400*f), tarjeta:Math.round(118000*f), tx:Math.round(42*f) },
+        { fecha:`${String(m-2<1?6:m-2).padStart(2,'0')}/${mesStr}`, ventas:Math.round(541200*f), efectivo:Math.round(141000*f), transferencia:Math.round(310200*f), tarjeta:Math.round(90000*f),  tx:Math.round(35*f) },
+        { fecha:`${String(m-1<1?7:m-1).padStart(2,'0')}/${mesStr}`, ventas:Math.round(842600*f), efectivo:Math.round(218000*f), transferencia:Math.round(495000*f), tarjeta:Math.round(129600*f), tx:Math.round(52*f) }
       ]
     },
     segmentacion: [
@@ -358,19 +445,94 @@ app.post("/api/refresh", (req, res) => {
 
 // ── APIs mock: Operaciones, Ventas, Compras, CRM ─────────────
 app.get("/api/operaciones", (req, res) => {
-  res.json(getOperacionesData());
+  res.json(getOperacionesData(req.query.mes));
 });
 
 app.get("/api/ventas", (req, res) => {
-  res.json(getVentasData());
+  res.json(getVentasData(req.query.mes));
 });
 
 app.get("/api/compras", (req, res) => {
-  res.json(getComprasData());
+  res.json(getComprasData(req.query.mes));
 });
 
 app.get("/api/crm", (req, res) => {
-  res.json(getCrmData());
+  res.json(getCrmData(req.query.mes));
+});
+
+// ── Resend Email via HTTP nativo ──────────────────────────────────
+function sendResendEmail(to, subject, html) {
+  return new Promise((resolve, reject) => {
+    const body = JSON.stringify({
+      from: 'Refacciones Franco <onboarding@resend.dev>',
+      to: [to],
+      subject: subject,
+      html: html
+    });
+    const options = {
+      hostname: 'api.resend.com',
+      path: '/emails',
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer ' + (process.env.RESEND_API_KEY || 're_RVjUHeUc_2osxujQwcgqWVALdnz5D6iLu'),
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(body)
+      }
+    };
+    const req = https.request(options, (res) => {
+      let data = '';
+      res.on('data', chunk => data += chunk);
+      res.on('end', () => {
+        try {
+          const parsed = JSON.parse(data);
+          if (res.statusCode >= 200 && res.statusCode < 300) resolve(parsed);
+          else reject(new Error(parsed.message || 'Resend error ' + res.statusCode));
+        } catch(e) { reject(e); }
+      });
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
+app.post("/api/send-email", async (req, res) => {
+  try {
+    const { tabId, mesNombre, tabNombre, datos } = req.body;
+    const adminEmail = process.env.ADMIN_EMAIL || 'daftpunkmanolo@gmail.com';
+    const fecha = new Date().toLocaleDateString("es-MX", { year:'numeric', month:'long', day:'numeric' });
+
+    const subject = `Dashboard RF — ${tabNombre}${mesNombre ? ' · ' + mesNombre : ''} · ${fecha}`;
+
+    const html = `
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>${subject}</title>
+</head>
+<body style="margin:0;padding:0;background:#F4F6F8;font-family:'Helvetica Neue',Arial,sans-serif;">
+  <div style="max-width:700px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);">
+    <div style="background:#2563eb;padding:24px 28px;">
+      <div style="font-size:20px;font-weight:700;color:#fff;letter-spacing:-0.5px;">Refacciones Franco</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.85);margin-top:3px;">${tabNombre}${mesNombre ? ' · ' + mesNombre : ''}</div>
+      <div style="font-size:11px;color:rgba(255,255,255,0.65);margin-top:5px;">${fecha}</div>
+    </div>
+    <div style="padding:24px 28px;">
+      ${datos}
+    </div>
+    <div style="padding:16px 28px;background:#F9FAFB;border-top:1px solid #E5E7EB;font-size:11px;color:#9CA3AF;">
+      Dashboard Ejecutivo · Refacciones Franco · Generado el ${fecha}
+    </div>
+  </div>
+</body>
+</html>`;
+
+    await sendResendEmail(adminEmail, subject, html);
+    res.json({ ok: true, to: adminEmail });
+  } catch (err) {
+    console.error('Email error:', err.message);
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // ── Chat con Claude — Asesor del Dashboard ───────────────────────

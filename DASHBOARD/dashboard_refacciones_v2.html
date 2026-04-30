@@ -9,6 +9,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 <script src="/lucide.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <style>
 
 /* ============================================================
@@ -751,9 +752,202 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
 }
 @media (max-width: 639px) { .grid-3c { grid-template-columns: 1fr; } }
 @media (min-width:640px) and (max-width:1023px) { .grid-3c { grid-template-columns: repeat(2,1fr); } }
+
+/* ============================================================
+   LOGIN OVERLAY
+   ============================================================ */
+#login-overlay {
+  position: fixed; inset: 0; z-index: 99999;
+  background: linear-gradient(135deg, #F4F6F8 0%, #EEF0F3 100%);
+  display: flex; align-items: center; justify-content: center;
+}
+#login-overlay.hidden { display: none; }
+
+.login-box {
+  background: #fff;
+  border: 1px solid rgba(0,0,0,0.09);
+  border-radius: 18px;
+  padding: 40px 44px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.10), 0 1px 0 rgba(0,0,0,0.05);
+  width: 100%; max-width: 400px;
+  text-align: center;
+}
+.login-logo {
+  width: 48px; height: 48px; border-radius: 14px;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; font-weight: 700; color: #fff;
+  margin: 0 auto 18px;
+  box-shadow: 0 4px 16px rgba(37,99,235,0.30);
+}
+.login-title { font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+.login-sub { font-size: 12px; color: #9CA3AF; margin-bottom: 28px; }
+.login-label { display: block; text-align: left; font-size: 11px; font-weight: 600; color: #4B5563; margin-bottom: 5px; letter-spacing: 0.3px; text-transform: uppercase; }
+.login-input {
+  width: 100%; padding: 10px 14px; font-size: 13px;
+  border: 1px solid rgba(0,0,0,0.12); border-radius: 8px;
+  outline: none; font-family: 'Sora', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  margin-bottom: 16px; background: #F9FAFB;
+}
+.login-input:focus { border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37,99,235,0.12); background: #fff; }
+.login-btn {
+  width: 100%; padding: 11px; background: #2563eb; color: #fff;
+  border: none; border-radius: 9px; font-size: 14px; font-weight: 600;
+  cursor: pointer; font-family: 'Sora', sans-serif;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  box-shadow: 0 4px 14px rgba(37,99,235,0.35);
+}
+.login-btn:hover { background: #1d4ed8; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,99,235,0.45); }
+.login-btn:active { transform: translateY(0); }
+.login-error { font-size: 12px; color: #dc2626; margin-top: 10px; min-height: 18px; }
+
+/* Tab bloqueado */
+.tab-btn.locked { opacity: 0.45; cursor: not-allowed; position: relative; }
+.tab-btn.locked::after {
+  content: '🔒';
+  font-size: 10px; margin-left: 4px;
+}
+
+/* ── Selector de mes ── */
+.mes-selector-bar {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px; padding: 10px 16px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  width: fit-content;
+}
+.mes-selector-label {
+  font-size: 12px; font-weight: 600; color: var(--text-secondary);
+  display: flex; align-items: center; gap: 6px;
+}
+.mes-selector-label i[data-lucide] { width: 14px; height: 14px; }
+.mes-select {
+  font-size: 13px; font-weight: 600; color: var(--text-primary);
+  background: var(--bg-surface); border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm); padding: 5px 10px;
+  cursor: pointer; font-family: 'Sora', sans-serif;
+  transition: border-color 0.2s;
+}
+.mes-select:focus { outline: none; border-color: var(--blue-400); }
+
+/* ── Botones de exportar ── */
+.export-bar {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 16px; flex-wrap: wrap;
+}
+.btn-export {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 14px; border-radius: var(--radius-sm);
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  border: 1px solid var(--border-default); font-family: 'Sora', sans-serif;
+  transition: background 0.15s, box-shadow 0.15s, transform 0.1s;
+  background: var(--bg-surface); color: var(--text-primary);
+}
+.btn-export:hover { background: var(--bg-overlay); transform: translateY(-1px); box-shadow: var(--glass-shadow); }
+.btn-export i[data-lucide] { width: 13px; height: 13px; }
+.btn-export.btn-pdf { background: #dc2626; color: #fff; border-color: #b91c1c; }
+.btn-export.btn-pdf:hover { background: #b91c1c; }
+.btn-export.btn-email { background: var(--blue-500); color: #fff; border-color: var(--blue-400); }
+.btn-export.btn-email:hover { background: var(--blue-400); }
+
+/* ── Modal Email ── */
+#email-modal-overlay {
+  position: fixed; inset: 0; z-index: 99998;
+  background: rgba(0,0,0,0.45);
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+}
+#email-modal-overlay.open { opacity: 1; pointer-events: all; }
+.email-modal {
+  background: #fff; border-radius: 16px; padding: 32px 36px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+  width: 100%; max-width: 460px;
+  transform: translateY(16px); transition: transform 0.2s;
+}
+#email-modal-overlay.open .email-modal { transform: translateY(0); }
+.email-modal-title { font-size: 17px; font-weight: 700; color: var(--text-primary); margin-bottom: 6px; }
+.email-modal-sub { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+.email-modal-row { margin-bottom: 14px; }
+.email-modal-label { font-size: 11px; font-weight: 600; color: var(--text-secondary); margin-bottom: 5px; display: block; text-transform: uppercase; letter-spacing: 0.3px; }
+.email-modal-input { width: 100%; padding: 9px 12px; border: 1px solid var(--border-default); border-radius: 8px; font-size: 13px; font-family: 'Sora', sans-serif; background: #F9FAFB; }
+.email-modal-input:focus { outline: none; border-color: var(--blue-400); background: #fff; }
+.email-modal-actions { display: flex; gap: 10px; margin-top: 20px; }
+.email-modal-btn { flex: 1; padding: 10px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: 'Sora', sans-serif; border: none; }
+.email-modal-cancel { background: var(--bg-overlay); color: var(--text-secondary); border: 1px solid var(--border-default); }
+.email-modal-send { background: var(--blue-500); color: #fff; }
+.email-modal-send:hover { background: var(--blue-400); }
+.email-modal-status { font-size: 12px; margin-top: 10px; min-height: 18px; text-align: center; }
+
+@media print {
+  .tab-nav, .header, .export-bar, .mes-selector-bar, #chat-fab, #chat-panel, #login-overlay { display: none !important; }
+  .tab-panel { display: block !important; }
+  .card { break-inside: avoid; }
+}
+
+/* Badge de usuario en header */
+.user-badge {
+  display: flex; align-items: center; gap: 7px;
+  background: var(--bg-overlay); border: 1px solid var(--border-subtle);
+  border-radius: 20px; padding: 4px 12px 4px 8px;
+  font-size: 11px; font-weight: 600; color: var(--text-secondary);
+  cursor: pointer; transition: background 0.15s;
+}
+.user-badge:hover { background: var(--border-subtle); }
+.user-avatar {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--blue-500); color: #fff;
+  font-size: 10px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
 </style>
 </head>
 <body>
+
+<!-- ============================================================
+     LOGIN OVERLAY
+     ============================================================ -->
+<div id="login-overlay">
+  <div class="login-box">
+    <div class="login-logo">RF</div>
+    <div class="login-title">Refacciones Franco</div>
+    <div class="login-sub">Dashboard Ejecutivo — Inicia sesión para continuar</div>
+    <label class="login-label" for="login-user">Usuario</label>
+    <input class="login-input" id="login-user" type="text" placeholder="ID de usuario" autocomplete="username" />
+    <label class="login-label" for="login-pass">Contraseña</label>
+    <input class="login-input" id="login-pass" type="password" placeholder="Contraseña" autocomplete="current-password" />
+    <button class="login-btn" id="login-submit">Ingresar</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- ============================================================
+     MODAL EMAIL
+     ============================================================ -->
+<div id="email-modal-overlay">
+  <div class="email-modal">
+    <div class="email-modal-title">Enviar reporte por correo</div>
+    <div class="email-modal-sub" id="email-modal-sub">Pestaña actual · mes seleccionado</div>
+    <div class="email-modal-row">
+      <label class="email-modal-label">Destinatario</label>
+      <input class="email-modal-input" id="email-modal-to" type="email" value="daftpunkmanolo@gmail.com" />
+    </div>
+    <div class="email-modal-row">
+      <label class="email-modal-label">Incluir</label>
+      <select class="email-modal-input" id="email-modal-scope">
+        <option value="tab">Solo esta pestaña (mes seleccionado)</option>
+        <option value="all">Reporte general completo</option>
+      </select>
+    </div>
+    <div class="email-modal-actions">
+      <button class="email-modal-btn email-modal-cancel" onclick="cerrarModalEmail()">Cancelar</button>
+      <button class="email-modal-btn email-modal-send" id="email-send-btn" onclick="enviarEmail()">Enviar</button>
+    </div>
+    <div class="email-modal-status" id="email-modal-status"></div>
+  </div>
+</div>
 
 <!-- ============================================================
      HEADER
@@ -776,6 +970,11 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
       <span>Actualizar</span>
     </button>
     <div class="header-time" id="header-time">--:--:--</div>
+    <div class="user-badge hidden" id="user-badge" onclick="doLogout()">
+      <div class="user-avatar" id="user-avatar">?</div>
+      <span id="user-name-display">Usuario</span>
+      <span style="color:var(--text-muted);font-weight:400;">· Salir</span>
+    </div>
   </div>
 </header>
 
@@ -789,8 +988,8 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
      NAVEGACIÓN DE TABS
      ============================================================ -->
 <nav class="tab-nav">
-  <button class="tab-btn active" data-tab="mercado">
-    <i data-lucide="globe"></i> Mercado
+  <button class="tab-btn active" data-tab="insights">
+    <i data-lucide="zap"></i> Insights
   </button>
   <button class="tab-btn" data-tab="resumen">
     <i data-lucide="layout-dashboard"></i> Resumen Financiero
@@ -818,12 +1017,21 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
 <main class="main">
 
 <!-- ══════════════════════════════════════════════════════════
-     TAB: MERCADO
+     TAB: INSIGHTS
      ══════════════════════════════════════════════════════════ -->
-<div class="tab-panel active" id="tab-mercado">
+<div class="tab-panel active" id="tab-insights">
 
-  <!-- ── SECCIÓN: MACRO ── -->
-  <div class="section-label">Mercado &amp; Macroeconómico</div>
+  <div class="export-bar">
+    <button class="btn-export btn-pdf" onclick="exportarPDF('insights')">
+      <i data-lucide="file-down"></i> Descargar PDF
+    </button>
+    <button class="btn-export btn-email" onclick="abrirModalEmail('insights')">
+      <i data-lucide="mail"></i> Enviar por correo
+    </button>
+  </div>
+
+  <!-- ── SECCIÓN: INDICADORES DE MERCADO ── -->
+  <div class="section-label">Indicadores de Mercado</div>
   <div class="grid-4">
 
     <!-- Tipo de Cambio -->
@@ -849,22 +1057,245 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
       <div class="kpi-sub">Índice INPC Mercancías · INEGI</div>
     </div>
 
-    <!-- Petróleo WTI -->
-    <div class="card accent-purple fade-in delay-4">
-      <div class="kpi-label">Petróleo WTI (ref. logística)</div>
-      <div class="kpi-value">$73.40</div>
-      <div class="kpi-delta neg">▼ −1.2% esta semana</div>
-      <div class="kpi-sub">USD / barril · EIA</div>
-    </div>
-
   </div>
 
-  </div> <!-- /tab-mercado -->
+  <!-- ── SECCIÓN A: KPIs DE VENTAS DEL DÍA ── -->
+  <div class="section-label">Ventas del Día — Resumen Ejecutivo</div>
+  <div class="grid-4">
+    <!-- Ticket Promedio -->
+    <div class="card accent-green fade-in delay-1">
+      <div class="kpi-label">Ticket Promedio</div>
+      <div class="kpi-value">$16,180</div>
+      <div class="kpi-delta pos">▲ +3.4% vs abr 2024</div>
+      <div class="kpi-sub">MXN por pedido · Abril 2025</div>
+    </div>
+    <!-- Ventas del mes vs Meta -->
+    <div class="card accent-blue fade-in delay-2">
+      <div class="kpi-label">Ventas del Mes vs Meta</div>
+      <div class="kpi-value" id="ins-ventas-mes">$18.2M</div>
+      <div style="margin-top:10px;">
+        <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:4px;">
+          <span style="color:var(--text-secondary);">Avance</span>
+          <span id="ins-meta-pct" style="font-weight:700;color:var(--blue-500);">73%</span>
+        </div>
+        <div style="background:var(--bg-overlay);border-radius:20px;height:6px;overflow:hidden;">
+          <div id="ins-meta-bar" style="width:73%;height:100%;background:var(--blue-500);border-radius:20px;transition:width 0.6s ease;"></div>
+        </div>
+        <div style="font-size:10px;color:var(--text-muted);margin-top:4px;">Meta: $25.0M MXN</div>
+      </div>
+    </div>
+    <!-- Ventas de hoy -->
+    <div class="card accent-blue fade-in delay-3">
+      <div class="kpi-label">Ventas del Día (Hoy)</div>
+      <div class="kpi-value" id="ins-dia-ventas">—</div>
+      <div class="kpi-sub">Corte en tiempo real</div>
+    </div>
+    <!-- SKUs Quiebre -->
+    <div class="card accent-red fade-in delay-4">
+      <div class="kpi-label">SKUs con Quiebre de Stock</div>
+      <div class="kpi-value">142</div>
+      <div class="kpi-delta neg">▲ +28 vs mes anterior</div>
+      <div class="kpi-sub">de 4,820 SKUs activos (2.9%)</div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN B: CORTE DIARIO / CAJA ── -->
+  <div class="section-label">Corte Diario / Caja — Hoy</div>
+  <div class="grid-4">
+    <div class="card accent-blue fade-in delay-1">
+      <div class="kpi-label">Ventas del Día</div>
+      <div class="kpi-value" id="ins-corte-ventas">—</div>
+    </div>
+    <div class="card accent-green fade-in delay-2">
+      <div class="kpi-label">Cobros en Efectivo</div>
+      <div class="kpi-value" id="ins-corte-efectivo">—</div>
+    </div>
+    <div class="card accent-blue fade-in delay-3">
+      <div class="kpi-label">Transferencias</div>
+      <div class="kpi-value" id="ins-corte-transferencia">—</div>
+    </div>
+    <div class="card accent-amber fade-in delay-4">
+      <div class="kpi-label">Cobros con Tarjeta</div>
+      <div class="kpi-value" id="ins-corte-tarjeta">—</div>
+    </div>
+  </div>
+  <div class="grid-21" style="margin-top:12px;">
+    <div class="card fade-in delay-1" style="overflow-x:auto;">
+      <div class="card-title">Resumen últimos 7 días</div>
+      <table style="min-width:520px;">
+        <thead>
+          <tr>
+            <th>Fecha</th>
+            <th style="text-align:right;">Ventas MXN</th>
+            <th style="text-align:right;">Efectivo</th>
+            <th style="text-align:right;">Transferencia</th>
+            <th style="text-align:right;">Tarjeta</th>
+            <th style="text-align:right;">Transacc.</th>
+          </tr>
+        </thead>
+        <tbody id="ins-corte-tbody">
+          <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:16px;">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card fade-in delay-2">
+      <div class="card-title">Mix de forma de pago — Hoy</div>
+      <div class="chart-wrap" style="height:180px;">
+        <canvas id="chartInsPago"></canvas>
+      </div>
+      <div class="donut-legend" style="margin-top:10px;">
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#16a34a;"></span>Transferencia</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#2563eb;"></span>Efectivo</span>
+        <span class="donut-legend-item"><span class="donut-swatch" style="background:#d97706;"></span>Tarjeta</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN C: PROVEEDORES & ABASTECIMIENTO ── -->
+  <div class="section-label">Proveedores &amp; Abastecimiento</div>
+  <div class="grid-2">
+    <div class="card fade-in delay-1">
+      <div class="card-title">Estado de proveedores clave</div>
+      <table>
+        <thead>
+          <tr>
+            <th>Proveedor</th>
+            <th>País</th>
+            <th>Lead time</th>
+            <th style="min-width:120px;">Var. precio</th>
+            <th>Estatus</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="font-weight:600;">ACDelco / GM</td><td style="color:var(--text-secondary);">USA</td><td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">12 d</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:45%;background:#3b82f6;"></div></div><span class="price-pct pos">+4.2%</span></div></td><td><span class="badge badge-ok"><span class="badge-dot"></span>Normal</span></td></tr>
+          <tr><td style="font-weight:600;">Bosch México</td><td style="color:var(--text-secondary);">MEX</td><td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">5 d</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:62%;background:#f59e0b;"></div></div><span class="price-pct neu">+6.1%</span></div></td><td><span class="badge badge-warn"><span class="badge-dot"></span>Presión</span></td></tr>
+          <tr><td style="font-weight:600;">Denso Intl.</td><td style="color:var(--text-secondary);">JPN</td><td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">28 d</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:30%;background:#3b82f6;"></div></div><span class="price-pct pos">+2.8%</span></div></td><td><span class="badge badge-ok"><span class="badge-dot"></span>Normal</span></td></tr>
+          <tr><td style="font-weight:600;">Gates Industrial</td><td style="color:var(--text-secondary);">USA</td><td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">18 d</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:95%;background:#ef4444;"></div></div><span class="price-pct neg">+9.3%</span></div></td><td><span class="badge badge-err"><span class="badge-dot"></span>Alerta</span></td></tr>
+          <tr><td style="font-weight:600;">SKF México</td><td style="color:var(--text-secondary);">MEX</td><td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">4 d</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:36%;background:#3b82f6;"></div></div><span class="price-pct pos">+3.5%</span></div></td><td><span class="badge badge-ok"><span class="badge-dot"></span>Normal</span></td></tr>
+          <tr><td style="font-weight:600;">Hyundai Mobis</td><td style="color:var(--text-secondary);">KOR</td><td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">35 d</td><td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:74%;background:#f59e0b;"></div></div><span class="price-pct neu">+7.4%</span></div></td><td><span class="badge badge-warn"><span class="badge-dot"></span>Presión</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card fade-in delay-2">
+      <div class="card-title">KPIs de abastecimiento</div>
+      <div class="mini-stat"><span class="mini-label">Nivel de servicio proveedor</span><span class="mini-val" style="color:var(--green-400);">91.4%</span></div>
+      <div class="mini-stat"><span class="mini-label">Órdenes emitidas este mes</span><span class="mini-val">347</span></div>
+      <div class="mini-stat"><span class="mini-label">Entregadas a tiempo</span><span class="mini-val" style="color:var(--green-400);">318 (91.6%)</span></div>
+      <div class="mini-stat"><span class="mini-label">Proveedores activos</span><span class="mini-val">62</span></div>
+      <div class="mini-stat"><span class="mini-label">Exposición en USD</span><span class="mini-val" style="color:var(--amber-400);">$1.24M</span></div>
+      <div class="mini-stat"><span class="mini-label">Ahorro negociación YTD</span><span class="mini-val" style="color:var(--green-400);">$2.8M MXN</span></div>
+    </div>
+  </div>
+
+  <!-- ── SECCIÓN D: ÓRDENES DE COMPRA & SUGERENCIAS ── -->
+  <div class="section-label">Órdenes de Compra &amp; Sugerencias</div>
+  <div class="card fade-in delay-1" style="overflow-x:auto; margin-bottom:12px;">
+    <div class="card-title">Órdenes de Compra Recientes</div>
+    <table style="min-width:640px;">
+      <thead>
+        <tr>
+          <th># Orden</th><th>Proveedor</th><th>Tipo</th><th>F. Emisión</th><th>F. Entrega Est.</th><th style="text-align:right;">Monto MXN</th><th style="text-align:right;">Estatus</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">OC-2025-1847</td><td style="font-weight:500;">ACDelco / GM</td><td><span class="tag tag-nac">Nacional</span></td><td style="font-size:11px;">18/04/2026</td><td style="font-size:11px;">30/04/2026</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$284,500</td><td style="text-align:right;"><span class="badge badge-warn"><span class="badge-dot"></span>En Tránsito</span></td></tr>
+        <tr><td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">OC-2025-1848</td><td style="font-weight:500;">Denso Intl.</td><td><span class="tag tag-imp">Importación</span></td><td style="font-size:11px;">15/04/2026</td><td style="font-size:11px;">13/05/2026</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$612,000</td><td style="text-align:right;"><span class="badge badge-warn"><span class="badge-dot"></span>Pendiente</span></td></tr>
+        <tr><td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">OC-2025-1849</td><td style="font-weight:500;">Bosch México</td><td><span class="tag tag-nac">Nacional</span></td><td style="font-size:11px;">20/04/2026</td><td style="font-size:11px;">25/04/2026</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$198,000</td><td style="text-align:right;"><span class="badge badge-err"><span class="badge-dot"></span>Con Retraso</span></td></tr>
+        <tr><td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">OC-2025-1850</td><td style="font-weight:500;">SKF México</td><td><span class="tag tag-nac">Nacional</span></td><td style="font-size:11px;">21/04/2026</td><td style="font-size:11px;">25/04/2026</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$143,200</td><td style="text-align:right;"><span class="badge badge-ok"><span class="badge-dot"></span>Recibida</span></td></tr>
+        <tr><td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">OC-2025-1851</td><td style="font-weight:500;">Gates Industrial</td><td><span class="tag tag-imp">Importación</span></td><td style="font-size:11px;">10/04/2026</td><td style="font-size:11px;">28/04/2026</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$537,800</td><td style="text-align:right;"><span class="badge badge-err"><span class="badge-dot"></span>Con Retraso</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="card fade-in delay-2" style="overflow-x:auto; margin-bottom:12px;">
+    <div class="card-title">Sugerencias de Compra — Quiebre de Stock</div>
+    <table style="min-width:680px;">
+      <thead>
+        <tr>
+          <th>SKU</th><th>Descripción</th><th>Categoría</th><th style="text-align:right;">Stock Actual</th><th style="text-align:right;">Stock Mínimo</th><th style="text-align:right;">Ventas / Mes</th><th style="text-align:right;">Qty Sugerida</th><th>Proveedor</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">SKU-4821</td><td>Balata Delantera Bosch Cerámico</td><td><span class="badge badge-warn"><span class="badge-dot"></span>Frenos</span></td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--red-400);font-weight:600;">12</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">50</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">78</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">120</td><td>Bosch México</td></tr>
+        <tr><td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">SKU-2047</td><td>Filtro de Aceite ACDelco PF47E</td><td><span class="badge badge-ok"><span class="badge-dot"></span>Motor</span></td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--red-400);font-weight:600;">8</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">100</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">145</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">300</td><td>ACDelco / GM</td></tr>
+        <tr><td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">SKU-3312</td><td>Amortiguador Delantero Gabriel G57</td><td><span class="badge badge-warn"><span class="badge-dot"></span>Suspensión</span></td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--red-400);font-weight:600;">3</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">20</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">32</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">60</td><td>Gates Industrial</td></tr>
+        <tr><td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">SKU-1189</td><td>Banda Distribución Gates T218</td><td><span class="badge badge-ok"><span class="badge-dot"></span>Motor</span></td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--amber-400);font-weight:600;">15</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">40</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">52</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">80</td><td>Gates Industrial</td></tr>
+        <tr><td style="font-family:'IBM Plex Mono',monospace;font-size:11px;">SKU-5503</td><td>Cojinete Rueda SKF BR930748</td><td><span class="badge badge-warn"><span class="badge-dot"></span>Suspensión</span></td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;color:var(--red-400);font-weight:600;">6</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">25</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">38</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">70</td><td>SKF México</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── SECCIÓN E: COMISIONES POR VENDEDOR ── -->
+  <div class="section-label">Comisiones por Vendedor</div>
+  <div class="card fade-in delay-1" style="overflow-x:auto; margin-bottom:12px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+      <div class="card-title" style="margin-bottom:0;">Comisiones por Vendedor — Período Actual</div>
+      <div style="font-size:11px;color:var(--text-muted);font-family:'IBM Plex Mono',monospace;">% Comisión: 1.00% sobre venta neta</div>
+    </div>
+    <table style="min-width:820px;">
+      <thead>
+        <tr>
+          <th style="width:36px;">#</th><th>Nombre</th><th style="text-align:right;"># Ventas</th><th style="text-align:right;">$ Ventas</th><th style="text-align:right;"># Dev.</th><th style="text-align:right;">$ Devoluciones</th><th style="text-align:right;">$ Total Neto</th><th style="text-align:right;">$ Comisión</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td style="color:var(--text-muted);font-size:11px;">11</td><td style="font-weight:500;">JORGE RAMIREZ</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">982</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1,451,954.15</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">82</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$66,348.12</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$1,385,606.03</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$13,856.06</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:11px;">12</td><td style="font-weight:500;">MIGUEL ANGEL GONZALEZ</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">949</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1,569,665.77</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">66</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$56,238.99</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$1,513,426.78</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$15,134.27</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:11px;">13</td><td style="font-weight:500;">GERARDO SANTANA</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">1,458</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1,773,348.46</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">152</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$119,724.36</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$1,653,624.10</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$16,536.24</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:11px;">14</td><td style="font-weight:500;">SAMUEL E. ORTIZ GONZALES</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">1,322</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1,317,671.63</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">153</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$94,751.81</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$1,222,919.82</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$12,229.20</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:11px;">16</td><td style="font-weight:500;">CESAR MARTINEZ</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">995</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1,703,899.41</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">73</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$80,216.30</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$1,623,683.11</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$16,236.83</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:11px;">2</td><td style="font-weight:500;">CASILDO LOPEZ</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">1,719</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$3,163,696.03</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">174</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$184,854.63</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$2,978,841.40</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$29,788.41</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:11px;">20</td><td style="font-weight:500;">ANTONIO DOMINGUEZ</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">8</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$4,941.20</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">0</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$0.00</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$4,941.20</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$49.41</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:11px;">22</td><td style="font-weight:500;">GUILLERMO FRANCO</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">314</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$769,637.37</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">7</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$9,390.24</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$760,247.13</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$7,602.48</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:11px;">3</td><td style="font-weight:500;">MIGUEL MEDINA</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">1,142</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1,884,853.52</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">77</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$76,517.97</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$1,808,335.55</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$18,083.36</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:11px;">4</td><td style="font-weight:500;">JOSE LUIS BADILLO</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">1,447</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$3,869,620.64</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">167</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$205,563.38</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$3,664,057.26</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$36,640.57</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:11px;">7</td><td style="font-weight:500;">OLIMPO ORTIZ NAVARRO</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">1,225</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1,750,762.49</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">134</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$88,403.96</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$1,662,358.53</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$16,623.59</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:11px;">3</td><td style="font-weight:500;">HUMBERTO SANTANA BARRERA</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">1,871</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$1,816,163.78</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">120</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$92,335.43</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$1,723,828.35</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$17,238.28</td></tr>
+        <tr><td style="color:var(--text-muted);font-size:11px;">4</td><td style="font-weight:500;">ERICK ANGELES</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">970</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$837,858.58</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">104</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;">$87,560.89</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;">$750,297.69</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:600;color:var(--blue-500);">$7,502.98</td></tr>
+        <tr class="total"><td colspan="2" style="font-weight:700;">TOTALES</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;">11,522</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;">$19,137,854.15</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;">1,084</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;">$979,341.86</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;">$18,158,512.29</td><td style="text-align:right;font-family:'IBM Plex Mono',monospace;font-weight:700;color:var(--blue-500);">$181,585.12</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── SECCIÓN F: CLIENTES CON SALDO PENDIENTE ── -->
+  <div class="section-label">Clientes con Saldo Pendiente</div>
+  <div class="grid-21" style="margin-top:0;">
+    <div class="card fade-in delay-1" style="overflow-x:auto;">
+      <div class="card-title">Clientes con Saldo Pendiente</div>
+      <table style="min-width:560px;">
+        <thead>
+          <tr>
+            <th>Cliente</th><th>Seg.</th><th style="text-align:right;">Límite Crédito</th><th style="text-align:right;">Saldo MXN</th><th style="text-align:right;">Días Venc.</th><th style="text-align:right;">Estatus</th>
+          </tr>
+        </thead>
+        <tbody id="ins-cxc-tbody">
+          <tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:16px;">Cargando...</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card fade-in delay-2">
+      <div class="card-title">Antigüedad de Saldos</div>
+      <div id="ins-aging-bars" style="margin-top:8px;"></div>
+      <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border-subtle);">
+        <div class="mini-stat"><span class="mini-label">Saldo total en cartera</span><span class="mini-val" id="ins-aging-total">—</span></div>
+        <div class="mini-stat"><span class="mini-label">% Al corriente (0-30d)</span><span class="mini-val" style="color:var(--green-400);" id="ins-aging-pct">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  </div> <!-- /tab-insights -->
 
 <!-- ══════════════════════════════════════════════════════════
      TAB: RESUMEN
      ══════════════════════════════════════════════════════════ -->
 <div class="tab-panel" id="tab-resumen">
+  <div class="export-bar">
+    <button class="btn-export btn-pdf" onclick="exportarPDF('resumen')">
+      <i data-lucide="file-down"></i> Descargar PDF
+    </button>
+    <button class="btn-export btn-email" onclick="abrirModalEmail('resumen')">
+      <i data-lucide="mail"></i> Enviar por correo
+    </button>
+  </div>
   <div class="section-label" style="justify-content:space-between;">
     <span>Resumen Ejecutivo Financiero</span>
     <select id="resumen-year" class="year-select"></select>
@@ -893,6 +1324,14 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
      TAB: ESTADO DE RESULTADOS
      ══════════════════════════════════════════════════════════ -->
 <div class="tab-panel" id="tab-resultados">
+  <div class="export-bar">
+    <button class="btn-export btn-pdf" onclick="exportarPDF('resultados')">
+      <i data-lucide="file-down"></i> Descargar PDF
+    </button>
+    <button class="btn-export btn-email" onclick="abrirModalEmail('resultados')">
+      <i data-lucide="mail"></i> Enviar por correo
+    </button>
+  </div>
   <div class="section-label" style="justify-content:space-between;">
     <span>Estado de Resultados</span>
     <select id="er-year" class="year-select"></select>
@@ -923,6 +1362,14 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
      TAB: BALANCE GENERAL
      ══════════════════════════════════════════════════════════ -->
 <div class="tab-panel" id="tab-balance">
+  <div class="export-bar">
+    <button class="btn-export btn-pdf" onclick="exportarPDF('balance')">
+      <i data-lucide="file-down"></i> Descargar PDF
+    </button>
+    <button class="btn-export btn-email" onclick="abrirModalEmail('balance')">
+      <i data-lucide="mail"></i> Enviar por correo
+    </button>
+  </div>
   <div class="section-label" style="justify-content:space-between;">
     <span>Balance General</span>
     <select id="bg-year-select" class="year-select"></select>
@@ -951,6 +1398,14 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
      TAB: RATIOS
      ══════════════════════════════════════════════════════════ -->
 <div class="tab-panel" id="tab-ratios">
+  <div class="export-bar">
+    <button class="btn-export btn-pdf" onclick="exportarPDF('ratios')">
+      <i data-lucide="file-down"></i> Descargar PDF
+    </button>
+    <button class="btn-export btn-email" onclick="abrirModalEmail('ratios')">
+      <i data-lucide="mail"></i> Enviar por correo
+    </button>
+  </div>
   <div class="section-label" style="justify-content:space-between;">
     <span>Ratios Financieros</span>
     <select id="ratios-year" class="year-select"></select>
@@ -979,6 +1434,35 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
      TAB: OPERACIONES
      ══════════════════════════════════════════════════════════ -->
 <div class="tab-panel" id="tab-operaciones">
+
+  <div class="mes-selector-bar">
+    <label class="mes-selector-label">
+      <i data-lucide="calendar"></i>
+      Período:
+    </label>
+    <select class="mes-select" id="mes-select-operaciones">
+      <option value="1">Enero 2026</option>
+      <option value="2">Febrero 2026</option>
+      <option value="3">Marzo 2026</option>
+      <option value="4" selected>Abril 2026</option>
+      <option value="5">Mayo 2026</option>
+      <option value="6">Junio 2026</option>
+      <option value="7">Julio 2026</option>
+      <option value="8">Agosto 2026</option>
+      <option value="9">Septiembre 2026</option>
+      <option value="10">Octubre 2026</option>
+      <option value="11">Noviembre 2026</option>
+      <option value="12">Diciembre 2026</option>
+    </select>
+  </div>
+  <div class="export-bar">
+    <button class="btn-export btn-pdf" onclick="exportarPDF('operaciones')">
+      <i data-lucide="file-down"></i> Descargar PDF
+    </button>
+    <button class="btn-export btn-email" onclick="abrirModalEmail('operaciones')">
+      <i data-lucide="mail"></i> Enviar por correo
+    </button>
+  </div>
 
   <div class="section-label">Inventario &amp; Rotación</div>
   <div class="grid-4">
@@ -1188,6 +1672,35 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
      TAB: VENTAS & COMPRAS
      ══════════════════════════════════════════════════════════ -->
 <div class="tab-panel" id="tab-ventas">
+
+  <div class="mes-selector-bar">
+    <label class="mes-selector-label">
+      <i data-lucide="calendar"></i>
+      Período:
+    </label>
+    <select class="mes-select" id="mes-select-ventas">
+      <option value="1">Enero 2026</option>
+      <option value="2">Febrero 2026</option>
+      <option value="3">Marzo 2026</option>
+      <option value="4" selected>Abril 2026</option>
+      <option value="5">Mayo 2026</option>
+      <option value="6">Junio 2026</option>
+      <option value="7">Julio 2026</option>
+      <option value="8">Agosto 2026</option>
+      <option value="9">Septiembre 2026</option>
+      <option value="10">Octubre 2026</option>
+      <option value="11">Noviembre 2026</option>
+      <option value="12">Diciembre 2026</option>
+    </select>
+  </div>
+  <div class="export-bar">
+    <button class="btn-export btn-pdf" onclick="exportarPDF('ventas')">
+      <i data-lucide="file-down"></i> Descargar PDF
+    </button>
+    <button class="btn-export btn-email" onclick="abrirModalEmail('ventas')">
+      <i data-lucide="mail"></i> Enviar por correo
+    </button>
+  </div>
 
   <!-- ══ A. VENTAS ══ -->
   <div class="section-label">Ventas — Abril 2025</div>
@@ -1780,6 +2293,35 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
      ══════════════════════════════════════════════════════════ -->
 <div class="tab-panel" id="tab-crm">
 
+  <div class="mes-selector-bar">
+    <label class="mes-selector-label">
+      <i data-lucide="calendar"></i>
+      Período:
+    </label>
+    <select class="mes-select" id="mes-select-crm">
+      <option value="1">Enero 2026</option>
+      <option value="2">Febrero 2026</option>
+      <option value="3">Marzo 2026</option>
+      <option value="4" selected>Abril 2026</option>
+      <option value="5">Mayo 2026</option>
+      <option value="6">Junio 2026</option>
+      <option value="7">Julio 2026</option>
+      <option value="8">Agosto 2026</option>
+      <option value="9">Septiembre 2026</option>
+      <option value="10">Octubre 2026</option>
+      <option value="11">Noviembre 2026</option>
+      <option value="12">Diciembre 2026</option>
+    </select>
+  </div>
+  <div class="export-bar">
+    <button class="btn-export btn-pdf" onclick="exportarPDF('crm')">
+      <i data-lucide="file-down"></i> Descargar PDF
+    </button>
+    <button class="btn-export btn-email" onclick="abrirModalEmail('crm')">
+      <i data-lucide="mail"></i> Enviar por correo
+    </button>
+  </div>
+
   <!-- ── SECCIÓN: SEGMENTACIÓN ── -->
   <div class="section-label">Segmentación de Clientes</div>
 
@@ -2032,6 +2574,11 @@ tr:hover td:last-child  { border-radius: 0 var(--radius-sm) var(--radius-sm) 0; 
      ============================================================ -->
 <script>
 
+/* ── Variables globales para gráficas actualizables ── */
+let chartDIOInstance = null;
+let chartVentasMensInstance = null;
+let chartComprasMensInstance = null;
+
 /* ── RELOJ Y FECHA ── */
 function updateTime() {
   const now = new Date();
@@ -2061,6 +2608,7 @@ document.getElementById('error-close')?.addEventListener('click', hideError);
 /* ── NAVEGACIÓN DE TABS ── */
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
+    if (btn.classList.contains('locked')) return;
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
     btn.classList.add('active');
@@ -2162,7 +2710,7 @@ const C = {
 };
 
 /* ── GRÁFICA 3: DIO tendencia ── */
-new Chart(document.getElementById('chartDIO'), {
+chartDIOInstance = new Chart(document.getElementById('chartDIO'), {
   type:'line',
   data:{
     labels:['Enero','Febrero','Marzo','Abril'],
@@ -2672,8 +3220,8 @@ cargarEstadoResultados();
 cargarRatios();
 cargarCRM();
 
-/* ── VENTAS & COMPRAS — gráficas estáticas ── */
-new Chart(document.getElementById('chartVentasMens'), {
+/* ── VENTAS & COMPRAS — gráficas con soporte de mes ── */
+chartVentasMensInstance = new Chart(document.getElementById('chartVentasMens'), {
   type: 'bar',
   data: {
     labels: ['Enero','Febrero','Marzo','Abril'],
@@ -2702,7 +3250,7 @@ new Chart(document.getElementById('chartVentasCanal'), {
   }
 });
 
-new Chart(document.getElementById('chartComprasMens'), {
+chartComprasMensInstance = new Chart(document.getElementById('chartComprasMens'), {
   type: 'bar',
   data: {
     labels: ['Enero','Febrero','Marzo','Abril'],
@@ -2751,8 +3299,9 @@ function cxcEstatusClass(e) {
 }
 
 async function cargarCRM() {
+  const mes = document.getElementById('mes-select-crm')?.value || 4;
   try {
-    const res  = await fetch('/api/crm');
+    const res  = await fetch('/api/crm?mes=' + mes);
     const d    = await res.json();
 
     /* ── Segmentación ── */
@@ -2895,6 +3444,50 @@ async function cargarCRM() {
       }).join('');
     }
 
+    /* Sincronizar datos de corte diario en tab Insights */
+    const insCorteTbody = document.getElementById('ins-corte-tbody');
+    if (insCorteTbody && corTbody) {
+      insCorteTbody.innerHTML = corTbody.innerHTML;
+    }
+    set('ins-corte-ventas',       fmtMXNcrm(cd.ventasHoy));
+    set('ins-corte-efectivo',     fmtMXNcrm(cd.efectivo));
+    set('ins-corte-transferencia',fmtMXNcrm(cd.transferencia));
+    set('ins-corte-tarjeta',      fmtMXNcrm(cd.tarjeta));
+    set('ins-dia-ventas',         fmtMXNcrm(cd.ventasHoy));
+
+    /* Sincronizar CxC en Insights */
+    const insCxcTbody = document.getElementById('ins-cxc-tbody');
+    const cxcTbodySrc = document.getElementById('crm-cxc-tbody');
+    if (insCxcTbody && cxcTbodySrc) {
+      insCxcTbody.innerHTML = cxcTbodySrc.innerHTML;
+    }
+    set('ins-aging-total', fmtMXNcrm(agTotal));
+    set('ins-aging-pct', pct030 + '%');
+    const insAgingBars = document.getElementById('ins-aging-bars');
+    const srcAgingBars = document.getElementById('crm-aging-bars');
+    if (insAgingBars && srcAgingBars) {
+      insAgingBars.innerHTML = srcAgingBars.innerHTML;
+    }
+
+    /* Gráfica donut pago en Insights */
+    const insCtx = document.getElementById('chartInsPago');
+    if (insCtx) {
+      new Chart(insCtx, {
+        type: 'doughnut',
+        data: {
+          labels: ['Transferencia','Efectivo','Tarjeta'],
+          datasets: [{ data: [cd.transferencia, cd.efectivo, cd.tarjeta],
+            backgroundColor: [C.green, C.blue, C.amber],
+            borderWidth: 2, borderColor: C.border, hoverOffset: 6 }]
+        },
+        options: { responsive:true, maintainAspectRatio:false, cutout:'68%',
+          animation: C.animation,
+          plugins: { legend:{ display:false },
+            tooltip: { ...C.tooltip, callbacks:{ label: ctx=>` ${ctx.label}: ${fmtMXNcrm(ctx.parsed)}` } } }
+        }
+      });
+    }
+
     /* Donut forma de pago */
     const cPagoCtx = document.getElementById('chartCrmPago');
     if (cPagoCtx) {
@@ -2920,6 +3513,92 @@ async function cargarCRM() {
     console.warn('CRM:', err.message);
   }
 }
+
+/* ═══════════════════════════════════════════════
+   SISTEMA DE LOGIN
+   ═══════════════════════════════════════════════ */
+const USERS = {
+  'TOMAS':  { pass: 'BUENOSDIAS', role: 'admin',    allowedTabs: null },
+  'MANOLO': { pass: 'manolo2026', role: 'limited',  allowedTabs: ['operaciones','ventas','crm'] }
+};
+
+let currentUser = null;
+
+function applyUserPermissions(username) {
+  const user = USERS[username];
+  if (!user) return;
+  currentUser = username;
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    const tab = btn.dataset.tab;
+    if (user.allowedTabs && !user.allowedTabs.includes(tab)) {
+      btn.classList.add('locked');
+      btn.setAttribute('disabled', 'disabled');
+    } else {
+      btn.classList.remove('locked');
+      btn.removeAttribute('disabled');
+    }
+  });
+
+  /* Si el tab activo está bloqueado, cambiar al primero permitido */
+  const activeBtn = document.querySelector('.tab-btn.active');
+  if (activeBtn && activeBtn.classList.contains('locked')) {
+    const firstAllowed = document.querySelector('.tab-btn:not(.locked)');
+    if (firstAllowed) firstAllowed.click();
+  }
+
+  /* Mostrar badge de usuario */
+  const badge = document.getElementById('user-badge');
+  const avatar = document.getElementById('user-avatar');
+  const nameDisplay = document.getElementById('user-name-display');
+  if (badge) badge.classList.remove('hidden');
+  if (avatar) avatar.textContent = username[0].toUpperCase();
+  if (nameDisplay) nameDisplay.textContent = username;
+}
+
+function doLogin() {
+  const userInput = document.getElementById('login-user').value.trim().toUpperCase();
+  const passInput = document.getElementById('login-pass').value.trim();
+  const errorEl   = document.getElementById('login-error');
+
+  /* Buscar usuario (case-insensitive en ID) */
+  const foundKey = Object.keys(USERS).find(k => k.toUpperCase() === userInput);
+  const user = foundKey ? USERS[foundKey] : null;
+
+  if (!user || user.pass !== passInput) {
+    errorEl.textContent = 'Usuario o contraseña incorrectos.';
+    document.getElementById('login-pass').value = '';
+    document.getElementById('login-pass').focus();
+    return;
+  }
+
+  errorEl.textContent = '';
+  document.getElementById('login-overlay').classList.add('hidden');
+  applyUserPermissions(foundKey);
+}
+
+function doLogout() {
+  currentUser = null;
+  /* Limpiar permisos */
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.classList.remove('locked');
+    btn.removeAttribute('disabled');
+  });
+  const badge = document.getElementById('user-badge');
+  if (badge) badge.classList.add('hidden');
+  document.getElementById('login-user').value = '';
+  document.getElementById('login-pass').value = '';
+  document.getElementById('login-error').textContent = '';
+  document.getElementById('login-overlay').classList.remove('hidden');
+}
+
+document.getElementById('login-submit')?.addEventListener('click', doLogin);
+document.getElementById('login-pass')?.addEventListener('keydown', e => {
+  if (e.key === 'Enter') doLogin();
+});
+document.getElementById('login-user')?.addEventListener('keydown', e => {
+  if (e.key === 'Enter') document.getElementById('login-pass').focus();
+});
 
 /* ── GSAP ANIMACIONES DE ENTRADA ── */
 gsap.registerPlugin(ScrollTrigger);
@@ -2968,6 +3647,220 @@ gsap.from('.btn-action, .tab-btn', {
   y: -10, opacity: 0, duration: 0.35,
   stagger: 0.06, ease: 'power2.out', delay: 0.28
 });
+
+/* ═══════════════════════════════════════════════
+   CARGAR OPERACIONES — con selector de mes
+   ═══════════════════════════════════════════════ */
+async function cargarOperaciones() {
+  const mes = document.getElementById('mes-select-operaciones')?.value || 4;
+  try {
+    const res = await fetch('/api/operaciones?mes=' + mes);
+    const d = await res.json();
+    // Actualizar gráfica DIO
+    if (chartDIOInstance) {
+      chartDIOInstance.data.labels = d.inventario.meses;
+      chartDIOInstance.data.datasets[0].data = d.inventario.dioPorMes;
+      chartDIOInstance.update();
+    }
+  } catch(e) {
+    console.warn('Operaciones:', e.message);
+  }
+}
+
+document.getElementById('mes-select-operaciones')?.addEventListener('change', cargarOperaciones);
+
+/* ═══════════════════════════════════════════════
+   CARGAR VENTAS — con selector de mes
+   ═══════════════════════════════════════════════ */
+async function cargarVentas() {
+  const mes = document.getElementById('mes-select-ventas')?.value || 4;
+  try {
+    const [ventasRes, comprasRes] = await Promise.all([
+      fetch('/api/ventas?mes=' + mes),
+      fetch('/api/compras?mes=' + mes)
+    ]);
+    const v = await ventasRes.json();
+    const c = await comprasRes.json();
+
+    // Actualizar gráfica ventas mensuales
+    if (chartVentasMensInstance) {
+      chartVentasMensInstance.data.labels = v.ventasMensuales.meses;
+      chartVentasMensInstance.data.datasets[0].data = v.ventasMensuales['2025'];
+      chartVentasMensInstance.data.datasets[1].data = v.ventasMensuales['2024'];
+      chartVentasMensInstance.update();
+    }
+    // Actualizar gráfica compras mensuales
+    if (chartComprasMensInstance) {
+      chartComprasMensInstance.data.labels = c.comprasMensuales.meses;
+      chartComprasMensInstance.data.datasets[0].data = c.comprasMensuales.nacional;
+      chartComprasMensInstance.data.datasets[1].data = c.comprasMensuales.importacion;
+      chartComprasMensInstance.update();
+    }
+  } catch(e) {
+    console.warn('Ventas/Compras:', e.message);
+  }
+}
+
+document.getElementById('mes-select-ventas')?.addEventListener('change', cargarVentas);
+document.getElementById('mes-select-crm')?.addEventListener('change', cargarCRM);
+
+/* ═══════════════════════════════════════════════
+   EXPORTAR PDF
+   ═══════════════════════════════════════════════ */
+async function exportarPDF(tabId) {
+  const panel = document.getElementById('tab-' + tabId);
+  if (!panel) return;
+
+  const nombreTab = {
+    insights: 'Insights', resumen: 'Resumen Financiero', resultados: 'Estado de Resultados',
+    balance: 'Balance General', ratios: 'Ratios Financieros', operaciones: 'Operaciones',
+    ventas: 'Ventas y Compras', crm: 'CRM y Clientes'
+  }[tabId] || tabId;
+
+  const mesEl = document.getElementById('mes-select-' + tabId);
+  const mesNombre = mesEl ? mesEl.options[mesEl.selectedIndex].text : '';
+  const fecha = new Date().toLocaleDateString('es-MX', { year:'numeric', month:'long', day:'numeric' });
+
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = 'font-family:Sora,sans-serif;padding:0;background:#fff;';
+  wrapper.innerHTML = `
+    <div style="background:#2563eb;color:#fff;padding:18px 24px;margin-bottom:20px;border-radius:0;">
+      <div style="font-size:18px;font-weight:700;">Refacciones Franco</div>
+      <div style="font-size:13px;opacity:0.85;margin-top:2px;">${nombreTab}${mesNombre ? ' · ' + mesNombre : ''}</div>
+      <div style="font-size:11px;opacity:0.7;margin-top:4px;">${fecha}</div>
+    </div>
+  `;
+  const clone = panel.cloneNode(true);
+  clone.querySelectorAll('.export-bar, .mes-selector-bar').forEach(el => el.style.display = 'none');
+  wrapper.appendChild(clone);
+
+  document.body.appendChild(wrapper);
+
+  const opt = {
+    margin: [8, 8, 8, 8],
+    filename: `RF_${tabId}_${mesNombre.replace(' ','_') || fecha}.pdf`,
+    image: { type: 'jpeg', quality: 0.92 },
+    html2canvas: {
+      scale: 1.8,
+      useCORS: true,
+      logging: false,
+      backgroundColor: '#F4F6F8'
+    },
+    jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' },
+    pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+  };
+
+  try {
+    await html2pdf().set(opt).from(wrapper).save();
+  } finally {
+    document.body.removeChild(wrapper);
+  }
+}
+
+/* ═══════════════════════════════════════════════
+   EMAIL
+   ═══════════════════════════════════════════════ */
+let emailCurrentTab = '';
+
+const TAB_NOMBRES = {
+  insights: 'Insights', resumen: 'Resumen Financiero', resultados: 'Estado de Resultados',
+  balance: 'Balance General', ratios: 'Ratios Financieros', operaciones: 'Operaciones',
+  ventas: 'Ventas y Compras', crm: 'CRM y Clientes'
+};
+
+function abrirModalEmail(tabId) {
+  emailCurrentTab = tabId;
+  const nombre = TAB_NOMBRES[tabId] || tabId;
+  const mesEl = document.getElementById('mes-select-' + tabId);
+  const mesNombre = mesEl ? mesEl.options[mesEl.selectedIndex].text : '';
+  document.getElementById('email-modal-sub').textContent = nombre + (mesNombre ? ' · ' + mesNombre : '');
+  document.getElementById('email-modal-status').textContent = '';
+  document.getElementById('email-send-btn').disabled = false;
+  document.getElementById('email-send-btn').textContent = 'Enviar';
+  document.getElementById('email-modal-overlay').classList.add('open');
+}
+
+function cerrarModalEmail() {
+  document.getElementById('email-modal-overlay').classList.remove('open');
+}
+
+document.getElementById('email-modal-overlay')?.addEventListener('click', function(e) {
+  if (e.target === this) cerrarModalEmail();
+});
+
+function buildEmailDatos(tabId) {
+  const mesEl = document.getElementById('mes-select-' + tabId);
+  const mesNombre = mesEl ? mesEl.options[mesEl.selectedIndex].text : '';
+
+  const kpis = [];
+  const panel = document.getElementById('tab-' + tabId);
+  if (panel) {
+    panel.querySelectorAll('.kpi-value').forEach((el, i) => {
+      const label = el.closest('.card')?.querySelector('.kpi-label')?.textContent?.trim() || ('KPI ' + (i+1));
+      kpis.push(`<tr><td style="padding:8px 12px;border-bottom:1px solid #F3F4F6;color:#4B5563;font-size:13px;">${label}</td><td style="padding:8px 12px;border-bottom:1px solid #F3F4F6;font-weight:700;font-size:13px;text-align:right;">${el.textContent.trim()}</td></tr>`);
+    });
+  }
+
+  return `
+    <h2 style="font-size:15px;font-weight:700;color:#111827;margin:0 0 16px;">${TAB_NOMBRES[tabId] || tabId}${mesNombre ? ' · ' + mesNombre : ''}</h2>
+    <table style="width:100%;border-collapse:collapse;background:#F9FAFB;border-radius:8px;overflow:hidden;">
+      <thead><tr><th style="padding:10px 12px;background:#F3F4F6;text-align:left;font-size:11px;color:#6B7280;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Indicador</th><th style="padding:10px 12px;background:#F3F4F6;text-align:right;font-size:11px;color:#6B7280;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;">Valor</th></tr></thead>
+      <tbody>${kpis.join('')}</tbody>
+    </table>
+    <p style="margin:16px 0 0;font-size:12px;color:#9CA3AF;">Para ver el reporte completo con gráficas y tablas detalladas, accede al Dashboard Ejecutivo.</p>
+  `;
+}
+
+async function enviarEmail() {
+  const scope = document.getElementById('email-modal-scope').value;
+  const toEl = document.getElementById('email-modal-to');
+  const statusEl = document.getElementById('email-modal-status');
+  const sendBtn = document.getElementById('email-send-btn');
+
+  statusEl.style.color = 'var(--text-muted)';
+  statusEl.textContent = 'Enviando...';
+  sendBtn.disabled = true;
+
+  try {
+    const tabs = scope === 'all'
+      ? ['insights','resumen','resultados','balance','ratios','operaciones','ventas','crm']
+      : [emailCurrentTab];
+
+    const mesEl = document.getElementById('mes-select-' + emailCurrentTab);
+    const mesNombre = mesEl ? mesEl.options[mesEl.selectedIndex].text : '';
+    const tabNombre = scope === 'all' ? 'Reporte General Completo' : (TAB_NOMBRES[emailCurrentTab] || emailCurrentTab);
+
+    let datosHtml = '';
+    if (scope === 'all') {
+      datosHtml = tabs.map(t => `<div style="margin-bottom:28px;">${buildEmailDatos(t)}</div>`).join('');
+    } else {
+      datosHtml = buildEmailDatos(emailCurrentTab);
+    }
+
+    const res = await fetch('/api/send-email', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        tabId: emailCurrentTab,
+        mesNombre: mesNombre,
+        tabNombre: tabNombre,
+        datos: datosHtml
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Error al enviar');
+
+    statusEl.style.color = 'var(--green-400)';
+    statusEl.textContent = '✓ Correo enviado a ' + (toEl.value || 'daftpunkmanolo@gmail.com');
+    sendBtn.textContent = '✓ Enviado';
+    setTimeout(cerrarModalEmail, 2500);
+  } catch (err) {
+    statusEl.style.color = 'var(--red-400)';
+    statusEl.textContent = 'Error: ' + err.message;
+    sendBtn.disabled = false;
+    sendBtn.textContent = 'Reintentar';
+  }
+}
 
 /* ── Inicializar iconos Lucide ── */
 lucide.createIcons();
